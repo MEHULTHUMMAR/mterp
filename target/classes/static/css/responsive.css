@@ -1,0 +1,33 @@
+@media all and (min-width: 1025px) and (max-width: 1367px){
+        
+
+	div#scrollable{height:600px !important;overflow:hidden;}
+	div#salesbtndiv .btn{font-size:14px !important;}
+	
+	
+	
+}
+
+@media all and (min-width: 1366px) and (max-width: 1919px){
+        
+
+	div#scrollable{height:600px !important;overflow:hidden;}
+	
+	
+}
+
+@media all and (min-width: 1920px){
+        
+
+	div#scrollable{height:725px !important;overflow:hidden;}
+	
+	
+}
+
+@media all and (min-height: 620px) and (max-height: 630px){
+        
+
+	div#scrollProductDiv{max-height:49vh !important;height:49vh !important;}
+	
+	
+}

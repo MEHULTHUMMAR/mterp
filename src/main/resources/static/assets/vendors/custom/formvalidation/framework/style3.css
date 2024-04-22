@@ -1,0 +1,317 @@
+.heading-box h2 {
+    font-weight: normal;
+    display: inline-block;
+    color: white;
+    margin: 10px;
+    font-size: 24px;
+}
+
+.heading-box {
+    background: #31aff5;
+    padding: 0px 20px;
+}
+
+.heading-box h2.right-heading {
+    float: right;
+}
+
+.form-ht-input {
+    padding: 40px 0px;
+    text-align: center;
+}
+
+html, body {
+    overflow-x: hidden;
+    background: #EDEDEE;
+}
+
+html, body, form, span, h1 {
+    box-sizing: border-box;
+}
+
+form {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'roboto', sans-serif;
+    width: 65%;
+    background: #fff;
+    margin: 0 auto;
+    box-shadow: 0px 0px 70px 0 rgba(0, 0, 0, 0.2);
+    padding: 0 0 70px;
+    border-radius: 3px;
+    color: #555;
+}
+
+.bootstrap-select > .btn {
+    font: inherit;
+    font-size: 14px;
+    margin-bottom: 15px;
+    width: 100%;
+    display: block;
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+    border: solid 1px #31aff5;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, #31aff5 4%);
+    background-position: -800px 0;
+    background-size: 800px 100%;
+    background-repeat: no-repeat;
+    transition: background 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    resize: none;
+    overflow: hidden;
+}
+
+.form-ht-input button.form-3-btn {
+    font-family: 'roboto', sans-serif;
+    transition: transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), box-shadow 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    border: none;
+    background: linear-gradient(135deg, #7367f0, #ce9ffc);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 8px;
+    display: block;
+    font-size: 19px;
+    width: 250px;
+    color: white;
+    margin: 20px auto;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.form-ht-input button.form-3-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.table > tbody > tr > td {
+    text-align: left
+}
+
+.table > thead > tr > th {
+    border-bottom: 1px solid #8558EF;
+}
+
+.table-bordered {
+    border: 1px solid #8558EF;
+}
+
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid #8558EF;
+}
+
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid #8558EF;
+}
+
+input#firstdiv2 {
+    text-align: right;
+}
+
+/*.table>thead>tr>th{border: 1px solid #8558EF;}*/
+.input-group {
+    width: 130px;
+    display: inline-table;
+}
+
+.link-box {
+    height: 340px;
+    overflow-y: scroll;
+    margin: 90px 0 20px;
+}
+
+.link-box a.link-title {
+    color: #000;
+    font-size: 15px;
+    width: 80%;
+    text-align: left;
+    text-decoration: none;
+    float: left;
+}
+
+.link-box .wrapper {
+    border: 1px solid #31aff5;
+    width: 100%;
+    padding: 10px;
+}
+
+.link-box .mr-top {
+    margin: 10px 0;
+}
+
+.link-box .col-md-6.mr-top {
+    padding: 0 10px;
+}
+
+.link-box p.link-price {
+    float: right;
+    font-weight: 600;
+}
+
+.link-box a.link-sub-title {
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+}
+
+.wizard-nav {
+    text-align: center;
+}
+
+.wizard-nav button {
+    font-family: 'roboto', sans-serif;
+    transition: transform 0.2s cubic-bezier(0.64, 0.09, 0.08, 1), box-shadow 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    border: none;
+    background: #31aff5;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 8px;
+    font-size: 16px;
+    width: 120px;
+    color: white;
+    margin: 0px 0 0 10px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.wizard-nav button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+th, .table > tbody > tr > td {
+    text-align: right;
+}
+
+.table > thead > tr > th:nth-child(2), .table > tbody > tr > td:nth-child(2), .table > thead > tr > th:nth-child(1), .table > tbody > tr > td:nth-child(1) {
+    text-align: left !important;
+}
+
+.alignment {
+    text-align: left;
+}
+
+.summary-wrapper {
+    height: 280px;
+    overflow-y: scroll;
+    margin: 115px 0 0;
+}
+
+.summary-wrapper .summary-box {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+
+.summary-wrapper .summary-box a.ht-titleremove {
+    word-wrap: break-word;
+    color: #000;
+    font-size: 16px;
+    float: left;
+    text-decoration: none;
+    width: 56%;
+    text-align: left;
+}
+
+.summary-wrapper .summary-box h3 {
+    text-align: left;
+    margin-top: 10px;
+    padding: 0;
+    font-size: 16px;
+}
+
+.summary-wrapper .summary-box button {
+    background: #31aff5;
+}
+
+.summary-wrapper .summary-box span.glyphicon {
+    color: #fff;
+}
+
+.sum-total-box {
+    background: #31aff5;
+    margin: 25px 0 0;
+    color: #fff;
+    padding: 15px 0;
+}
+
+.sum-total-box h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+}
+
+.form-ht-input .col-md-6.select-mr-top {
+    padding: 0 5px;
+}
+
+.sum-title-box {
+    background: #eee;
+}
+
+.sum-title-box h3 {
+    font-size: 22px;
+    text-align: left;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+    overflow: visible;
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: solid #fff;
+    border-radius: 17px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    border-width: 4px 6px;
+    min-width: 40px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    border-width: 6px 4px;
+    min-height: 40px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: #fff;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ADADAD;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
+.ht-p {
+    text-align: right;
+}
+
+a.ht-dlt img {
+    width: 25px;
+}
+
+a.ht-dlt {
+    display: inline-block;
+    float: right;
+}
+
+

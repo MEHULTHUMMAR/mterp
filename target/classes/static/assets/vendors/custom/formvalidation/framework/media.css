@@ -1,0 +1,63 @@
+@media screen and (max-width: 991px) {
+    .select-mr-top {
+        margin-top: 25px;
+    }
+
+    .link-box {
+        margin: 50px 0;
+    }
+
+    .form-ht-input {
+        padding: 0px 0px;
+    }
+
+    .wizard-nav {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        border-color: #8557EF
+    }
+
+    .wizard-nav {
+        float: unset;
+    }
+}
+
+@media screen and (max-width: 639px) {
+    html, body {
+        background: #fff !important;
+    }
+
+    form {
+        width: 100%;
+        margin: 0;
+        position: unset;
+        top: 0;
+        transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .heading-box h2 {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    .link-box .col-xs-6 {
+        width: 100%;
+    }
+
+    .wizard-nav button {
+        margin: 30px 0 0 5px;
+    }
+
+    .sum-total-box h3 {
+        font-size: 20px;
+    }
+}
