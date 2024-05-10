@@ -9,7 +9,7 @@
 
     <%@include file="../header/head.jsp" %>
 
-    <title>Login | Vasy ERP</title>
+    <title>Login | ERP</title>
     <link href="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.css" rel="stylesheet"
           type="text/css"/>
 
@@ -59,7 +59,7 @@
                                             </a>
                                         </div> --%>
                                         <div class="d-flex align-items-center justify-content-between m-b-30">
-	                                        <img class="img-fluid" alt="Logo"  src="/images/vasyerplogo.png" style="width: 35%;">
+	                                        <img class="img-fluid" alt="Logo"  src="/images/vasyerplogo.jpg" style="width: 35%;">
 	                                        <h3 class="m-login__title">Sign In</h3>
 	                                    </div>
                                         <div class="m-login__signin">

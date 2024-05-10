@@ -1,4 +1,3 @@
-<%@page import="com.croods.loyalty.vo.userfront.UserFrontVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -152,7 +151,7 @@
                             <div class="card no-shadow" style="background-color:transparent;">
                                 <div class="row">
                                     <div class="col-md-12 col-lg-3">
-                                        <ul class="list-group list-group-flush">
+                                       <%-- <ul class="list-group list-group-flush">
                                             <li class="list-group-item mb-3" style="background-color:#fff;">
                                                 <div class="widget-content p-0">
                                                     <div class="widget-content-outer">
@@ -169,10 +168,10 @@
                                                 
                                             </li>
                                             
-                                        </ul>
+                                        </ul>--%>
                                     </div>
                                     <div class="col-md-12 col-lg-3">
-                                        <ul class="list-group list-group-flush">
+                                       <%-- <ul class="list-group list-group-flush">
                                             <li class="list-group-item mb-3" style="background-color:#fff;">
                                                 <div class="widget-content p-0">
                                                     <div class="widget-content-outer">
@@ -188,7 +187,7 @@
                                                 </div>
                                              </li>
                                             
-                                        </ul>
+                                        </ul>--%>
                                     </div>
                                     
                                     

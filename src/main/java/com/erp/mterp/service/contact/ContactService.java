@@ -3,6 +3,7 @@ package com.erp.mterp.service.contact;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -65,4 +66,10 @@ public interface ContactService {
 	void updateDob(Long contactId, Date dob);
 
 	void savetransaction(ContactTransactionVo transactionVo);
+
+	ContactVo findBycontactId(long id, long companyId);
+
+	List<ContactVo> findByCompanyIdAndIsDeleted(long companyId, int i);
+
+	Map<String, String> findAddressDetails(long id, long companyId);
 }

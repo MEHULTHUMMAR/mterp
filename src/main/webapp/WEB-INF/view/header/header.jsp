@@ -31,7 +31,7 @@
                   id="m-logo_div_header">
                   <!--  m-brand__logo -->
                   <a href="/" class="m-brand__logo-wrapper"> <img alt=""
-                     src="<%=request.getContextPath()%>/assets/image/logo_vasyerp_nav.png"
+                     src="<%=request.getContextPath()%>/images/vasyerplogo.jpg"
                      style="height: 50px;"/>
                   </a>
                   <%-- <a href="#" class="m-brand__logo-wrapper " style="font-size: 2.9rem;color: white;font-weight: bold;" id="HeaderName">
@@ -78,7 +78,7 @@
             </button>
             <div id="m_header_menu"
                class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-dark m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
-               <ul class="m-menu__nav ">
+              <%-- <ul class="m-menu__nav ">
                   <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel"
                      m-menu-submenu-toggle="click" m-menu-link-redirect="1"
                      aria-haspopup="true">
@@ -114,7 +114,7 @@
                         </div>
                      </div>
                   </li>
-               </ul>
+               </ul>--%>
             </div>
             <!-- END: Horizontal Menu -->
             <!-- BEGIN: Topbar -->

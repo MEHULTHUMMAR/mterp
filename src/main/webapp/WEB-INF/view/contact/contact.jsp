@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="com.erp.mterp.constant.Constant" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -64,17 +63,25 @@
                         <!--begin::Portlet-->
                         <div class="m-portlet m-portlet--bordered-semi">
                             <div class="m-portlet__head remove_head_space_1">
-                                <div class="col-md-3 mb-1 ">
+                              <%--  <div class="col-md-3 mb-1 ">
                                   
                                         <a href="javascript:void()" class="btn btn-sm btn-primary mt-3" data-toggle="modal" data-target="#contact_upload_model"> <span><i class="fas fa-file-import"></i><span>&nbsp;&nbsp;Import</span></span></a>
                                     
-                                </div>
+                                </div>--%>
                                 <div class="m-portlet__head-caption">
                                     <div class="m-portlet__head-title">
                                         <%-- <a href="/contact/${type}/new"
                                            class="btn btn-primary btn-sm m-btn m-btn--icon"> <span><i
                                                 class="la la-plus"></i><span> New ${displayContactType}</span></span>
                                         </a> --%>
+                                    </div>
+                                </div>
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <a href="#" data-toggle="modal" data-target="#contact_new_modal"
+                                           class="btn btn-primary m-btn btn-sm m-btn--icon m-btn--air">
+                                            <span><i class="la la-plus"></i><span>New customer</span></span>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="m-portlet__head-caption ml-auto">
@@ -149,18 +156,18 @@
                                  id="contact_table">
                                     <thead>
                                     <tr>
-                                        <th>
+                                        <%--<th>
                                             <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
                                                 <input type="checkbox" class="checkbox m-group-checkable" id="contactPoints"
                                                        name="contactPoints" value="0">
                                                 <span></span>
                                             </label>
-                                        </th>
+                                        </th>--%>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Company Name</th>
                                         <th>Mobile No</th>
                                         <th>Email</th>
-                                        <th>Point</th>
                                         <th>Actions</th>
                                         
                                     </tr>
@@ -178,40 +185,7 @@
         </div>
     </div>
     <!-- loyalty modal code -->
-    <div class="modal fade" id="pointsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header modal-header-sm">
-                <h5 class="modal-title" id="exampleModalLabel">Points Adjustment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="pointsForm" >
-                <div class="modal-body modal-body-sm">
-                    <div class="row" id="qty_div">
-                        <div class="form-group col-md-6">
-                            <label>In Points</label>
-                            <input type="text"  class="form-control form-control-sm" 
-                                   name="inPoints" placeholder="In Points" value="0" autocomplete="off" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Out Points</label>
-                            <input type="text" class="form-control form-control-sm" 
-                                   name="outPoints" 
-                                   placeholder="Out Points" value="0" autocomplete="off" required>
-                        </div>
-                    </div>
-                    <div class="col-12 p-0 text-right">
-                        <button type="button" id="addPointsBtn" class="btn btn-sm btn-primary">Add</button>
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
- </div>
+
     <!-- end loyalty modal code -->
     <!-- start import excel sheet modal -->
     <div class="modal fade" id="contact_upload_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -256,18 +230,21 @@
     
     <!-- end modal for selecting contacts -->
 	<%@include file="../footer/footer.jsp" %>
+
+    <%@include file="contact-modal-new.jsp" %>
+    <%@include file="contact-modal-update.jsp" %>
 </div>
 <script src="<%=request.getContextPath()%>/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/demo/demo12/base/scripts.bundle.js" type="text/javascript"></script>
 
 <%@include file="../global/global-script.jsp" %>
+<%@include file="../global/location-ajax.jsp" %>
 <script src="<%=request.getContextPath()%>/assets/vendors/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
-<script  src="<%=request.getContextPath()%>/script/jquery.spring-friendly.js" type="text/javascript"></script>
-<script
-src="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.js"></script>
-<script
-src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
-
+<script src="<%=request.getContextPath()%>/script/jquery.spring-friendly.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/script/contact/contact-new-script.js?v=0.0.2" type="text/javascript"></script>
+<script src="<%=request.getContextPath()%>/script/contact/contact-update-script.js?v=0.0.2" type="text/javascript"></script>
 <script type="text/javascript">
     var table;
     var selectContactId=null;
@@ -290,60 +267,60 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
                     type: "POST",
                 },
                 lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
-                columns: [{
-                    data: "contactManageId"
-                },
+                columns: [
                     {
-                    data: "contactManageId"
+                    data: "contactId"
                 }, {
                     data: "contactName"
+                }, {
+                    data: "companyName"
                 }, {
                     data: "contactMobNo"
                 }, {
                     data: "contactEmail"
                 }, {
-                    data: "points"
-                }],
-                columnDefs: [{
-                    targets:0,
-                    orderable: !1,
-                    classname:"checkbox",
-                    render: function(a,e,t,n){
-                     var c = "";
-                    c = '<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">'
-                    + '<input type="checkbox" class="checkbox  m-group-checkable" id="" name="" data-contactManageId ="' + t.contactManageId + '"  data-contactId ="' + t.contactId + '" value="' + t.contactId  + '">'
-                    + '<span></span></label>';
-                    return c;
-
-                    }
-                },
+                        data: "contactId"
+                    }],
+                columnDefs: [
                     {
-                    targets: 1,
+                    targets: 0,
                     className: "text-center px-0 mx-0",
                     orderable: !1,
                     render: function (a, e, t, n) {
                        return n.row + n.settings._iDisplayStart + 1;
                     }
                 }, {
-                    targets: 2,
+                    targets: 1,
                     orderable: !1,
                     render: function (a, e, t, n) {
                         return a
                     }
                 }, {
-                    targets: 5,
+                    targets: 2,
                     orderable: !1,
                     render: function (a, e, t, n) {
                         return a;
                     }
                 },{
                     
-                    targets: 6, // index of the "Actions" column (zero-based index)
+                    targets: 5, // index of the "Actions" column (zero-based index)
                     orderable: false,
                    render: function (data, type, row) {
-                    selectContactId=row.contactId;
-                  return '<i class="fa fa-edit text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="edit" data-target="#pointsModal" onclick="setSelectedContactId(' + row.contactId + ')" style="cursor: pointer; color:gray;"></i> '+
-                         '<i class="fas fa-redo text-red-500" id="resetpoints" data-toggle="popover" title="Reset" style="cursor: pointer; color:red;" onclick="resetPointsFnc(' + row.contactId + ')" ></i>'
+
+
+                  return '<input type="hidden" id="table_contactId'+row.contactId+'" value='+row.contactId+'>'+
+                      '<input type="hidden" id="table_contactName'+row.contactId+'" value='+row.contactName+'>'+
+                      '<input type="hidden" id="table_companyName'+row.contactId+'" value='+row.companyName+'>'+
+                      '<input type="hidden" id="table_contactEmail'+row.contactId+'" value='+row.contactEmail+'>'+
+                      '<input type="hidden" id="table_contactMobNo'+row.contactId+'" value='+row.contactMobNo+'>'+
+                      '<input type="hidden" id="table_countriesCode'+row.contactId+'" value='+row.countriesCode+'>'+
+                      '<input type="hidden" id="table_stateCode'+row.contactId+'" value='+row.stateCode+'>'+
+                      '<input type="hidden" id="table_cityCode'+row.contactId+'" value='+row.cityCode+'>'+
+                      '<input type="hidden" id="table_address'+row.contactId+'" value='+row.address+'>'+
+                      '<input type="hidden" id="table_pincode'+row.contactId+'" value='+row.pincode+'>'+
+                       '<i class="fa fa-edit text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="edit" data-target="#contact_edit_modal" onclick="updatecontact(' + row.contactId + ')" style="cursor: pointer; color:gray;"></i> '+
+                       '<i class="fa fa-trash text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="delete"  onclick="deletecontact(' + row.contactId + ')" style="cursor: pointer; color:gray;"></i> ';
+
                      }
                      
                 }],
@@ -355,12 +332,9 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
    
      $(document).ready(function() {
        DatatablesDataSourceHtml.init();
+         getAllCountryAjax("countriesCode");
+         getAllCountryAjax("editcountriesCode");
        $(".dt-buttons").addClass("m--hide");
-       
-       $(document).on('click', '.fa-edit', function() {
-       // Open the modal when the edit icon is clicked
-      $('#pointsModal').modal('show');
-      });
 
       $('#addPointsBtn').on('click', function() {
       var inPoints = $('input[name="inPoints"]').val(); 
@@ -378,13 +352,13 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
       success: function(response) {
        toastr.success("Points has been adjusted successfully!");
         $("#contact_table").DataTable().ajax.reload()
-        $('#pointsModal').modal('hide'); 
+
       },
       error: function(xhr, status, error) {
         console.error(error);
       }
     });
-    $('#pointsModal').modal('hide'); 
+
     });
     $('#pointsForm').formValidation({
     framework: 'bootstrap',
@@ -418,13 +392,7 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
         }
 
     })
-    $('#pointsModal').on('hidden.bs.modal', function() {
-        $(this).find("input").val('0')
-     });
-     $('#pointsModal').on('hide.bs.modal', function () {
-    //    $('#pointsForm').data('formValidation').resetForm();
-    //    $('#pointsForm')[0].reset()
-    })
+
    
     });
          $("#contactPoints").click(function () {
@@ -460,59 +428,7 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
     function setSelectedContactId(contactId) {
     selectContactId = contactId; // Update the value of selectContactId
     }
-   
-    function resetPointsFnc(contactId) {
-        let contactArray = [];
-        contactArray.push(contactId)
-        resetPointsAjaxFnc(contactArray.toString());
-    }
 
-    function resetPointsForMultipleContact() {
-        $("#resetbtn").prop('disable',true);
-        var conatctIDs = "";
-
-        $(".checkbox").each(function () {
-            if ($(this).prop('checked') == true) {
-                if ($(this).val() != "" && $(this).val() != "0") {
-                    conatctIDs = conatctIDs + $(this).val() + ",";
-                    console.log("id:--" + conatctIDs);
-                }
-            }
-        });
-        swal({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            type: "warning",
-            showCancelButton: !0,
-            confirmButtonText: "Yes, delete it!"
-        }).then(function (e) {
-            if (e.value) {
-               resetPointsAjaxFnc(conatctIDs)
-            }else{
-                $("#resetbtn").prop('disable',false);
-            }
-        });
-    }
-
-    function resetPointsAjaxFnc(contactIds) {
-        
-        $.ajax({
-        url: '/contact/resetPoints?contactIds='+contactIds,
-        type: 'DELETE',
-        success: function(response) {
-          toastr.success("Points has been Reset successfully");
-          console.log(response);
-          $("#resetbtn").prop('disable',false);
-          $("#contact_table").DataTable().ajax.reload();
-          $('#m_datatable_group_action_form').collapse("hide");
-
-        },
-        error: function(xhr, status, error) {
-            toastr.error("something went wrong......!");
-            $("#resetbtn").prop('disable',false);
-        }
-     });
-    }
     $("#contact_upload_model").on('hidden.bs.modal', function () {
         	$("#fileTextBox").val("");
             $("#file-upload").val("");
@@ -756,7 +672,56 @@ src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/boots
     // setSelectedContactId(contactId);
     // resetPointsFnc(contactId);
     // });
-   
+
+
+    function updatecontact(id) {
+
+        $("#editcustomerName").val($("#table_contactName"+id).val());
+        $("#editcompanyName").val($("#table_companyName"+id).val())
+        $("#editmobileNo").val($("#table_contactMobNo"+id).val())
+        $("#editemail").val($("#table_contactEmail"+id).val())
+        $("#editcontactId").val($("#table_contactId"+id).val())
+        $("#editaddress").text($("#table_address"+id).val())
+        $("#editpincode").val($("#table_pincode"+id).val())
+        $('#editcountriesCode').val($('#table_countriesCode'+id).val()).trigger('change');
+        $('#editstateCode').val($('#table_stateCode'+id).val()).trigger('change');
+        $('#editcityCode').val($('#table_cityCode'+id).val()).trigger('change');
+
+    }
+
+    function deletecontact(id){
+        swal(
+            {
+                title: "",
+                text: "Are you sure you want to delete this!",
+                type: "info",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, Delete this!"
+            }).then(function (e) {
+            if (e.value) {
+
+                $.ajax({
+                    url: "/contact/delete",
+                    type: "POST",
+                    data:{
+                        id: id
+                    },
+                    success: function (data) {
+                      if (data) {
+                            toastr["success"]("Record deleted....");
+                            table.ajax.reload();
+                        } else {
+                            toastr.error("There is Something went wrong...");
+                        }
+                    },
+                    error: function () {
+
+                        toastr.error("There is Something went wrong...");
+                    }
+                });
+            }
+        });
+    }
 </script>
 </body>
 

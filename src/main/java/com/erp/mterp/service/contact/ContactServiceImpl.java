@@ -8,10 +8,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -175,7 +172,7 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public Integer countOfContactVoDatatable(String serachValue, long companyId, int isDeleted) {
-		return contactManageRepository.countOfContactManageVoDatatable(serachValue, companyId, isDeleted);
+		return contactRepository.countOfContactVoDatatable(serachValue, companyId, isDeleted);
 	}
 
 	@Override
@@ -482,6 +479,21 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public void savetransaction(ContactTransactionVo transactionVo) {
 		contactTransactionRepository.save(transactionVo);
+	}
+
+	@Override
+	public ContactVo findBycontactId(long id, long companyId) {
+		return contactRepository.findByIdAndCompanyId(id,companyId);
+	}
+
+	@Override
+	public List<ContactVo> findByCompanyIdAndIsDeleted(long companyId, int i) {
+		return contactRepository.findByCompanyIdAndIsDeleted(companyId, i) ;
+	}
+
+	@Override
+	public Map<String, String> findAddressDetails(long id, long companyId) {
+		return contactRepository.findAddressDetails(id,  companyId);
 	}
 
 

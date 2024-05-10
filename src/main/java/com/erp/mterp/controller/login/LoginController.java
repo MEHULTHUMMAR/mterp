@@ -429,7 +429,8 @@ public class LoginController {
 				.getRoleWisePermission(userFrontVo.getRoles().get(0).getUserRoleId());
 		if (permis.size() != 0) {
 			// response.sendRedirect(permis.get(0).getNavSubMenuVo().getMenuURL());
-			return "redirect:/" + permis.get(0).getNavSubMenuVo().getMenuURL();
+			//return "redirect:/" + permis.get(0).getNavSubMenuVo().getMenuURL();
+			return "redirect:/dashboard";
 
 		} else {
 			// response.sendRedirect("/AccessDenid");

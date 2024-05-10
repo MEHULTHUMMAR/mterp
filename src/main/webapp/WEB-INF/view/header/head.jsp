@@ -173,4 +173,4 @@
         box-shadow: 0 2px 10px 1px rgba(57, 73, 76, .4), 0 1px 2px rgba(57, 73, 76, .25);
     }
 </style>
-<link rel="shortcut icon" href="<%=request.getContextPath()%>/assets/image/icon_vasyerp.png"/>
+<link rel="shortcut icon" href="<%=request.getContextPath()%>/assets/image/vasyerplogo.jpg"/>

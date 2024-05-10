@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.erp.mterp.service.city.CityService;
+import com.erp.mterp.service.country.CountryService;
+import com.erp.mterp.service.state.StateService;
+import com.erp.mterp.vo.contact.ContactVo;
+import com.erp.mterp.vo.coupon.CouponVo;
+import com.erp.mterp.vo.product.ProductVo;
 import org.apache.commons.lang3.StringUtils;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Row;
@@ -80,6 +86,15 @@ public class ContactController {
 	
 	@Autowired
 	ContactRepository contactRepository;
+
+	@Autowired
+	CountryService countryService;
+
+	@Autowired
+	StateService stateService;
+
+	@Autowired
+	CityService cityService;
 	
 	long totalRow=0;
 	String rowNumber = "";
@@ -88,6 +103,9 @@ public class ContactController {
 	public ModelAndView Listpage(HttpSession session) {
 
 		ModelAndView view = new ModelAndView("contact/contact");
+		view.addObject("CountryList", countryService.findAll());
+		view.addObject("StateList", stateService.findAll());
+		view.addObject("CityList", cityService.findAll());
 
 		return view;
 	}
@@ -171,226 +189,60 @@ public class ContactController {
 	}
 
    //loyalty reset points api
+
+
+	@PostMapping("/savecontact")
+	@ResponseBody
+	public void savecontact(@RequestParam(value = "customerName") String customerName,
+						   @RequestParam(value = "mobileNo") String mobileNo,
+						   @RequestParam(value = "companyName") String companyName,
+						   @RequestParam(value = "email") String email,
+							@RequestParam(value = "address") String address, @RequestParam(value = "cityCode") String cityCode,
+							@RequestParam(value = "stateCode") String stateCode, @RequestParam(value = "countriesCode") String countriesCode,
+							@RequestParam(value = "pincode") String pincode,
+							@RequestParam(value = "contactId",defaultValue = "0") long contactId,HttpSession session) {
+
+		ContactVo contactVo=new ContactVo();
+		if(contactId!=0){
+			contactVo.setContactId(contactId);
+		}
+		contactVo.setAlterBy(Long.parseLong(session.getAttribute("userId").toString()));
+		contactVo.setCreatedBy(Long.parseLong(session.getAttribute("userId").toString()));
+		contactVo.setCompanyId(Long.parseLong(session.getAttribute("companyId").toString()));
+		contactVo.setBranchId(Long.parseLong(session.getAttribute("branchId").toString()));
+		contactVo.setEmail(email);
+		contactVo.setCompanyName(companyName);
+		contactVo.setName(customerName);
+		contactVo.setMobNo(mobileNo);
+		contactVo.setAddress(address);
+		contactVo.setCountriesCode(countriesCode);
+		contactVo.setStateCode(stateCode);
+		contactVo.setCityCode(cityCode);
+		contactVo.setPincode(pincode);
+		contactService.saveContact(contactVo);
+
+	}
+
+	@RequestMapping("delete")
+	@ResponseBody
+	public boolean deleteContact(@RequestParam(value = "id") long id,HttpSession session) {
+		ContactVo contactVo =contactService.findBycontactId(id,Long.parseLong(session.getAttribute("companyId").toString()));
+		if(contactVo!=null) {
+			contactVo.setIsDeleted(1);
+			contactService.saveContact(contactVo);
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@RequestMapping("/{id}/address")
+	@ResponseBody
+	public Map<String,String> contactVoData(HttpSession session, @PathVariable("id") long id) {
+		Map<String,String> contactVo= contactService.findAddressDetails(id, Long.parseLong(session.getAttribute("companyId").toString()));
+		return contactVo;
+	}
 	
-	@PostMapping("/adjust/{contactId}")
-	@ResponseBody
-	public ApiResponse adjustPoints(@PathVariable long contactId,@RequestParam(required = false) double inPoints,@RequestParam(required = false) double outPoints,HttpSession session) {
-		long comapanyId=Long.parseLong( session.getAttribute("companyId").toString());
-		try {
-			log.info(contactId+"contactId");
-			log.info("points"+inPoints+"po"+outPoints);
-			int res=contactService.adjustPoints(contactId,inPoints,outPoints,comapanyId,Constant.POINTDESCRIPTION);
-			return new ApiResponse(true,"adjust points",null,res);
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			return new ApiResponse(false, "not adjust points", null, ex);
-		}
-	}
-	
-	@DeleteMapping("/resetPoints")
-	@ResponseBody
-	public ApiResponse deleteByContactIdAndCompanyId(@RequestParam String contactIds,HttpSession session) {
-		long companyId=Long.parseLong( session.getAttribute("companyId").toString());
-		if (StringUtils.isNotBlank(contactIds)) {
-			List<Long> contactId = new ArrayList<>();
-			contactId.add(0L);
-			try {
-				contactId = Arrays.asList(contactIds.split(",")).stream().map(Long::parseLong).collect(Collectors.toList());
-				contactService.deleteByContactIdAndCompanyId(contactId, companyId);
-				return new ApiResponse(true,"delete points",null);
-			}catch(Exception ex) {
-				ex.printStackTrace();
-				return new ApiResponse(false, "not delete points", ex);
-			}
-		}else {
-			return new ApiResponse(false, "No contactIds found", null);
-		}
-		
-	}
 
-	@PostMapping(value = "/check/excel")
-	@ResponseBody
-	public CustomerUploadSheetFinalDTO ImportCustomer(@RequestParam("excelFile") MultipartFile file,
-			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		FileValidationResponse fileValidationResponse = securityValidation.validateFile(file, Constant.FILE_EXCEL);
-		if (!fileValidationResponse.isValid()) {
-			List<CustomerLoyaltyWrongSheetDTO> wrongSheetDTO = new ArrayList<CustomerLoyaltyWrongSheetDTO>();
-			return new CustomerUploadSheetFinalDTO(wrongSheetDTO, Integer.parseInt("" + 0), wrongSheetDTO.size(),
-					fileValidationResponse.getMessage(), false);
-		} else {
-			File fb = ImageResize.convert(file);
-			// System.out.println(fb.getName());
-			// System.out.println(fb.getAbsolutePath());
-			String filepath = fb.getAbsolutePath();
-			session.setAttribute("filepath", filepath);
-			return checkSheet(request, response, session, Constant.CONTACT_CUSTOMER);
-		}
-	}
-
-	public CustomerUploadSheetFinalDTO checkSheet(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session, String type) throws IOException {
-		String name = "";
-		boolean result = true;
-
-		String filepath = (String) session.getAttribute("filepath");
-		File fb = new File(filepath);
-		InputStream in = new FileInputStream(fb);
-		// Create Workbook instance holding reference to .xlsx file
-		ReadableWorkbook workbook = new ReadableWorkbook(in);
-	        Sheet sheet = workbook.getFirstSheet();
-
-		try(Stream<Row> rows = sheet.openStream()){
-			var rowIterator = rows.iterator();
-			List<Row> row2 = sheet.read(); 
-	        long rowTotal = row2.size();
-	        totalRow=rowTotal;
-	        System.err.println("rowTotal"+rowTotal);
-	        Row row1 = rowIterator.next();
-
-		List<CustomerLoyaltyWrongSheetDTO> wrongSheetDTO = new ArrayList<CustomerLoyaltyWrongSheetDTO>();
-
-		if (rowTotal == 0) {
-			result = false;
-			rowNumber = "";
-			rowNumber = "Please enter data in the sheet";
-			return new CustomerUploadSheetFinalDTO(wrongSheetDTO, Integer.parseInt("" + rowTotal), wrongSheetDTO.size(),
-					"Please enter data in the sheet", false);
-		}
-		if (row1.getCell(Constant.SHEETNAME) != null
-				&& row1.getCell(Constant.SHEETNAME).getText().trim() != "") {
-			if (type.equals(Constant.CONTACT_CUSTOMER)) {
-				if (!row1.getCell(Constant.SHEETNAME).getText().trim().equals("Customer Name")) {
-					result = false;
-					rowNumber += "column Not find Wrong Sheet";
-					return new CustomerUploadSheetFinalDTO(wrongSheetDTO, Integer.parseInt("" + rowTotal),
-							wrongSheetDTO.size(), "column Not find Wrong Sheet", false);
-				}
-			}
-
-		} else {
-			result = false;
-			rowNumber += "column Not find Wrong Sheet";
-			return new CustomerUploadSheetFinalDTO(wrongSheetDTO, Integer.parseInt("" + rowTotal), wrongSheetDTO.size(),
-					"column Not find Wrong Sheet", false);
-		}
-
-		if (result == true) {
-			int i = 2;
-			while (rowIterator.hasNext()) {
-				Boolean checkIssue = false;
-				String reason = "";
-				Row row = rowIterator.next();
-				
-
-					try {
-						if (row.getCell(Constant.SHEETNAME) != null) {
-							if (row.getCell(Constant.SHEETNAME).getText().trim().length() < 51) {
-								if (RegexTest.validateFirstName(
-										row.getCell(Constant.SHEETNAME).getText().trim())) {
-								} else {
-									result = false;
-									rowNumber += "(" + i + ",A)-";
-									checkIssue = true;
-									reason += "(The name can only consist of alphabetical, number and underscore)-";
-								}
-							} else {
-								result = false;
-								rowNumber += "(" + i + ",A)-";
-								checkIssue = true;
-								reason += "(The name must be less than 50 characters long)-";
-							}
-						} else {
-							if (type.equalsIgnoreCase(Constant.CONTACT_CUSTOMER)) {
-								checkIssue = true;
-								reason += "(First Name Required)-";
-								result = false;
-								rowNumber += "(" + i + ",A)-";
-							}
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-					try {
-						if (row.getCell(Constant.SHEETMOBILENO) != null
-								&& row.getCell(Constant.SHEETMOBILENO).getText().trim() != "") {
-							if (row.getCell(Constant.SHEETMOBILENO).getText().trim().length() >= 10
-									&& row.getCell(Constant.SHEETMOBILENO).getText().trim().length() <= 15) {
-								if (RegexTest.validateMobile(
-										row.getCell(Constant.SHEETMOBILENO).getText().trim())) {
-								} else {
-									log.info("mobile "
-											+ row.getCell(Constant.SHEETMOBILENO).getText().trim());
-									result = false;
-									rowNumber += "(" + i + ",B)-";
-									checkIssue = true;
-									reason += "(The mobile no can only consist of number)-";
-								}
-							} else {
-								result = false;
-								rowNumber += "(" + i + ",B)-";
-								checkIssue = true;
-								reason += "(The mobile no must be between 10-15 digits .)-";
-							}
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-					try {
-						if (row.getCell(Constant.SHEETEMAIL) != null
-								&& row.getCell(Constant.SHEETEMAIL).getText().trim() != "") {
-							if (RegexTest.validateEmail(row.getCell(Constant.SHEETEMAIL).getText().trim())) {
-							} else {
-								result = false;
-								rowNumber += "(" + i + ",C)-";
-								checkIssue = true;
-								reason += "(email address is not a valid)-";
-							}
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					try {
-						if (row.getCell(Constant.SHEETPOINTS) != null
-								&& row.getCell(Constant.SHEETPOINTS).getText().trim() != "") {
-						} else {
-							result = false;
-							rowNumber += "(" + i + ",D)-";
-							checkIssue = true;
-							reason += "( Points is not a valid)-";
-
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-					System.out.println("Row No= " + (row.getRowNum() + 1));
-					if (checkIssue) {
-						int actualIndex = row.getRowNum()-1;
-						wrongSheetDTO.add(new CustomerLoyaltyWrongSheetDTO(reason,actualIndex, actualIndex));
-					}
-					i++;
-
-			}
-		}
-		workbook.close();
-		in.close();
-		
-		session.setAttribute("Wrongsheet", wrongSheetDTO);
-		System.out.println("Final Result----------->" + result);
-		return new CustomerUploadSheetFinalDTO(wrongSheetDTO, Integer.parseInt("" + rowTotal), wrongSheetDTO.size(),
-				"All Data Not Valid", true);
-	}
-	}
-	@RequestMapping(value = "/upload/excel/{flag}")
-	@ResponseBody
-	public String ImportContactToDB(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("flag") int flag) throws IOException, ParseException {
-		return contactService.ImportContactToDB(flag, session, request);
-	}
 
 }

@@ -32,38 +32,29 @@ public interface ContactManageRepository extends JpaRepository<ContactManageVo, 
 	@Query(value="Select coalesce(contact_manage.points,0) from contact_manage INNER JOIN contact ON  contact.contact_id=contact_manage.contact_id where contact.mob_no=?1 and contact_manage.company_id=?2 order by contact_manage.contact_manage_id desc limit 1",nativeQuery = true)
 	Double findPointsByContactWithMobileNumberAndCompanyId(String mobileNumber, long l);
 
-	@Query(nativeQuery = true, value = "SELECT\n"
-			+ "	count(contact_manage.contact_manage_id)\n"
-			+ "FROM\n"
-			+ "	contact_manage \n"
-			+ "	left join contact on contact.contact_id = contact_manage.contact_id\n"
-			+ "WHERE\n"
-			+ "		case when :searchValue='' then 1=1 else \n"
-			+ "		(LOWER(contact.name) like lower(concat('%',:searchValue,'%')) \n"
-			+ "			or LOWER(contact.email) like lower(concat('%',:searchValue,'%')) \n"
-			+ "			or LOWER(contact.mob_no) like lower(concat('%',:searchValue,'%'))) end\n"
-			+ "	AND contact_manage.company_id = :companyId \n"
-			+ "	AND contact_manage.is_deleted = :isDeleted")
-	Integer countOfContactManageVoDatatable(@Param("searchValue") String serachValue,@Param("companyId") long companyId,@Param("isDeleted") int isDeleted);
 
 	@Query(nativeQuery = true, value = "SELECT\n"
-			+ "	contact_manage.contact_manage_id as contactManageId,\n"
 			+ "	COALESCE(contact.contact_id,0) as contactId,\n"
 			+ "	COALESCE(contact.name,'') as contactName,\n"
 			+ "	COALESCE(contact.mob_no,'') as contactMobNo,\n"
 			+ "	COALESCE(contact.email,'') as contactEmail,\n"
-			+ "	COALESCE(contact_manage.points,0) as points\n"
+			+ "	COALESCE(contact.company_name,'') as companyName,\n"
+			+ "	COALESCE(contact.address,'') as address,\n"
+			+ "	COALESCE(contact.countries_code,'') as countriesCode,\n"
+			+ "	COALESCE(contact.state_code,'') as stateCode,\n"
+			+ "	COALESCE(contact.city_code,'') as cityCode,\n"
+			+ "	COALESCE(contact.pin_code,'') as pincode\n"
 			+ "FROM\n"
-			+ "	contact_manage \n"
-			+ "	left join contact on contact.contact_id = contact_manage.contact_id\n"
+			+ "	contact \n"
 			+ "WHERE\n"
 			+ "		case when :searchValue='' then 1=1 else \n"
 			+ "		(LOWER(contact.name) like lower(concat('%',:searchValue,'%')) \n"
 			+ "			or LOWER(contact.email) like lower(concat('%',:searchValue,'%')) \n"
+			+ "			or LOWER(contact.company_name) like lower(concat('%',:searchValue,'%')) \n"
 			+ "			or LOWER(contact.mob_no) like lower(concat('%',:searchValue,'%'))) end\n"
-			+ "	AND contact_manage.company_id = :companyId \n"
-			+ "	AND contact_manage.is_deleted = :isDeleted\n"
-			+ "	order by contact_manage.contact_manage_id desc limit :length offset :offset")
+			+ "	AND company_id = :companyId \n"
+			+ "	AND is_deleted = :isDeleted\n"
+			+ "	order by contact_id desc limit :length offset :offset")
 	List<ContactCustomDatatableDTO> getContactManageCustomDatatableBy(@Param("searchValue") String serachValue,@Param("companyId") long companyId,@Param("isDeleted") int isDeleted,
 			@Param("length") int length,@Param("offset") int offset);
 

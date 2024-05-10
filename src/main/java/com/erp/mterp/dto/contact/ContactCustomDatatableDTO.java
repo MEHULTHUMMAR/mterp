@@ -1,19 +1,6 @@
 package com.erp.mterp.dto.contact;
 
 public interface ContactCustomDatatableDTO {
-
-//	private long contactManageId;
-//
-//	private String contactName;
-//	
-//	private String contactMobNo;
-//	
-//	private String contactEmail;
-//	
-//	private double points;
-
-	public long getContactManageId();
-
 	public long getContactId();
 	
 	public String getContactName();
@@ -22,6 +9,12 @@ public interface ContactCustomDatatableDTO {
 
 	public String getContactEmail();
 
-	public double getPoints();
+	public String getCompanyName();
+
+	public String getAddress();
+	public String getCountriesCode();
+	public String getStateCode();
+	public String getCityCode();
+	public String getPincode();
 
 }

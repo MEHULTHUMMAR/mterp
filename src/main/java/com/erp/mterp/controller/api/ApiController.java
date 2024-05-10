@@ -292,17 +292,7 @@ public class ApiController {
     			contactVo.setName(captureBillDTO.getCustomer().getName());
     			contactVo.setEmail(captureBillDTO.getCustomer().getEmail());
 	    		
-    			try {
-	    			contactVo.setDateOfBirth(dateFormat.parse(captureBillDTO.getCustomer().getDob()));
-				} catch (Exception e) {
-						
-				}
-	    		
-	    		try {
-	    			contactVo.setAnniversaryDate(dateFormat.parse(captureBillDTO.getCustomer().getAnniversaryDate()));
-				} catch (Exception e) {
-					
-				}
+
 	    		contactService.saveContact(contactVo);
 	    		
 	    		ContactTransactionVo transactionVo=new ContactTransactionVo();
@@ -384,17 +374,7 @@ public class ApiController {
         			contactVo.setName(captureBillDTO.getCustomer().getName());
         			contactVo.setEmail(captureBillDTO.getCustomer().getEmail());
     	    		
-        			try {
-    	    			contactVo.setDateOfBirth(dateFormat.parse(captureBillDTO.getCustomer().getDob()));
-    				} catch (Exception e) {
-    						
-    				}
-    	    		
-    	    		try {
-    	    			contactVo.setAnniversaryDate(dateFormat.parse(captureBillDTO.getCustomer().getAnniversaryDate()));
-    				} catch (Exception e) {
-    					
-    				}
+
     	    		contactService.saveContact(contactVo);
     	    		
     	    		ContactTransactionVo transactionVo=new ContactTransactionVo();
@@ -679,7 +659,6 @@ public class ApiController {
 								contactJson.put("contactId", contactManageVo.getContactVo().getContactId());
 								contactJson.put("mobileNumber", contactManageVo.getContactVo().getMobNo());
 								contactJson.put("contactName", contactManageVo.getContactVo().getName());
-								contactJson.put("clientCustomerId", contactManageVo.getContactVo().getClientCustomerId());
 								return ResponseEntity
 										.ok(new ApiResponse(true, Constant.STATUS200, "CUSTOMER_EXIST", contactJson));
 							} else {
@@ -692,14 +671,12 @@ public class ApiController {
 							contactJson.put("contactId", manageVo.getContactVo().getContactId());
 							contactJson.put("mobileNumber", manageVo.getContactVo().getMobNo());
 							contactJson.put("contactName", manageVo.getContactVo().getName());
-							contactJson.put("clientCustomerId", manageVo.getContactVo().getClientCustomerId());
 							return ResponseEntity.ok(new ApiResponse(true, Constant.STATUS200, "CUSTOMER_EXIST", contactJson));
 						}
 					} else {
 						ContactVo contactVo = new ContactVo();
 						contactVo.setAlterBy(companyId);
 						contactVo.setCreatedBy(companyId);
-						contactVo.setClientCustomerId(customerSignUpDTO.getClientCustomerId());
 						contactVo.setName(customerSignUpDTO.getCustomerName());
 						contactVo.setMobNo(customerSignUpDTO.getCustomerMobile());
 

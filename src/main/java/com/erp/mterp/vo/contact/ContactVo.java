@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.Getter;
@@ -37,28 +38,42 @@ public class ContactVo {
     @Column(name = "name")
     private String name;
     
-    @Column(name = "client_customer_id")
-    private String clientCustomerId;
+    @Column(name = "company_name")
+    private String companyName;
     
     @Column(name = "email", length = 50)
     private String email;
     
     @Column(name = "mob_no", length = 17)
     private String mobNo;
-    
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "anniversary_date")
-    private Date anniversaryDate;
+    @Column(name = "address", length = 300, columnDefinition = "text")
+    private String address;
+
+    @Column(name = "countries_code", length = 50)
+    private String countriesCode;
+
+    @Column(name = "pin_code", length = 50)
+    private String pincode;
+
+    @Column(name = "state_code", length = 50)
+    private String stateCode;
+
+    @Column(name = "city_code", length = 50)
+    private String cityCode;
+    
 
     @Column(name = "alterby_id", length = 10)
     private long alterBy;
 
     @Column(name = "createdby_id", length = 10, updatable = false)
     private long createdBy;
+
+    @Column(name = "company_id", length = 10, updatable = false)
+    private long companyId;
+
+    @Column(name = "branch_id", length = 10, updatable = false)
+    private long branchId;
 
     @Column(name = "is_deleted", length = 1, columnDefinition = "int default 0")
     private int isDeleted;
@@ -72,6 +87,12 @@ public class ContactVo {
     @LastModifiedDate
     @Column(name = "modified_on", length = 50)
     private Date modifiedOn;
-    
+
+    @Transient
+    private String cityName;
+    @Transient
+    private String countryName;
+    @Transient
+    private String stateName;
 
 }
