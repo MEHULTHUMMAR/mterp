@@ -58,6 +58,7 @@ $(document).ready(function () {
     //----------End Department------------
     $('#coupon_edit_modal').on('shown.bs.modal', function () {
         $("#points_edit_model").focus();
+        $('#coupon_edit_form').reset();
     });
 
 });

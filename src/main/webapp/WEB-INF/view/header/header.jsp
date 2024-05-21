@@ -31,7 +31,7 @@
                   id="m-logo_div_header">
                   <!--  m-brand__logo -->
                   <a href="/" class="m-brand__logo-wrapper"> <img alt=""
-                     src="<%=request.getContextPath()%>/images/vasyerplogo.jpg"
+                     src="<%=request.getContextPath()%>/images/mterplogo.jpg"
                      style="height: 50px;"/>
                   </a>
                   <%-- <a href="#" class="m-brand__logo-wrapper " style="font-size: 2.9rem;color: white;font-weight: bold;" id="HeaderName">
@@ -154,7 +154,7 @@
                                     <ul class="m-nav m-nav--skin-light">
                                        <li class="m-nav__section m--hide"><span
                                           class="m-nav__section-text">Section</span></li>
-                                       <c:if test="${sessionScope.userType<=2}">
+                                       <c:if test="${sessionScope.userType<=0}">
                                           <li class="m-nav__item">
                                              <a
                                                 href="<%=request.getContextPath()%>/profile"
@@ -173,7 +173,7 @@
                                              </a>
                                           </li>
                                        </c:if>
-                                       <li class="m-nav__item">
+                                      <%-- <li class="m-nav__item">
                                           <a
                                              href="<%=request.getContextPath()%>/changepassword"
                                              class="m-nav__link">
@@ -189,7 +189,7 @@
                                                 </span>
                                              </span>
                                           </a>
-                                       </li>
+                                       </li>--%>
                                        <li class="m-nav__separator m-nav__separator--fit"></li>
                                        <li class="m-nav__item"><a
                                           href="<%=request.getContextPath()%>/logout"
@@ -201,14 +201,7 @@
                            </div>
                         </div>
                      </li>
-                     <li
-                        class="m-nav__item m-topbar__user-profile  m-dropdown m-dropdown--medium m-dropdown--arrow  m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light">
-                        <a href="#" onclick="help()"
-                           class="m-nav__link m-dropdown__toggle" title="HELP"> <span
-                           class="m-nav__link-icon"><i
-                           class="far fa-question-circle"></i></span>
-                        </a>
-                     </li>
+
                   </ul>
                </div>
             </div>

@@ -61,4 +61,9 @@ public class PlaningServiceImpl implements PlaningService {
         planingRepository.updateplaningItemCost(id);
     }
 
+    @Override
+    public List<Map<String,String>> findPlaningForQuotation(long companyId) {
+        return planingRepository.findPlaningForQuotation(companyId);
+    }
+
 }

@@ -7,51 +7,53 @@
 $(document).ready(function () {
 
     //----------Department------------
-    $("#product_edit_form1").formValidation({
+    $("#product_edit_form").formValidation({
         framework: 'bootstrap',
         live: 'disabled',
         excluded: ":disabled",
-        button: {
-            selector: "#save_edit_product1",
-            disabled: "disabled",
-        },
         icon: null,
         fields: {
-            editcustomerName: {
+            itemcode: {
                 verbose: false,
                 validators: {
                     notEmpty: {
-                        message: 'The  customer Name is required.'
+                        message: 'The  itemcode is required.'
                     }
                 }
-            },editmobileNo: {
+            },productName: {
                 verbose: false,
                 validators: {
                     notEmpty: {
-                        message: 'The mobile No. is required. '
+                        message: 'The productName is required. '
+                    }
+                }
+            },"categoryVo.categoryId": {
+                verbose: false,
+                validators: {
+                    notEmpty: {
+                        message: 'The Category is required. '
+                    }
+                }
+            },capacity1: {
+                verbose: false,
+                validators: {
+                    notEmpty: {
+                        message: 'Capacity 1 is required. '
+                    }
+                }
+            },capacity2: {
+                verbose: false,
+                validators: {
+                    notEmpty: {
+                        message: 'Capacity 2 is required. '
                     }
                 }
             }
         }
-    }).on('success.form.fv', function (e) {
-        e.preventDefault();//stop the from action methods
-        $("#save_edit_contact").attr("disabled", true);
-       $.post("/product/saveproduct", {
-           customerName: $('#editcustomerName').val(),
-           companyName: $('#editcompanyName').val(),
-           mobileNo: $('#editmobileNo').val(),
-           email: $('#editemail').val(),
-           contactId:$('#editcontactId').val(),
-
-        }, function (data, status) {
-            toastr["success"]("Record Inserted....");
-            $('#contact_edit_modal').modal('toggle');
-           table.ajax.reload();
-		});
-    });
+    })
 
     $("#save_edit_product").click(function () {
-        //  $('#product_new_form').data('formValidation').validate();
+          $('#product_edit_form').data('formValidation').validate();
         var filenames="",ids="";
         $("#all_prodcut_tbl_edit").find("[data-purchase-item='template']").remove();
         var $purchaseItem = $("#all_prodcut_tbl_edit").find("[data-purchase-item]").not(".m--hide");

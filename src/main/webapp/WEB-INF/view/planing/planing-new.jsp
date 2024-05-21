@@ -138,9 +138,9 @@
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="m-section m--margin-bottom-15">
-                                                        <label>Customer Name</label>
+                                                        <label>Customer Name: </label>
                                                         <input type="hidden" id="contactId" name="contactVo.contactId">
-                                                        <div class="m-section__content m--hide mb-0" id="contact_details">
+                                                        <div class="m-section__content mb-0" id="contact_details">
                                                             <div class="row">
                                                                 <p class="mb-0"><span customer_name=""></span></p>
                                                             </div>
@@ -148,8 +148,8 @@
 
                                                     </div>
                                                     <div class="m-section m--margin-bottom-15">
-                                                        <label>Address</label>
-                                                        <div class="m-section__content m--hide mb-0" id="purchase_billing_address">
+                                                        <label>Address : </label>
+                                                        <div class="m-section__content mb-0" id="purchase_billing_address">
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                                     <p class="mb-0"><span data-address-line-1=""></span></p>
@@ -181,7 +181,7 @@
                                                             <div class="input-group date">
                                                                 <input type="text"
                                                                        class="form-control form-control-sm"
-                                                                       name="planingDate" id="planingDate"
+                                                                       name="planingDate" id="planingDate" onchange="changeDueDate()"
                                                                        data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy"/>
                                                                     </div>
                                                         </div>
@@ -190,7 +190,7 @@
 
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Planning No.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Planning No.</label>
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 m-form__group-sub">
                                                             <input type="text" readonly="readonly"
                                                                    class="form-control form-control-sm" name="prefix"
@@ -206,7 +206,7 @@
 
                                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.</label>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-form__group-sub">
                                                            <textarea class="form-control m-input" id="description" name="description"
                                                                      placeholder="Enter Description"></textarea>
@@ -329,7 +329,7 @@
 
                                                 <div
                                                         style="justify-content: flex-end; flex: 1 1 0; display: flex; white-space: nowrap;">
-                                                    <button type="submit" class="btn btn-info" id="save_sales"
+                                                    <button type="button" class="btn btn-info" id="save_sales"
                                                             style="border-radius: .25rem" >Save
                                                     </button>
 
@@ -358,7 +358,24 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
 <script type="text/javascript">
-
+    var qtyValidator = {
+        validators: {
+            notEmpty: {
+                message: 'The Qty is required'
+            },
+            greaterThan: {
+                value: 0,
+                inclusive: false, // Set to true if zero is allowed
+                message: 'The Qty must be greater than 0'
+            }
+        }
+    },productValidator = {
+        validators: {
+            notEmpty: {
+                message: 'The Product is required'
+            }
+        }
+    };
     $(document).ready(function () {
         $("#enquireVo").select2();
         $("#planingDate").datepicker({
@@ -370,107 +387,64 @@
 
         $("#product_table").on("click", 'a[data-item-remove]', function (e) {
             var i = $(this).closest("[data-sales-item]").attr("data-sales-item");
-
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].productVarientsVo.productVarientId");
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].freeQty");
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].qty");
-
-            $(this).closest("[data-sales-item]").remove();
+            $('#planing_form').formValidation('removeField', "planingItemVos[" + i + "].qty");
+           $(this).closest("[data-sales-item]").remove();
             setSrNo();
             return false;
         });
 
         $("#save_sales").click(function (e) {
-            // $('#sales_form').formValidation('revalidateField', "salesNo");
             $('#save_sales').prop('disabled', true);
 
-                // if ($('#sales_form').data('formValidation').isValid() == null) {
-                //     $('#sales_form').data('formValidation').validate();
-                // }
+            if ($("#product_table").find("[data-sales-item]").not(".m--hide").length == 0) {
+                toastr.error("","Add minimum one product");
+                $('#save_sales').prop('disabled', false);
+                return false;
+            } else {
+                if ($('#planing_form').data('formValidation').isValid() == null) {
+                    $('#planing_form').data('formValidation').validate();
+                }
+                if ($('#planing_form').data('formValidation').isValid() == true) {
                     $("#product_table").find("[data-sales-item='template']").remove();
-            document.getElementById("planing_form").submit();
+                    document.getElementById("planing_form").submit();
+                }else{
+                    $('#save_sales').prop('disabled', false);
+                    return false;
+                }
+            }
+
         });
         //----------Department------------
-        $("#product_new_form1").formValidation({
+        $("#planing_form").formValidation({
             framework: 'bootstrap',
-            live: 'disabled',
-            excluded: ":disabled",
             button: {
-                selector: "#saveproduct1",
+                selector: "#save_sales",
                 disabled: "disabled",
             },
             icon: null,
             fields: {
-                productName: {
-                    verbose: false,
+                "enquireVo.enquireId": {
                     validators: {
                         notEmpty: {
-                            message: 'The  Product Name is required.'
+                            message: 'The Enquire No is required.'
                         }
                     }
-                },itemcode: {
+                },planingDate: {
                     verbose: false,
                     validators: {
                         notEmpty: {
-                            message: 'The itemcode is required. '
-                        }
-                    }
-                },categoryId: {
-                    verbose: false,
-                    validators: {
-                        notEmpty: {
-                            message: 'The Category is required. '
+                            message: 'Select Planing Date '
+                        },stringLength: {
+                            min: 8,
+                            message: 'The Date is not valid'
+                        },regexp:{
+                            regexp:/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/,
+                            message:'Date is not valid'
                         }
                     }
                 }
 
             }
-        }).on('success.form.fv', function (e) {
-            e.preventDefault();//stop the from action methods
-            const form = $("#product_new_form");
-
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
-            $("#saveproduct").attr("disabled", true);
-            var formData = form.serializeArray();
-            var fileInput = document.getElementById('uploadFiles');
-            formData.append('uploadFiles', fileInput);
-
-            $.ajax({
-                url: "/product/saveproduct",
-                type: "POST",
-                data: formData,
-                success: function(blob, status, xhr) {
-                    // check for a filename
-                    toastr["success"]("Record Inserted....");
-                    $('#contact_new_modal').modal('toggle');
-                    table.ajax.reload();
-                },
-            });
-        });
-   $("#saveproduct").click(function () {
-            //  $('#product_new_form').data('formValidation').validate();
-
-
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
-
         });
 
         //----------End Department------------
@@ -487,7 +461,7 @@
         $salesItemTemplate = $("#product_table").find("[data-sales-item='template']").clone();
         $salesItemTemplate.attr("data-sales-item", mainIndex).removeClass("m--hide");
         $salesItemTemplate.find("[name='planingItemVos[" + selector + "].qty']").val(0).end()
-            .find("[name='planingItemVos[" + selector + "].remark']").val(0).end()
+            .find("[name='planingItemVos[" + selector + "].remark']").end()
             .find("[name='planingItemVos[" + selector + "].productVo.productId']").val(0).end();
 
         $salesItemTemplate.find("input[type='hidden'],input[type='text'],textarea,button,select,span,a").each(function() {
@@ -532,10 +506,9 @@
             var id = $("#enquireVo").val();
             $.post("/enquire/" + id + "/getenquire-data", {}, function (data, status) {
                 if (data) {
-                    console.log(data)
                     $("#contactId").val(data.contactVo.contactId);
                     $("#contact_details").find("[customer_name]").html(data.contactVo.name).end();
-
+                    $("#product_table").find("[data-sales-item]").not("[data-sales-item='template']").remove();
                     $.each(data.enquireItemVos,function(index,data){
 
 
@@ -545,7 +518,7 @@
                         $salesItemTemplate = $("#product_table").find("[data-sales-item='template']").clone();
                         $salesItemTemplate.attr("data-sales-item", mainIndex).removeClass("m--hide");
                         $salesItemTemplate.find("[name='planingItemVos[" + selector + "].qty']").val(0).end()
-                            .find("[name='planingItemVos[" + selector + "].remark']").val(0).end()
+                            .find("[name='planingItemVos[" + selector + "].remark']").end()
                             .find("[name='planingItemVos[" + selector + "].productVo.productId']").val(0).end();
 
                         $salesItemTemplate.find("input[type='hidden'],input[type='text'],textarea,button,select,span,a").each(function() {
@@ -559,6 +532,8 @@
                             $(this).attr("data-target") ? $(this).attr("data-target", $(this).attr("data-target").replace(/{index}/g, index)) : "";
                         });
                         $("#product_table").find("[data-sales-list]").append($salesItemTemplate);
+
+                        $('#planing_form').formValidation('addField', "planingItemVos[" + index + "].qty", qtyValidator);
                         $("#productId"+index).select2();
                         $("#productId"+index).append(new Option(data.productVo.productName, data.productVo.productId));
                         $("#productId"+index).val(data.productVo.productId);
@@ -574,6 +549,10 @@
                 }
             });
         }
+    }
+
+    function changeDueDate() {
+        $('#planing_form').formValidation('revalidateField', "planingDate");
     }
 </script>
 </body>

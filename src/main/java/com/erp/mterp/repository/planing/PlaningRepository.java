@@ -50,4 +50,7 @@ public interface PlaningRepository extends JpaRepository<PlaningVo, Long> {
     @Modifying
     @Transactional
     void updateplaningItemCost(Long planingItemId);
+
+    @Query(value = "select concat(prefix,planing_no) as planing_no,planing_id,planing_date from planing where is_deleted=0 and company_id=?1",nativeQuery = true)
+    List<Map<String,String>> findPlaningForQuotation(long companyId);
 }

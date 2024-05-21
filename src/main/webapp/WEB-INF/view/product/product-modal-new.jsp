@@ -68,7 +68,8 @@
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-8">
                             <div class="form-group m-form__group row m--padding-left-0">
-                                <label class="col-form-label col-lg-12 col-md-12 col-sm-12">Capacity:</label>
+                                <label class="col-form-label col-lg-6 col-md-6 col-sm-12">Capacity:</label>
+                                <label class="col-form-label col-lg-6 col-md-6 col-sm-12">Unit:</label>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control m-input m_name" autofocus
@@ -78,14 +79,15 @@
                                                name="capacity2" id="capacity2" placeholder="0.0" value="">
                                     </div>
                                 </div>
+
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="input-group">
                                         <select class="form-control m-select2" id="unit"
                                                 name="unit" placeholder="Select Unit">
                                             <option value="">Select Unit</option>
                                                 <option value="ml"selected="selected">ML</option>
-                                            <option value="mg"selected="selected">MG</option>
-                                            <option value="gm"selected="selected">GM</option>
+                                            <option value="mg">MG</option>
+                                            <option value="gm"      >GM</option>
                                         </select>
 
                                     </div>

@@ -32,9 +32,6 @@
     }
 
     function getAllCityAjax(state, city) {
-                                      
-       
-    	 console.log("state ajax nnn")
         if($("#" + state).val()==null||$("#" + state).val()==""){
             toastr.error("state value null");
         }else{

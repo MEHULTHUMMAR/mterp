@@ -172,7 +172,7 @@
                                                             <div class="input-group date">
                                                                 <input type="text"
                                                                        class="form-control form-control-sm"
-                                                                       name="enquireDate" id="enquireDate"
+                                                                       name="enquireDate" id="enquireDate" onchange="changeDueDate()"
                                                                        data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy"/>
                                                                     </div>
                                                         </div>
@@ -181,7 +181,7 @@
 
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Enquire No.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Enquire No.</label>
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 m-form__group-sub">
                                                             <input type="text" readonly="readonly"
                                                                    class="form-control form-control-sm" name="prefix"
@@ -197,7 +197,7 @@
 
                                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.</label>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-form__group-sub">
                                                            <textarea class="form-control m-input" id="description" name="description"
                                                                      placeholder="Enter Description"></textarea>
@@ -277,7 +277,7 @@
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                <textarea rows="2" colspan="8" class="pro-desc " id="remark{index}"
+                                                                <textarea rows="2" colspan="8" class="pro-desc" id="remark{index}"
                                                                           name="enquireItemVos[{index}].remark" ></textarea>
                                                                 </td>
                                                                 <td style="min-width: 45px;">
@@ -320,7 +320,7 @@
 
                                                 <div
                                                         style="justify-content: flex-end; flex: 1 1 0; display: flex; white-space: nowrap;">
-                                                    <button type="submit" class="btn btn-info" id="save_sales"
+                                                    <button type="button" class="btn btn-info" id="save_sales"
                                                             style="border-radius: .25rem" >Save
                                                     </button>
 
@@ -350,6 +350,24 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+    var qtyValidator = {
+            validators: {
+                notEmpty: {
+                    message: 'The Qty is required'
+                },
+                greaterThan: {
+                    value: 0,
+                    inclusive: false, // Set to true if zero is allowed
+                    message: 'The Qty must be greater than 0'
+                }
+            }
+        },productValidator = {
+        validators: {
+            notEmpty: {
+                message: 'The Product is required'
+            }
+        }
+    };
     $(document).ready(function () {
         $("#contactVo").select2();
         $("#enquireDate").datepicker({
@@ -362,105 +380,67 @@
         $("#product_table").on("click", 'a[data-item-remove]', function (e) {
             var i = $(this).closest("[data-sales-item]").attr("data-sales-item");
 
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].productVarientsVo.productVarientId");
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].freeQty");
-            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].qty");
+            $('#enquire_form').formValidation('removeField', "enquireItemVos[" + i + "].productVo.productId");
+            $('#enquire_form').formValidation('removeField', "enquireItemVos[" + i + "].qty");
 
             $(this).closest("[data-sales-item]").remove();
             setSrNo();
             return false;
         });
 
-        $("#save_sales").click(function (e) {
-            // $('#sales_form').formValidation('revalidateField', "salesNo");
-            $('#save_sales').prop('disabled', true);
 
-                // if ($('#sales_form').data('formValidation').isValid() == null) {
-                //     $('#sales_form').data('formValidation').validate();
-                // }
-                    $("#product_table").find("[data-sales-item='template']").remove();
-            document.getElementById("enquire_form").submit();
-        });
         //----------Department------------
-        $("#product_new_form1").formValidation({
+        $("#enquire_form").formValidation({
             framework: 'bootstrap',
-            live: 'disabled',
-            excluded: ":disabled",
             button: {
-                selector: "#saveproduct1",
+                selector: "#save_sales",
                 disabled: "disabled",
             },
             icon: null,
             fields: {
-                productName: {
-                    verbose: false,
+                contactVo: {
                     validators: {
                         notEmpty: {
-                            message: 'The  Product Name is required.'
+                            message: 'Select Customer.'
                         }
                     }
-                },itemcode: {
+                },enquireDate: {
                     verbose: false,
                     validators: {
                         notEmpty: {
-                            message: 'The itemcode is required. '
-                        }
-                    }
-                },categoryId: {
-                    verbose: false,
-                    validators: {
-                        notEmpty: {
-                            message: 'The Category is required. '
+                            message: 'Select Enquire Date '
+                        },stringLength: {
+                            min: 8,
+                            message: 'The Date is not valid'
+                        },regexp:{
+                            regexp:/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/,
+                            message:'Date is not valid'
                         }
                     }
                 }
 
             }
-        }).on('success.form.fv', function (e) {
-            e.preventDefault();//stop the from action methods
-            const form = $("#product_new_form");
-
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
-            $("#saveproduct").attr("disabled", true);
-            var formData = form.serializeArray();
-            var fileInput = document.getElementById('uploadFiles');
-            formData.append('uploadFiles', fileInput);
-
-            $.ajax({
-                url: "/product/saveproduct",
-                type: "POST",
-                data: formData,
-                success: function(blob, status, xhr) {
-                    // check for a filename
-                    toastr["success"]("Record Inserted....");
-                    $('#contact_new_modal').modal('toggle');
-                    table.ajax.reload();
-                },
-            });
         });
-   $("#saveproduct").click(function () {
-            //  $('#product_new_form').data('formValidation').validate();
+        $("#save_sales").click(function () {
+            $('#save_sales').prop('disabled', true);
 
+            if ($("#product_table").find("[data-sales-item]").not(".m--hide").length == 0) {
+                toastr.error("","Add minimum one product");
+                $('#save_sales').prop('disabled', false);
+                return false;
+            } else {
+                if ($('#enquire_form').data('formValidation').isValid() == null) {
+                    $('#enquire_form').data('formValidation').validate();
+                }
+                if ($('#enquire_form').data('formValidation').isValid() == true) {
+                    $("#product_table").find("[data-sales-item='template']").remove();
+                    document.getElementById("enquire_form").submit();
+                }else{
+                    $('#save_sales').prop('disabled', false);
+                    return false;
+                }
+            }
 
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
 
         });
 
@@ -478,7 +458,7 @@
         $salesItemTemplate = $("#product_table").find("[data-sales-item='template']").clone();
         $salesItemTemplate.attr("data-sales-item", mainIndex).removeClass("m--hide");
         $salesItemTemplate.find("[name='enquireItemVos[" + selector + "].qty']").val(0).end()
-            .find("[name='enquireItemVos[" + selector + "].remark']").val(0).end()
+            .find("[name='enquireItemVos[" + selector + "].remark']").end()
             .find("[name='enquireItemVos[" + selector + "].productVo.productId']").val(0).end();
 
         $salesItemTemplate.find("input[type='hidden'],input[type='text'],textarea,button,select,span,a").each(function() {
@@ -492,12 +472,9 @@
             $(this).attr("data-target") ? $(this).attr("data-target", $(this).attr("data-target").replace(/{index}/g, index)) : "";
         });
         $("#product_table").find("[data-sales-list]").append($salesItemTemplate);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].productVarientsVo.productVarientId", produstValidator);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].freeQty", qtyValidator);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].qty", qtyValidator);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].price", priceValidator);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].mrpToDiscount", discountValidator);
-        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].mrpTodiscountAdditional", discountValidator);
+        $('#enquire_form').formValidation('addField', "enquireItemVos[" + index + "].productVo.productId", productValidator);
+        $('#enquire_form').formValidation('addField', "enquireItemVos[" + index + "].qty", qtyValidator);
+
         $("#productId"+index).select2();
         setSrNo()
         index++;
@@ -522,7 +499,6 @@
             var id = $("#contactVo").val();
             $.post("/contact/" + id + "/address", {}, function (data, status) {
                 if (data) {
-                    console.log(data)
                     $("#purchase_billing_address").find("[data-address-line-1]").html(data.address).end()
                         .find("[data-address-pincode]").html(data.pin_code).end()
                         .find("[data-address-city]").html(data.city_name).end()
@@ -535,6 +511,10 @@
             });
         }
     }
+
+    function changeDueDate() {
+            $('#enquire_form').formValidation('revalidateField', "enquireDate");
+       }
 </script>
 </body>
 

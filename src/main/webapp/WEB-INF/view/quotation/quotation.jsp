@@ -206,7 +206,7 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/script/enquire/enquire-new-script.js?v=0.0.2"   type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/script/enquire/enquire-update-script.js?v=0.0.2"  type="text/javascript"></script>
-<script src="<%=request.getContextPath()%>/assets/demo/demo12/custom/crud/      forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath()%>/assets/demo/demo12/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
     var table;
     var selectContactId = null;
@@ -231,17 +231,17 @@
                 lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
                 columns: [
                     {
-                        data: "billofmaterial_id"
+                        data: "quotation_id"
                     }, {
-                        data: "bom_date"
+                        data: "quotation_date"
                     }, {
-                        data: "bom_no"
+                        data: "quotation_no"
                     }, {
-                        data: "drawing_logic_doc_no"
+                        data: "planing_no"
                     }, {
-                        data: "bom_total"
+                        data: "total"
                     }, {
-                        data: "billofmaterial_id"
+                        data: "quotation_id"
                     }],
                 columnDefs: [
                     {
@@ -261,18 +261,19 @@
                         targets: 2,
                         orderable: !1,
                         render: function (a, e, t, n) {
-                            return '<a href="/bom/view/'+t.billofmaterial_id+'">'+a+'</a>';
+                            return '<a href="/quotation/view/'+t.quotation_id+'">'+a+'</a>';
                         }
-                    }/*, {
+                    }, {
 
-                        targets: 4, // index of the "Actions" column (zero-based index)
+                        targets: 5, // index of the "Actions" column (zero-based index)
                         orderable: false,
                         render: function (a, e, t, n) {
                             console.log(a)
-                            return  /!*'<i class="fa fa-edit text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="edit" data-target="#product_edit_modal" onclick="updateproduct(' + a + ')" style="cursor: pointer; color:gray;"></i> ' +*!/
+                            return '<a href="/quotation/edit/' + a + '"> <i class="fa fa-edit text-gray-500 mr-2 " title="edit" style="cursor: pointer; color:gray;"></i> </a>' +
+                                '<a href="/quotation/pdf/' + a + '"> <i class="fa fa-file-pdf text-gray-500 mr-2 " title="PDF" style="cursor: pointer; color:gray;"></i> </a>' +
                                 '<i class="fa fa-trash text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="delete"  onclick="deleteproduct(' + a + ')" style="cursor: pointer; color:gray;"></i> ';
                         }
-                    }*/],
+                    }],
             })
         }
     };
@@ -767,7 +768,7 @@
             if (e.value) {
 
                 $.ajax({
-                    url: "/enquire/delete",
+                    url: "/quotation/delete",
                     type: "POST",
                     data: {
                         id: id

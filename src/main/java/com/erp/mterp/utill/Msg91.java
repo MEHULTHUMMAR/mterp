@@ -56,8 +56,7 @@ public class Msg91 {
 
    
     
-	/*System.out.println(Unirest.get("http://api.msg91.com/api/sendhttp.php?country=91&sender=CROODS&route=4&mobiles=9722305857&authkey=250610A7eSXPFou5c08caed&message=Hello")
-	  .asString().getStatus());
+	/*
 	  
 	  
 	HttpResponse<String> response = Unirest.post(_url+"sendotp.php?template=&otp_length=&authkey=&message=&sender=&mobile=&otp=&otp_expiry=&email=")

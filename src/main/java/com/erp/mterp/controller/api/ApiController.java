@@ -606,7 +606,7 @@ public class ApiController {
                  String otp = String.format("%06d", random.nextInt(1000000));
                  log.info("here calll ");
                  String sms = "Your OTP is "+otp+"\n"
-                 		+ "system developed by vasyerp.com";
+                 		+ "system developed by mterp";
                      try {
                      	String senderId = "VSYERP";
                      	Msg91.sendOtp(loyaltySendOtpBillDTO.getCustomer_mobile(), sms,SMSCONSTANT.OTP,senderId);

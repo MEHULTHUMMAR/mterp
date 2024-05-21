@@ -22,4 +22,6 @@ public interface PlaningService {
     void savePlaningItemDL(PlaningItemDLVo planingItemDLVo);
 
     void updateplaningItemCost(long id);
+
+    List<Map<String,String>> findPlaningForQuotation(long companyId);
 }

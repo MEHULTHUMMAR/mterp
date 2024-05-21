@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Constant {
-    public static final long VYAPAR_ERP = 0;
     public static final long URID_CORPORATE = 1;
     public static final long URID_COMPANY = 2;
     public static final long URID_BRANCH = 3;
@@ -33,29 +32,11 @@ public class Constant {
     public static final String CORPORATES = "corporates";
     public static final String CONTACT_COMPANY = "company";
     public static final String CONTACT_BRANCH = "branch";
-    public static final String DEFAULT_LANGUAGE_CODE = "en";
-    
+
     public static final long INSERT = 1;
     public static final long VIEW = 2;
-    public static final long EDIT = 3;
-    public static final long DELETE = 4;
-    public static final long PDF_EXCEL_PRINT = 5;
 
-    public static final String KEY = "JaewHxKm46v82veyb3JaG9rxZnC6BZDqLXxzywNNj7BRqaPPK2rM5WZbF2tksM7bUYrhgYXzPcGRSY79qBEGjrGnG4dckxcpw2RWecJzFEFPNUsD9w45K9ETCWtqqLgE";
-    public static final String CREATE = "create";
-    public static final String ISDELETE = "delete";
-    public static final String EXCEL = "excel";
-    public static final String PDF = "pdf";
-    public static final String MAIL = "mail";
-    public static final String REALPATH = "https://s3-us-west-2.amazonaws.com/";
 
-    public static final String WHATSAPP_API_BASE = "http://whatsapp.croodstech.com/api/v1/whatsapp";
-    public static final String WHATSAPP_API_AUTH = "/auth";
-    public static final String WHATSAPP_API_LOGIN = "/login";
-    public static final String WHATSAPP_API_SENDTEXT = "/send/text";
-    public static final String WHATSAPP_PASSWORD = "83e4060e-78e1-4fe5-9977-aeeccd46a2b8";
-    public static final String WHATSAPP_API_SENDDOC = "/send/document";
-    
     public static final String COUPON = "coupon";
     public static final String POINTSETUP = "pointsetup";
 	public static final String PRELOADINGPOINT = "preloadingpoint";

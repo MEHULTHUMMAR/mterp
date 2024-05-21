@@ -35,7 +35,7 @@ public interface BOMRepository extends JpaRepository<BillOfMaterialVo, Long> {
             "    bom_date,\n" +
             "    concat(billofmaterial.prefix,bom_no) as bom_no,\n" +
             "    concat(dl.prefix,drawing_logic_doc_no) as drawing_logic_doc_no,\n" +
-            "    dl.drawing_logic_doc_id\n" +
+            "    dl.drawing_logic_doc_id,\n" +
             "    bom_total \n" +
             "from billofmaterial\n" +
             "inner join public.drawing_logic_doc dl on dl.drawing_logic_doc_id = billofmaterial.drawing_logic_doc_id\n" +

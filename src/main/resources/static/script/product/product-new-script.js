@@ -1,20 +1,12 @@
-/**
- * This File is For Department New Modal
- * Department Ajax Insert
- * Department Validation
- */
-
 $(document).ready(function () {
 
+    $("#unit").select2();
+
     //----------Department------------
-    $("#product_new_form1").formValidation({
+    $("#product_new_form").formValidation({
         framework: 'bootstrap',
         live: 'disabled',
         excluded: ":disabled",
-        button: {
-            selector: "#saveproduct1",
-            disabled: "disabled",
-        },
         icon: null,
         fields: {
             productName: {
@@ -31,47 +23,31 @@ $(document).ready(function () {
                         message: 'The itemcode is required. '
                     }
                 }
-            },categoryId: {
+            },"categoryVo.categoryId": {
                 verbose: false,
                 validators: {
                     notEmpty: {
                         message: 'The Category is required. '
                     }
                 }
+            },capacity1: {
+                verbose: false,
+                validators: {
+                    notEmpty: {
+                        message: 'Capacity 1 is required. '
+                    }
+                }
+            },capacity2: {
+                verbose: false,
+                validators: {
+                    notEmpty: {
+                        message: 'Capacity 2 is required. '
+                    }
+                }
             }
 
         }
-    }).on('success.form.fv', function (e) {
-	  	e.preventDefault();//stop the from action methods
-        const form = $("#product_new_form");
-
-        var filenames="",ids="";
-        $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-        var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-        $purchaseItem.each(function() {
-            var index=this.id;
-            ids+=index+",";
-            filenames+=$("#fileName"+index).val()+",";
-        })
-        $("#fileNames").val(filenames);
-        $("#ids").val(ids);
-        $("#saveproduct").attr("disabled", true);
-        var formData = form.serializeArray();
-        var fileInput = document.getElementById('uploadFiles');
-        formData.append('uploadFiles', fileInput);
-
-        $.ajax({
-            url: "/product/saveproduct",
-            type: "POST",
-            data: formData,
-             success: function(blob, status, xhr) {
-                // check for a filename
-                toastr["success"]("Record Inserted....");
-                $('#contact_new_modal').modal('toggle');
-                table.ajax.reload();
-            },
-        });
-   });
+    });
 
     $('#product_new_modal').on('shown.bs.modal', function () {
         $('#product_new_form').formValidation('resetForm', true);
@@ -82,7 +58,7 @@ $(document).ready(function () {
 
 
     $("#saveproduct").click(function () {
-      //  $('#product_new_form').data('formValidation').validate();
+        $('#product_new_form').data('formValidation').validate();
 
 
         var filenames="",ids="";
@@ -110,7 +86,6 @@ function FileDetails() {
 
         var totalFiles=0;
         for (var i = 0; i <= fi.files.length - 1; i++) {
-            console.log(fi.files)
             if(i<10){
                 var fname = fi.files.item(i).name; // THE NAME OF THE FILE.
                 var fsize = fi.files.item(i).size; // THE SIZE OF THE FILE.

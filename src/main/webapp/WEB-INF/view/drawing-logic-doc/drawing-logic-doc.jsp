@@ -251,8 +251,7 @@
 	<%@include file="../footer/footer.jsp" %>
 
     <%@include file="drawing-logic-doc-new.jsp" %>
-    <%@include file="product-modal-update.jsp" %>
-    <%@include file="product-modal-view.jsp" %>
+
 </div>
 <script src="<%=request.getContextPath()%>/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/demo/demo12/base/scripts.bundle.js" type="text/javascript"></script>

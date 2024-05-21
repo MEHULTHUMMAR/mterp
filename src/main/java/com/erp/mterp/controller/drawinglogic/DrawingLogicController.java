@@ -210,4 +210,6 @@ public class DrawingLogicController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-	}}
+	}
+
+}

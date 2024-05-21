@@ -52,8 +52,6 @@ public class BillOfMaterialController {
 	@Autowired
 	PlaningService planingService;
 
-	@Value("${DOCUMENT_LOCATION}")
-	private String DOCUMENT_LOCATION;
 	long totalRow=0;
 	String rowNumber = "";
 

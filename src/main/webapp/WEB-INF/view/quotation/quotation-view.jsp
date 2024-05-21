@@ -13,7 +13,7 @@
 
         <%@include file="../header/head.jsp" %>
 
-        <title>${planingVo.prefix} ${planingVo.planingNo}</title>
+        <title>${quotationVo.prefix} ${quotationVo.quotationNo}</title>
 
         <style type="text/css">
             .select2-container {
@@ -59,7 +59,7 @@
                 <div class="m-subheader ">
                     <div class="d-flex align-items-center">
                         <div class="mr-auto">
-                            <h3 class="m-subheader__title m-subheader__title--separator">${planingVo.prefix}${planingVo.planingNo}</h3>
+                            <h3 class="m-subheader__title m-subheader__title--separator">${quotationVo.prefix}${quotationVo.quotationNo}</h3>
 
                             <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                                 <li class="m-nav__item m-nav__item--home">
@@ -69,8 +69,8 @@
                                 </li>
                                 <li class="m-nav__separator">-</li>
                                 <li class="m-nav__item">
-                                    <a href="/planing" class="m-nav__link">
-                                        <span class="m-nav__link-text">Planning</span>
+                                    <a href="/quotation" class="m-nav__link">
+                                        <span class="m-nav__link-text">Quotation</span>
                                     </a>
                                 </li>
                             </ul>
@@ -97,20 +97,20 @@
                                                     <table class="table m-table">
                                                         <tbody>
                                                         <tr class="row">
-                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Enquiry No:
+                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Planing No:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.enquireVo.prefix}${planingVo.enquireVo.enquireNo}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.planingVo.prefix}${quotationVo.planingVo.planingNo}</td>
                                                         </tr>
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Customer Name:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.contactVo.name}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.contactVo.name}</td>
                                                         </tr>
 
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Address: </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.contactVo.address}, ${planingVo.contactVo.pincode}, ${planingVo.contactVo.cityName}
-                                                                ${planingVo.contactVo.stateName},${planingVo.contactVo.countryName}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.contactVo.address}, ${quotationVo.contactVo.pincode}, ${quotationVo.contactVo.cityName}
+                                                                , ${quotationVo.contactVo.stateName}, ${quotationVo.contactVo.countryName}</td>
                                                         </tr>
 
                                                         </tbody>
@@ -121,21 +121,21 @@
                                                     <table class="table m-table">
                                                         <tbody>
                                                         <tr class="row">
-                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Planning Date:
+                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Quotation Date:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.planingDate}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.quotationDate}</td>
                                                         </tr>
 
                                                         <tr class="row">
-                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Planning No.:
+                                                            <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Quotation No.:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.prefix}${planingVo.planingNo}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.prefix}${quotationVo.quotationNo}</td>
                                                         </tr>
 
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Notes.:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.description}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${quotationVo.description}</td>
                                                         </tr>
 
                                                         </tbody>
@@ -178,11 +178,9 @@
                                                         <tr>
                                                             <th style="width: 100px;">#</th>
                                                             <th style="width: 100px;">Product</th>
-                                                            <th style="width: 100px;">Qty</th>
-                                                            <th style="width: 100px;">Remark</th>
-                                                            <th style="width: 100px;">Cost</th>
-                                                            <th style="width: 100px;">Total</th>
-                                                            <th style="width: 100px;">Drawing Login</th>
+                                                            <th style="width: 100px;text-align: right">Qty</th>
+                                                            <th style="width: 100px;text-align: right">Cost</th>
+                                                            <th style="width: 100px; text-align: right">Total</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -190,49 +188,30 @@
                                                         <c:set var="index" scope="page" value="0"/>
                                                         <c:set var="total_qty" value="0" scope="page"/>
                                                         <c:set var="total_value" value="0" scope="page"/>
-                                                            <c:forEach items="${planingVo.planingItemVos}" var="planingItemVos">
+                                                            <c:forEach items="${quotationVo.quotationItemVos}" var="quotationItemVos">
                                                                 <tr class="">
                                                                     <td  style="width: 100px;">
                                                                          ${index+1}
                                                                     </td>
 
                                                                     <td  style="width: 100px;">
-                                                                        ${planingItemVos.productVo.productName}
+                                                                        ${quotationItemVos.productVo.productName}
                                                                     </td>
 
-                                                                    <td  style="width: 100px;">
-                                                                       ${planingItemVos.qty}
+                                                                    <td  style="width: 100px; text-align: right">
+                                                                       ${quotationItemVos.qty}
                                                                     </td>
 
-                                                                    <td  style="width: 100px;">
-                                                                         ${planingItemVos.remark}
+                                                                    <td  style="width: 100px; text-align: right">
+                                                                         ${quotationItemVos.cost}
                                                                     </td>
-                                                                    <td  style="width: 100px;">
-                                                                            ${planingItemVos.cost}
-                                                                    </td>
-                                                                    <td  style="width: 100px;">
-                                                                        <c:set var="result" value="${planingItemVos.qty * planingItemVos.cost}"/>
-                                                                        <c:set var="total_qty" value="${total_qty + planingItemVos.qty}"/>
+                                                                      <td  style="width: 100px; text-align: right">
+                                                                        <c:set var="result" value="${quotationItemVos.qty * quotationItemVos.cost}"/>
+                                                                        <c:set var="total_qty" value="${total_qty + quotationItemVos.qty}"/>
                                                                         <c:set var="total_value" value="${total_value + result}"/>
                                                                             ${result}
                                                                     </td>
-                                                                    <td  style="width: 100px;">
-                                                                        <input type="hidden" id="planingItemId${planingItemVos.planingItemId}" value="${planingItemVos.planingItemId}">
-                                                                        <input type="hidden" id="planingId${planingItemVos.planingItemId}" value="${planingVo.planingId}">
-                                                                        <input type="hidden" id="enquireId${planingItemVos.planingItemId}" value="${planingVo.enquireVo.enquireId}">
-                                                                        <input type="hidden" id="planingNo${planingItemVos.planingItemId}" value="${planingVo.prefix}${planingVo.planingNo}">
-                                                                        <input type="hidden" id="enquireNo${planingItemVos.planingItemId}" value="${planingVo.enquireVo.prefix}${planingVo.enquireVo.enquireNo}">
-                                                                        <input type="hidden" id="productId${planingItemVos.planingItemId}" value="${planingItemVos.productVo.productId}">
-                                                                        <input type="hidden" id="productName${planingItemVos.planingItemId}" value="${planingItemVos.productVo.productName}">
 
-                                                                        <c:if test="${planingItemVos.cost==0}">
-                                                                        <a href="#" data-toggle="modal" onclick="openDrawingLogic(${planingItemVos.planingItemId})"
-                                                                           data-id=" ${planingItemVos.planingItemId}" data-productId="${planingItemVos.productVo.productId}"
-                                                                           class="btn btn-primary m-btn btn-sm m-btn--icon m-btn--air">
-                                                                            <span><i class="la la-plus"></i><span>Generate</span></span>
-                                                                        </a>
-                                                                        </c:if>
-                                                                    </td>
 
                                                                 </tr>
                                                                 <c:set var="index" scope="page" value="${index+1}"/>
@@ -240,13 +219,27 @@
                                                         </tbody>
                                                         <tfoot>
                                                         <tr>
+                                                            <th style="width:70px;"></th>
+                                                            <th><div class="m-demo-icon">
+                                                               </div></th>
+
+                                                            <th></th>
+                                                            <th style="text-align: right">
+                                                                Tax Rate :
+                                                                <span id="">${quotationVo.taxRate}</span>
+                                                            </th>
+                                                            <th style="text-align: right">
+                                                                <span id="tax_amount">${quotationVo.taxAmount}</span>
+                                                                <c:set var="total_value" value="${total_value + quotationVo.taxAmount}"/>
+                                                                <input type="hidden" id="taxAmount" name="taxAmount" value="0">
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
                                                             <th style="width: 100px;"></th>
                                                             <th style="width: 100px;">Total</th>
-                                                            <th style="width: 100px;">${total_qty}</th>
+                                                            <th style="width: 100px;text-align: right" >${total_qty}</th>
                                                             <th style="width: 100px;"></th>
-                                                            <th style="width: 100px;"></th>
-                                                            <th style="width: 100px;">${total_value}</th>
-                                                            <th style="width: 100px;"></th>
+                                                            <th style="width: 100px; text-align: right">${total_value}</th>
                                                         </tr>
                                                         </tfoot>
                                                     </table>
@@ -267,7 +260,7 @@
                 </div>
             </div>
         </div>
-        <%@include file="drawing-logic-modal.jsp" %>
+
         <%@include file="../footer/footer.jsp" %>
     </div>
     <script src="<%=request.getContextPath()%>/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>

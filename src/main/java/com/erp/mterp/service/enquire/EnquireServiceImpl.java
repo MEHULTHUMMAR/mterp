@@ -6,6 +6,7 @@ import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class EnquireServiceImpl implements EnquireService {
 	
 
 	@Override
+	@Transactional
 	public EnquireVo saveEnquire(EnquireVo enquireVo) {
 		// TODO Auto-generated method stub
 		return enquireRepository.save(enquireVo);

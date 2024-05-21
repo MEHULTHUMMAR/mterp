@@ -153,8 +153,6 @@ data-submit="#save_edit_product" data-cancel="#cancel_edit_product" id="product_
 
                     </div>
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="cancel_edit_product" data-dismiss="modal">Close

@@ -128,7 +128,7 @@
                                                                    placeholder="prefix"/>
                                                         </div>
                                                         <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text" class="form-control form-control-sm" readonly="readonly"
                                                                    name="bomNo" id="bomNo" placeholder="BOM No" value="${bomNo}"/>
                                                         </div>
                                                     </div>
@@ -136,8 +136,7 @@
 
                                                 <div class="col-lg-3 col-md-3 col-sm-4">
                                                     <div class="form-group row p-0">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Select Material
-                                                            Type <span style="font-size:1.25rem;"
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Select Material Type <span style="font-size:1.25rem;"
                                                                        class="text-danger">*</span></label>
                                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="input-group">
@@ -146,7 +145,7 @@
                                                                         name="materialTypeVo.materialTypeId"
                                                                         placeholder="Select Material Type">
 
-                                                                    <option value="0">Select material Type</option>
+                                                                    <option value="">Select material Type</option>
                                                                     <c:forEach items="${materilTypeList}" var="materilTypeList">
                                                                         <option value="${materilTypeList.material_type_id}"> ${materilTypeList.material_type} </option>
                                                                     </c:forEach>
@@ -179,6 +178,9 @@
                                                 </div>
 
                                                 <div class="col-lg-2 col-md-2 col-sm-6">
+                                                    <label class="col-lg-12 col-md-12 col-sm-12"> Material Cost <span
+                                                            style="font-size:1.25rem;"
+                                                            class="text-danger">*</span></label>
                                                     <input type="text" class="form-control form-control-sm"
                                                            name="materialCost" id="materialCost" onchange="setAllTotal()" value="0"
                                                            placeholder="Material Cost"/>
@@ -572,9 +574,7 @@
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="row">
-                                                        <label class="col-lg-2 col-md-2 col-sm-2">Additional Cost  <span
-                                                                style="font-size:1.25rem;"
-                                                                class="text-danger">*</span></label>
+                                                        <label class="col-lg-2 col-md-2 col-sm-2">Additional Cost</label>
                                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                                             <input type="number" class="form-control form-control-sm" value="0"
                                                                    name="additionalCost" id="additionalCost" onchange="setAllTotal()"
@@ -586,9 +586,7 @@
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="row">
-                                                        <label class="col-lg-2 col-md-2 col-sm-2">Total <span
-                                                                style="font-size:1.25rem;"
-                                                                class="text-danger">*</span></label>
+                                                        <label class="col-lg-2 col-md-2 col-sm-2">Total </label>
                                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                                             <input type="number" class="form-control form-control-sm"value="0"
                                                                    name="total" id="total" readonly
@@ -598,9 +596,7 @@
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="row">
-                                                        <label class="col-lg-2 col-md-2 col-sm-2">Profit <span
-                                                                style="font-size:1.25rem;"
-                                                                class="text-danger">*</span></label>
+                                                        <label class="col-lg-2 col-md-2 col-sm-2">Profit (%)</label>
                                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                                             <input type="number" class="form-control form-control-sm" value="0"
                                                                    name="profit" id="profit" onchange="setAllTotal()"
@@ -610,11 +606,9 @@
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="row">
-                                                        <label class="col-lg-2 col-md-2 col-sm-2">BOM Total <span
-                                                                style="font-size:1.25rem;"
-                                                                class="text-danger">*</span></label>
+                                                        <label class="col-lg-2 col-md-2 col-sm-2">BOM Total</label>
                                                         <div class="col-lg-3 col-md-3 col-sm-3">
-                                                            <input type="number" class="form-control form-control-sm" value="0"
+                                                            <input type="text" class="form-control form-control-sm" value="0"
                                                                    name="bomTotal" id="bomTotal" readonly
                                                                    placeholder="BOM Total"/>
                                                         </div>
@@ -632,7 +626,7 @@
 
                                             <div
                                                     style="justify-content: flex-end; flex: 1 1 0; display: flex; white-space: nowrap;">
-                                                <button type="submit" class="btn btn-info" id="save_sales"
+                                                <button type="button" class="btn btn-info" id="save_sales"
                                                         style="border-radius: .25rem" >Save
                                                 </button>
 
@@ -729,98 +723,50 @@
             setDate:'today'
         });
 
-
-        $("#save_sales").click(function (e) {
-            // $('#sales_form').formValidation('revalidateField', "salesNo");
+        $("#save_sales").click(function () {
             $('#save_sales').prop('disabled', true);
 
-                // if ($('#sales_form').data('formValidation').isValid() == null) {
-                //     $('#sales_form').data('formValidation').validate();
-                // }
-            document.getElementById("bom_form").submit();
+                if ($('#bom_form').data('formValidation').isValid() == null) {
+                    $('#bom_form').data('formValidation').validate();
+                }
+                if ($('#bom_form').data('formValidation').isValid() == true) {
+                    document.getElementById("bom_form").submit();
+                }else{
+                    $('#save_sales').prop('disabled', false);
+                    return false;
+                }
+
         });
+
         //----------Department------------
-        $("#product_new_form1").formValidation({
+        $("#bom_form").formValidation({
             framework: 'bootstrap',
-            live: 'disabled',
-            excluded: ":disabled",
             button: {
-                selector: "#saveproduct1",
+                selector: "#save_sales",
                 disabled: "disabled",
             },
             icon: null,
             fields: {
-                productName: {
-                    verbose: false,
+                "materialTypeVo.materialTypeId": {
                     validators: {
                         notEmpty: {
-                            message: 'The  Product Name is required.'
+                            message: 'The  Material Type is required.'
                         }
                     }
-                },itemcode: {
-                    verbose: false,
+                },materialCost: {
                     validators: {
                         notEmpty: {
-                            message: 'The itemcode is required. '
-                        }
-                    }
-                },categoryId: {
-                    verbose: false,
-                    validators: {
-                        notEmpty: {
-                            message: 'The Category is required. '
+                            message: 'The Material Cost is required. '
+                        }, greaterThan: {
+                            value: 0,
+                            inclusive: false,
+                            message: 'The Material Cost be greater than 0.'
                         }
                     }
                 }
-
             }
-        }).on('success.form.fv', function (e) {
-            e.preventDefault();//stop the from action methods
-            const form = $("#product_new_form");
-
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
-            $("#saveproduct").attr("disabled", true);
-            var formData = form.serializeArray();
-            var fileInput = document.getElementById('uploadFiles');
-            formData.append('uploadFiles', fileInput);
-
-            $.ajax({
-                url: "/product/saveproduct",
-                type: "POST",
-                data: formData,
-                success: function(blob, status, xhr) {
-                    // check for a filename
-                    toastr["success"]("Record Inserted....");
-                    $('#contact_new_modal').modal('toggle');
-                    table.ajax.reload();
-                },
-            });
         });
-   $("#saveproduct").click(function () {
-            //  $('#product_new_form').data('formValidation').validate();
 
-
-            var filenames="",ids="";
-            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
-            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
-            $purchaseItem.each(function() {
-                var index=this.id;
-                ids+=index+",";
-                filenames+=$("#fileName"+index).val()+",";
-            })
-            $("#fileNames").val(filenames);
-            $("#ids").val(ids);
-
-        });
 
         //----------End Department------------
     });

@@ -2,9 +2,12 @@ package com.erp.mterp.controller.enquire;
 
 import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
 import com.erp.mterp.service.category.CategoryService;
+import com.erp.mterp.service.city.CityService;
 import com.erp.mterp.service.contact.ContactService;
+import com.erp.mterp.service.country.CountryService;
 import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.product.ProductService;
+import com.erp.mterp.service.state.StateService;
 import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
@@ -44,8 +47,14 @@ public class EnquireController {
 	@Autowired
 	EnquireService enquireService;
 
-	@Value("${DOCUMENT_LOCATION}")
-	private String DOCUMENT_LOCATION;
+	@Autowired
+	CountryService countryService;
+
+	@Autowired
+	StateService stateService;
+	@Autowired
+	CityService cityService;
+
 	long totalRow=0;
 	String rowNumber = "";
 
@@ -72,7 +81,37 @@ String prefix="ENQ";
 	@RequestMapping(value = { "/view/{id}" })
 	public ModelAndView ViewEnquire(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("enquire/enquire-view");
-		view.addObject(	"enquiryVo",enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString())));
+		EnquireVo enquireVo = enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString()));
+		if(enquireVo.getContactVo().getCountriesCode()!=null) {
+			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
+		}
+		if(enquireVo.getContactVo().getStateCode()!=null) {
+			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
+		}
+		if(enquireVo.getContactVo().getCityCode()!=null) {
+			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
+		}
+		view.addObject(	"enquiryVo",enquireVo);
+
+		return view;
+	}
+
+	@RequestMapping(value = { "/edit/{id}" })
+	public ModelAndView EditEnquire(HttpSession session,@PathVariable("id")long id) {
+		ModelAndView view = new ModelAndView("enquire/enquire-edit");
+		EnquireVo enquireVo = enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString()));
+		if(enquireVo.getContactVo().getCountriesCode()!=null) {
+			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
+		}
+		if(enquireVo.getContactVo().getStateCode()!=null) {
+			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
+		}
+		if(enquireVo.getContactVo().getCityCode()!=null) {
+			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
+		}
+		view.addObject(	"enquiryVo",enquireVo);
+		view.addObject("productList",productService.findProductByCompanyId(Long.parseLong(session.getAttribute("companyId").toString())));
+		view.addObject("contactList",contactService.findByCompanyIdAndIsDeleted(Long.parseLong(session.getAttribute("companyId").toString()),0));
 
 		return view;
 	}
@@ -142,14 +181,17 @@ String prefix="ENQ";
 	public ModelAndView saveenquire(@ModelAttribute("enquireVo") EnquireVo enquireVo, HttpSession session) {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("redirect:/enquire");
+		if(enquireVo.getEnquireId()==0) {
+			enquireVo.setCreatedBy(Long.parseLong(session.getAttribute("userId").toString()));
+			enquireVo.setCompanyId(Long.parseLong(session.getAttribute("companyId").toString()));
+			enquireVo.setBranchId(Long.parseLong(session.getAttribute("branchId").toString()));
+		}
 		enquireVo.setAlterBy(Long.parseLong(session.getAttribute("userId").toString()));
-		enquireVo.setCreatedBy(Long.parseLong(session.getAttribute("userId").toString()));
-		enquireVo.setCompanyId(Long.parseLong(session.getAttribute("companyId").toString()));
-		enquireVo.setBranchId(Long.parseLong(session.getAttribute("branchId").toString()));
 
 		if(enquireVo.getEnquireItemVos()!=null) {
 			enquireVo.getEnquireItemVos().removeIf(x -> x.getProductVo() == null);
 			enquireVo.getEnquireItemVos().forEach(doc -> {
+				log.info("id"+doc.getEnquireItemId());
 				doc.setEnquireVo(enquireVo);
 
 			});

@@ -44,7 +44,7 @@ $(document).ready(function () {
            mobileNo: $('#editmobileNo').val(),
            email: $('#editemail').val(),
            contactId:$('#editcontactId').val(),
-           address: $('#editaddress').text(),
+           address: $('#editaddress').val(),
            countriesCode: $('#editcountriesCode').val(),
            stateCode: $('#editstateCode').val(),
            cityCode: $('#editcityCode').val(),

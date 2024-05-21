@@ -2,10 +2,13 @@ package com.erp.mterp.controller.planing;
 
 import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
 import com.erp.mterp.service.category.CategoryService;
+import com.erp.mterp.service.city.CityService;
 import com.erp.mterp.service.contact.ContactService;
+import com.erp.mterp.service.country.CountryService;
 import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.planing.PlaningService;
 import com.erp.mterp.service.product.ProductService;
+import com.erp.mterp.service.state.StateService;
 import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.planing.PlaningVo;
 import com.erp.mterp.vo.product.ProductVo;
@@ -40,8 +43,13 @@ public class PlaningController {
 	@Autowired
 	EnquireService enquireService;
 
-	@Value("${DOCUMENT_LOCATION}")
-	private String DOCUMENT_LOCATION;
+	@Autowired
+	CountryService countryService;
+
+	@Autowired
+	StateService stateService;
+	@Autowired
+	CityService cityService;
 	long totalRow=0;
 	String rowNumber = "";
 
@@ -67,7 +75,18 @@ String prefix="PLN";
 	@RequestMapping(value = { "/view/{id}" })
 	public ModelAndView ViewEnquire(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("planing/planing-view");
-		view.addObject(	"planingVo",planingService.findByPlaningId(id,Long.parseLong(session.getAttribute("companyId").toString())));
+		PlaningVo planingVo = planingService.findByPlaningId(id,Long.parseLong(session.getAttribute("companyId").toString()));
+		if(planingVo.getContactVo().getCountriesCode()!=null) {
+			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
+		}
+		if(planingVo.getContactVo().getStateCode()!=null) {
+			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
+		}
+		if(planingVo.getContactVo().getCityCode()!=null) {
+			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
+		}
+
+		view.addObject(	"planingVo",planingVo);
 
 		return view;
 	}
@@ -180,6 +199,22 @@ String prefix="PLN";
 	public String updateItemCose(HttpSession session, @PathVariable("id") long id) {
 		 planingService.updateplaningItemCost(id);
 		return "true";
+	}
+
+	@RequestMapping("/{id}/getplaning-data")
+	@ResponseBody
+	public PlaningVo enquiryData(HttpSession session, @PathVariable("id") long id) {
+		PlaningVo planingVo= planingService.findByPlaningId(id, Long.parseLong(session.getAttribute("companyId").toString()));
+		if(planingVo.getContactVo().getCountriesCode()!=null) {
+			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
+		}
+		if(planingVo.getContactVo().getStateCode()!=null) {
+			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
+		}
+		if(planingVo.getContactVo().getCityCode()!=null) {
+			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
+		}
+		return planingVo;
 	}
 
 }

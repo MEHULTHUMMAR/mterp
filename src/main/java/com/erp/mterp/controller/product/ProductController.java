@@ -21,9 +21,14 @@ import org.dhatim.fastexcel.reader.Sheet;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +46,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,8 +67,8 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
-	@Value("${DOCUMENT_LOCATION}")
-	private String DOCUMENT_LOCATION;
+	@Value("${PRODUCT_DOCUMENT_LOCATION}")
+	private String PRODUCT_DOCUMENT_LOCATION;
 	long totalRow=0;
 	String rowNumber = "";
 
@@ -162,7 +170,12 @@ public class ProductController {
 								log.info("time:"+cal.getTimeInMillis() );
 								log.info("ext:"+fileExtension);
 								filename = fileNameWithOutExt + cal.getTimeInMillis()+"." + fileExtension;
-								filePath = DOCUMENT_LOCATION;
+								filePath = PRODUCT_DOCUMENT_LOCATION;
+
+								Path uploadPath = Paths.get(filePath);
+								if (!Files.exists(uploadPath)) {
+									Files.createDirectories(uploadPath);
+								}
 
 								document.transferTo(new File(filePath + filename));
 								log.info(filePath);
@@ -209,6 +222,22 @@ public class ProductController {
 	public ProductVo productData(HttpSession session, @PathVariable("id") long id) {
 		ProductVo productVo= productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
 		return productVo;
+	}
+
+
+	@GetMapping("/download")
+	public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) {
+		Path filePath = Paths.get(PRODUCT_DOCUMENT_LOCATION).resolve(fileName);
+		Resource resource = new FileSystemResource(filePath.toFile());
+
+		if (resource.exists()) {
+			return ResponseEntity.ok()
+					.contentType(MediaType.APPLICATION_OCTET_STREAM)
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+					.body(resource);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

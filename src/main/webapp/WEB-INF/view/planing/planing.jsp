@@ -8,7 +8,7 @@
 
     <%@include file="../header/head.jsp" %>
 
-    <title>Enquire</title>
+    <title>Planing</title>
     <style type="text/css">
         .select2-container {
             display: block;

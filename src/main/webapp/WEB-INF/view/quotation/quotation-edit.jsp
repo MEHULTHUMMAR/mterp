@@ -8,7 +8,7 @@
 
     <%@include file="../header/head.jsp" %>
 
-    <title>Enquire</title>
+    <title>Quotation</title>
     <style type="text/css">
         .select2-container {
             display: block;
@@ -93,7 +93,7 @@
             <div class="m-subheader ">
                 <div class="d-flex align-items-center">
                     <div class="mr-auto">
-                        <h3 class="m-subheader__title m-subheader__title--separator">${enquiryVo.prefix}${enquiryVo.enquireNo}  | Enquire
+                        <h3 class="m-subheader__title m-subheader__title--separator">${quotationVo.prefix}${quotationVo.quotationNo}Quotation
                         </h3>
 
                         <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
@@ -108,8 +108,8 @@
             <!-- END: Subheader -->
 
             <div class="m-content">
-                <form class="m-form m-form--state m-form--fit m-form--label-align-left" id="enquire_form" action="<%=request.getContextPath() %>/enquire/save" method="post">
-                <input type="hidden" id="enquiryId" name="enquiryId" value="${enquiryVo.enquireId}">
+                <form class="m-form m-form--state m-form--fit m-form--label-align-left" id="planing_form" action="<%=request.getContextPath() %>/quotation/save" method="post">
+
                 <div class="row pt-0">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -120,52 +120,45 @@
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="form-group row p-0">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Select Customer <span style="font-size:1.25rem;" class="text-danger">*</span></label>
-                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <div class="input-group">
-                                                                <select class="form-control form-control-sm m-100px" id="contactVo" onchange="getContactInfo()"
-                                                                        name="contactVo.contactId" placeholder="Select Customer" >
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Select Planing No.</label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">${quotationVo.planingVo.prefix}${quotationVo.planingVo.planingNo}</label>
 
-                                                                <option value="0">Select Customer</option>
-                                                                <c:forEach items="${contactList}" var="contactList">
-                                                                    <c:choose>
-                                                                        <c:when test="${contactList.contactId==enquiryVo.contactVo.contactId}">
-                                                                            <option value="${contactList.contactId}" selected> ${contactList.name} </option>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <option value="${contactList.contactId}"> ${contactList.name} </option>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-
-                                                                </c:forEach>
-                                                                </select>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="m-section m--margin-bottom-15">
+                                                        <label>Customer Name :</label>
+                                                        <input type="hidden" id="quotationId" name="quotationId" value="${quotationVo.quotationId}">
+                                                        <input type="hidden" id="planingId" name="planingVo.planingId" value="${quotationVo.planingVo.planingId}">
+                                                        <input type="hidden" id="contactId" name="contactVo.contactId" value="${quotationVo.contactVo.contactId}">
+                                                        <div class="m-section__content mb-0" id="contact_details">
+                                                            <div class="row">
+                                                                <p class="mb-0"><span customer_name="">${quotationVo.contactVo.name}</span></p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="m-section m--margin-bottom-15">
                                                         <label>Address</label>
                                                         <div class="m-section__content  mb-0" id="purchase_billing_address">
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                    <p class="mb-0"><span data-address-line-1="">${enquiryVo.contactVo.address}</span></p>
+                                                                    <p class="mb-0"><span data-address-line-1="">${quotationVo.contactVo.address}</span></p>
                                                                     <p class="mb-0">
-                                                                        <span data-address-pincode=""${enquiryVo.contactVo.pincode}></span> <span
-                                                                            data-address-city="">${enquiryVo.contactVo.cityName}</span> <span
+                                                                        <span data-address-pincode="">${quotationVo.contactVo.pincode}</span> <span
+                                                                            data-address-city="">${quotationVo.contactVo.cityName}</span> <span
                                                                             class="m--font-boldest">,&nbsp;</span>
                                                                     </p>
                                                                     <p class="mb-0">
-                                                                        <span data-address-state="">${enquiryVo.contactVo.stateName}</span> <span
+                                                                        <span data-address-state="">${quotationVo.contactVo.stateName}</span> <span
                                                                             class="m--font-boldest">,&nbsp;</span> <span
-                                                                            data-address-country="">${enquiryVo.contactVo.countryName}</span>
+                                                                            data-address-country="">${quotationVo.contactVo.countryName}</span>
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <%-- </c:if> --%>
                                                     </div>
                                                 </div>
 
@@ -175,12 +168,12 @@
                                             <div class="row">
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12"> Enquire Date<span style="font-size:1.25rem;" class="text-danger">*</span></label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12"> Quotation Date<span style="font-size:1.25rem;" class="text-danger">*</span></label>
                                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="input-group date">
                                                                 <input type="text"
-                                                                       class="form-control form-control-sm" value="${enquiryVo.enquireDate}"
-                                                                       name="enquireDate" id="enquireDate" onchange="changeDueDate()"
+                                                                       class="form-control form-control-sm"
+                                                                       name="quotationDate" id="quotationDate" value="${quotationVo.quotationDate}"
                                                                        data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy"/>
                                                                     </div>
                                                         </div>
@@ -189,26 +182,26 @@
 
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Enquire No.</label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Quotation No.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 m-form__group-sub">
                                                             <input type="text" readonly="readonly"
                                                                    class="form-control form-control-sm" name="prefix"
-                                                                   placeholder="Prefix" value="${enquiryVo.prefix}">
+                                                                   placeholder="Prefix" value="${quotationVo.prefix}">
                                                         </div>
                                                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 m-form__group-sub">
                                                             <input type="text" class="form-control form-control-sm"
-                                                                   name="enquireNo" id="enquireNo"
-                                                                   placeholder="Enquire No" value="${enquiryVo.enquireNo}">
+                                                                   name="quotationNo" id="quotationNo"
+                                                                   placeholder="Quotation No" value="${quotationVo.quotationNo}">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-8 col-md-8 col-sm-12">
                                                     <div class="form-group row">
-                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.</label>
+                                                        <label class="col-lg-12 col-md-12 col-sm-12">Notes.<span style="font-size:1.25rem;" class="text-danger">*</span></label>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-form__group-sub">
                                                            <textarea class="form-control m-input" id="description" name="description"
-                                                                     placeholder="Enter Description">${enquiryVo.description}</textarea>
+                                                                     placeholder="Enter Description">${quotationVo.description}</textarea>
                                                         </div>
 
                                                     </div>
@@ -253,25 +246,23 @@
                                                                 <th>#</th>
                                                                 <th >Product</th>
                                                                 <th>Qty</th>
-                                                                <th>Remark</th>
-                                                                <th></th>
+                                                                <th>Cost</th>
+                                                                <th>Total</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody data-sales-list="">
-                                                            <tr data-sales-item="template" class="m--hide">
+                                                            <c:set var="index" scope="page" value="0"/>
+                                                            <c:forEach items="${quotationVo.quotationItemVos}" var="quotationItemVos">
+                                                            <tr data-sales-item="${index}" class="">
 
                                                                 <td style="width: 50px;"><span data-item-index></span></td>
 
                                                                 <td class="form-group mb-0 pname">
                                                                     <div class="d-flex">
-                                                                        <select class="form-control" id="productId{index}"
-                                                                                name="enquireItemVos[{index}].productVo.productId"
-                                                                                placeholder="Select product">
-                                                                            <option value="0">Select product</option>
-                                                                            <c:forEach items="${productList}" var="productList">
-                                                                                <option value="${productList.productId}"> ${productList.productName} </option>
-                                                                            </c:forEach>
-                                                                        </select>
+                                                                        <span >${quotationItemVos.productVo.productName}
+                                                                        <input type="hidden" id="productId${index}" name="quotationItemVos[${index}].productVo.productId" value="${quotationItemVos.productVo.productId}">
+                                                                        <input type="hidden" id="quotationItemId${index}" name="quotationItemVos[${index}].quotationItemId" value="${quotationItemVos.quotationItemId}">
+                                                                        </span>
                                                                     </div>
                                                                 </td>
 
@@ -279,75 +270,32 @@
                                                                     <div class="p-0 m--font-bolder form-group mb-0"
                                                                          data-item-qty="">
                                                                         <input type="text"
-                                                                               class="form-control form-control-sm qty"
-                                                                               name="enquireItemVos[{index}].qty" id="qty{index}"   placeholder="Qty" value="" />
+                                                                               class="form-control form-control-sm qty" readonly=""
+                                                                               name="quotationItemVos[${index}].qty" id="qty${index}"   placeholder="Qty" value="${quotationItemVos.qty}" />
 
                                                                     </div>
                                                                 </td>
-                                                                <td>
-                                                                <textarea rows="2" colspan="8" class="pro-desc" id="remark{index}"
-                                                                          name="enquireItemVos[{index}].remark" ></textarea>
+                                                                <td style="width: 100px;">
+                                                                    <div class="p-0 m--font-bolder form-group mb-0"
+                                                                         data-item-qty="">
+                                                                        <input type="text"
+                                                                               class="form-control form-control-sm qty"
+                                                                               name="quotationItemVos[${index}].cost" id="cost${index}"   placeholder="Cost" readonly value="${quotationItemVos.cost}" />
+
+                                                                    </div>
                                                                 </td>
-                                                                <td style="min-width: 45px;">
-                                                                    <a tabindex="-1" title="Delete" href="#" data-item-remove="" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mr-1">
-                                                                        <i class="fa fa-times"></i>
-                                                                    </a>
-                                                                 </td>
+                                                                <td style="width: 100px;">
+                                                                    <div class="p-0 m--font-bolder form-group mb-0"
+                                                                         data-item-qty="">
+                                                                        <c:set var="result" value="${quotationItemVos.qty * quotationItemVos.cost}"/>
+                                                                        <input type="text"
+                                                                               class="form-control form-control-sm qty"
+                                                                               name="itemTotal${index}" id="itemtotal${index}"   placeholder="Total"  readonly value="${result}" />
 
+                                                                    </div>
+                                                                </td>
                                                             </tr>
-                                                            <c:set var="index" scope="page" value="0"/>
-                                                            <c:forEach  items="${enquiryVo.enquireItemVos}"
-                                                                        var="enquireItemVos"
-                                                                        varStatus="status">
-                                                                <tr data-sales-item="${status.index}" class="">
-
-                                                                    <td style="width: 50px;"><span data-item-index></span>
-                                                                    <input type="hidden" id="enquireItemId${status.index}" name="enquireItemVos[${status.index}].enquireItemId" value="${enquireItemVos.enquireItemId}">
-                                                                    </td>
-
-                                                                    <td class="form-group mb-0 pname">
-                                                                        <div class="d-flex">
-                                                                            <select class="form-control" id="productId${status.index}"
-                                                                                    name="enquireItemVos[${status.index}].productVo.productId"
-                                                                                    placeholder="Select product">
-                                                                                <option value="0">Select product</option>
-                                                                                <c:forEach items="${productList}" var="productList">
-                                                                                    <c:choose>
-                                                                                        <c:when test="${productList.productId==enquireItemVos.productVo.productId}">
-                                                                                            <option value="${productList.productId}" selected> ${productList.productName} </option>
-                                                                                        </c:when>
-                                                                                        <c:otherwise>
-                                                                                            <option value="${productList.productId}"> ${productList.productName} </option>
-                                                                                        </c:otherwise>
-                                                                                    </c:choose>
-
-                                                                                </c:forEach>
-                                                                            </select>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td style="width: 100px;">
-                                                                        <div class="p-0 m--font-bolder form-group mb-0"
-                                                                             data-item-qty="">
-                                                                            <input type="text"
-                                                                                   class="form-control form-control-sm qty"
-                                                                                   name="enquireItemVos[${status.index}].qty" id="qty${status.index}"   placeholder="Qty" value="${enquireItemVos.qty}" />
-
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                <textarea rows="2" colspan="8" class="pro-desc" id="remark"
-                                                                          name="enquireItemVos[${status.index}].remark" >${enquireItemVos.remark}</textarea>
-                                                                    </td>
-                                                                    <td style="min-width: 45px;">
-                                                                        <a tabindex="-1" title="Delete" href="#" data-item-remove="" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill mr-1">
-                                                                            <i class="fa fa-times"></i>
-                                                                        </a>
-                                                                    </td>
-
-                                                                </tr>
-                                                                <c:set var="index" scope="page"
-                                                                       value="${status.index+1}"/>
+                                                                <c:set var="index" scope="page" value="${index+1}"/>
                                                             </c:forEach>
 
                                                             </tbody>
@@ -356,19 +304,41 @@
                                                             <tr>
                                                                 <th style="width:70px;"></th>
                                                                 <th><div class="m-demo-icon">
-                                                                    <div class="m-demo-icon__preview ">
-                                                                        <span class=""><i class="flaticon-plus m--font-primary"></i></span>
-                                                                    </div>
-                                                                    <div class="m-demo-icon__class">
-                                                                        <a href="#" onclick="AddRowblank()" class="m-link m--font-boldest">Add
-                                                                            Product</a>
-                                                                    </div>
-                                                                </div></th>
-                                                                <th></th>
+                                                                          </div></th>
 
-                                                                <th><span id="totalQty"></span></th>
-                                                                <th></th>
+                                                                <th>Tax Rate</th>
+                                                                <th>
+                                                                    <div class="d-flex">
+                                                                        <select class="form-control" id="taxRate"
+                                                                                name="taxRate" onchange="setAllTotal()"
+                                                                                placeholder="Select Tax Rate">
+                                                                            <option value="0">Select Tax Rate</option>
+                                                                            <option value="0"  <c:if test="${quotationVo.taxRate==0}">selected</c:if> > GST 0 </option>
+                                                                            <option value="5" <c:if test="${quotationVo.taxRate==5}">selected</c:if> > GST 5 </option>
+                                                                            <option value="12" <c:if test="${quotationVo.taxRate==12}">selected</c:if> > GST 12 </option>
+                                                                            <option value="18"<c:if test="${quotationVo.taxRate==18}">selected</c:if>  > GST 18 </option>
+                                                                            <option value="28" <c:if test="${quotationVo.taxRate==28}">selected</c:if> > GST 28 </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <span id="tax_amount"></span>
+                                                                    <input type="hidden" id="taxAmount" name="taxAmount" value="0">
+                                                                </th>
                                                                </tr>
+                                                            <tr>
+                                                                <th style="width:70px;"></th>
+                                                                <th><div class="m-demo-icon">
+
+                                                                </div></th>
+
+                                                                <th>Total</th>
+                                                                <th></th>
+                                                                <th>
+                                                                    <span id="total_amount"></span>
+                                                                    <input type="hidden" id="total" name="total" value="0">
+                                                                </th>
+                                                            </tr>
                                                             </tfoot>
                                                         </table>
                                                     </div>
@@ -382,7 +352,7 @@
 
                                                 <div
                                                         style="justify-content: flex-end; flex: 1 1 0; display: flex; white-space: nowrap;">
-                                                    <button type="button" class="btn btn-info" id="save_sales"
+                                                    <button type="submit" class="btn btn-info" id="save_sales"
                                                             style="border-radius: .25rem" >Save
                                                     </button>
 
@@ -411,29 +381,11 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
 <script type="text/javascript">
-    var index=${index};
 
-    var qtyValidator = {
-            validators: {
-                notEmpty: {
-                    message: 'The Qty is required'
-                },
-                greaterThan: {
-                    value: 0,
-                    inclusive: false, // Set to true if zero is allowed
-                    message: 'The Qty must be greater than 0'
-                }
-            }
-        },productValidator = {
-        validators: {
-            notEmpty: {
-                message: 'The Product is required'
-            }
-        }
-    };
     $(document).ready(function () {
-        $("#contactVo").select2();
-        $("#enquireDate").datepicker({
+        $("#planingVo").select2();
+        $("#taxRate").select2();
+        $("#quotationDate").datepicker({
             dateFormat: 'DD/MM/YYYY',
             autoApply:true,
             orientation: "auto bottom",
@@ -443,49 +395,48 @@
         $("#product_table").on("click", 'a[data-item-remove]', function (e) {
             var i = $(this).closest("[data-sales-item]").attr("data-sales-item");
 
-            $('#enquire_form').formValidation('removeField', "enquireItemVos[" + i + "].productVo.productId");
-            $('#enquire_form').formValidation('removeField', "enquireItemVos[" + i + "].qty");
-         
+            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].productVarientsVo.productVarientId");
+            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].freeQty");
+            // $('#sales_form').formValidation('removeField', "salesItemVos[" + i + "].qty");
+
             $(this).closest("[data-sales-item]").remove();
             setSrNo();
             return false;
         });
-        var $purchaseItem = $("#product_table").find("[data-sales-item]").not(".m--hide");
-        $purchaseItem.each(function () {
-            var i = $(this).closest("[data-sales-item]").attr("data-sales-item");
-            $('#enquire_form').formValidation('addField', "enquireItemVos[" + i + "].productVo.productId", productValidator);
-            $('#enquire_form').formValidation('addField', "enquireItemVos[" + i + "].qty", qtyValidator);
 
-            $("#productId"+i).select2();
+        $("#save_sales").click(function (e) {
+            // $('#sales_form').formValidation('revalidateField', "salesNo");
+            $('#save_sales').prop('disabled', true);
 
+                // if ($('#sales_form').data('formValidation').isValid() == null) {
+                //     $('#sales_form').data('formValidation').validate();
+                // }
+                    $("#product_table").find("[data-sales-item='template']").remove();
+            document.getElementById("planing_form").submit();
         });
-        setSrNo()
         //----------Department------------
-        $("#enquire_form").formValidation({
+        $("#product_new_form1").formValidation({
             framework: 'bootstrap',
+            live: 'disabled',
+            excluded: ":disabled",
             button: {
-                selector: "#save_sales",
+                selector: "#saveproduct1",
                 disabled: "disabled",
             },
             icon: null,
             fields: {
-                contactVo: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Select Customer.'
-                        }
-                    }
-                },enquireDate: {
+                productName: {
                     verbose: false,
                     validators: {
                         notEmpty: {
-                            message: 'Select Enquire Date '
-                        },stringLength: {
-                            min: 8,
-                            message: 'The Date is not valid'
-                        },regexp:{
-                            regexp:/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/,
-                            message:'Date is not valid'
+                            message: 'The  Product Name is required.'
+                        }
+                    }
+                },itemcode: {
+                    verbose: false,
+                    validators: {
+                        notEmpty: {
+                            message: 'The itemcode is required. '
                         }
                     }
                 },categoryId: {
@@ -498,34 +449,33 @@
                 }
 
             }
-        });
-        $("#save_sales").click(function () {
-            $('#save_sales').prop('disabled', true);
-
-            if ($("#product_table").find("[data-sales-item]").not(".m--hide").length == 0) {
-                toastr.error("","Add minimum one product");
-                $('#save_tracking').prop('disabled', false);
-                return false;
-            } else {
-                if ($('#enquire_form').data('formValidation').isValid() == null) {
-                    $('#enquire_form').data('formValidation').validate();
-                }
-                if ($('#enquire_form').data('formValidation').isValid() == true) {
-                    $("#product_table").find("[data-sales-item='template']").remove();
-                    document.getElementById("enquire_form").submit();
-                }else{
-                    $('#save_tracking').prop('disabled', false);
-                    return false;
-                }
-            }
-
+        }).on('success.form.fv', function (e) {
+            e.preventDefault();//stop the from action methods
 
         });
+   $("#saveproduct").click(function () {
+            //  $('#product_new_form').data('formValidation').validate();
 
+
+            var filenames="",ids="";
+            $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
+            var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
+            $purchaseItem.each(function() {
+                var index=this.id;
+                ids+=index+",";
+                filenames+=$("#fileName"+index).val()+",";
+            })
+            $("#fileNames").val(filenames);
+            $("#ids").val(ids);
+
+        });
+        setAllTotal();
+        setSrNo();
         //----------End Department------------
     });
 
 
+    var index=0;
 
     function AddRowblank() {
 
@@ -534,9 +484,9 @@
         var selector = "{index}";
         $salesItemTemplate = $("#product_table").find("[data-sales-item='template']").clone();
         $salesItemTemplate.attr("data-sales-item", mainIndex).removeClass("m--hide");
-        $salesItemTemplate.find("[name='enquireItemVos[" + selector + "].qty']").val(0).end()
-            .find("[name='enquireItemVos[" + selector + "].remark']").end()
-            .find("[name='enquireItemVos[" + selector + "].productVo.productId']").val(0).end();
+        $salesItemTemplate.find("[name='quotationItemVos[" + selector + "].qty']").val(0).end()
+            .find("[name='quotationItemVos[" + selector + "].remark']").val(0).end()
+            .find("[name='quotationItemVos[" + selector + "].productVo.productId']").val(0).end();
 
         $salesItemTemplate.find("input[type='hidden'],input[type='text'],textarea,button,select,span,a").each(function() {
             n = $(this).attr("id");
@@ -549,9 +499,12 @@
             $(this).attr("data-target") ? $(this).attr("data-target", $(this).attr("data-target").replace(/{index}/g, index)) : "";
         });
         $("#product_table").find("[data-sales-list]").append($salesItemTemplate);
-        $('#enquire_form').formValidation('addField', "enquireItemVos[" + index + "].productVo.productId", productValidator);
-        $('#enquire_form').formValidation('addField', "enquireItemVos[" + index + "].qty", qtyValidator);
-
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].productVarientsVo.productVarientId", produstValidator);
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].freeQty", qtyValidator);
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].qty", qtyValidator);
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].price", priceValidator);
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].mrpToDiscount", discountValidator);
+        // $('#sales_form').formValidation('addField', "salesItemVos[" + index + "].mrpTodiscountAdditional", discountValidator);
         $("#productId"+index).select2();
         setSrNo()
         index++;
@@ -571,27 +524,75 @@
     }
 
 
-    function getContactInfo() {
-        if ($("#contactVo").val() != "") {
-            var id = $("#contactVo").val();
-            $.post("/contact/" + id + "/address", {}, function (data, status) {
+
+    function getplaningInfo() {
+        if ($("#planingVo").val() != "") {
+            var id = $("#planingVo").val();
+            $.post("/planing/" + id + "/getplaning-data", {}, function (data, status) {
                 if (data) {
-                    $("#purchase_billing_address").find("[data-address-line-1]").html(data.address).end()
-                        .find("[data-address-pincode]").html(data.pin_code).end()
-                        .find("[data-address-city]").html(data.city_name).end()
-                        .find("[data-address-state]").html(data.state_name).end()
-                        .find("[data-address-country]").html(data.countries_name).end()
-                        .removeClass("m--hide").end()
-                        .find("[data-address-message]").addClass("m--hide").end();
+                    console.log(data)
+                    $("#contactId").val(data.contactVo.contactId);
+                    $("#contact_details").find("[customer_name]").html(data.contactVo.name).end();
+
+                    $.each(data.planingItemVos,function(index,data){
+
+
+                        var $salesItemTemplate;
+                        var mainIndex = index;
+                        var selector = "{index}";
+                        $salesItemTemplate = $("#product_table").find("[data-sales-item='template']").clone();
+                        $salesItemTemplate.attr("data-sales-item", mainIndex).removeClass("m--hide");
+                        $salesItemTemplate.find("[name='quotationItemVos[" + selector + "].qty']").val(0).end()
+                            .find("[name='quotationItemVos[" + selector + "].remark']").val(0).end()
+                            .find("[name='quotationItemVos[" + selector + "].productVo.productId']").val(0).end();
+
+                        $salesItemTemplate.find("input[type='hidden'],input[type='text'],textarea,button,select,span,a").each(function() {
+                            n = $(this).attr("id");
+                            n ? $(this).attr("id", n.replace(/{index}/g, index)) : "";
+                            n = $(this).attr("name");
+                            n ? $(this).attr("name", n.replace(/{index}/g, index)) : "";
+                            $(this).attr("onchange") ? $(this).attr("onchange", $(this).attr("onchange").replace(/{index}/g, index)) : "";
+                            $(this).attr("onkeyup") ? $(this).attr("onkeyup", $(this).attr("onkeyup").replace(/{index}/g, index)) : "";
+                            $(this).attr("onclick") ? $(this).attr("onclick", $(this).attr("onclick").replace(/{index}/g, index)) : "";
+                            $(this).attr("data-target") ? $(this).attr("data-target", $(this).attr("data-target").replace(/{index}/g, index)) : "";
+                        });
+                        $("#product_table").find("[data-sales-list]").append($salesItemTemplate);
+                        $("#productId"+index).select2();
+                        $("#productId"+index).append(new Option(data.productVo.productName, data.productVo.productId));
+                        $("#productId"+index).val(data.productVo.productId);
+                        $("#qty"+index).val(data.qty);
+                        $("#cost"+index).val(data.cost);
+                        $("#itemtotal"+index).val(data.qty * data.cost );
+
+                        setSrNo()
+                        index++;
+
+
+                    });
+                    setAllTotal();
 
                 }
             });
         }
     }
 
-    function changeDueDate() {
-            $('#enquire_form').formValidation('revalidateField', "enquireDate");
-       }
+    function setAllTotal(){
+        var $salesItem = $("#product_table").find("[data-sales-item]").not(".m--hide");
+        var allTotal=0.0,total=0.0,taxamount=0.0;
+        $salesItem.each(function() {
+            var sales_item = $(this).attr("data-sales-item");
+           var itemTotal = $("#itemtotal"+sales_item).val();
+            allTotal+=parseFloat(itemTotal);
+        });
+        var tax_rate=$("#taxRate").val();
+        if(!allTotal){allTotal=0}
+        taxamount= ((parseFloat(allTotal) * parseFloat(tax_rate))/100);
+        total=  parseFloat(allTotal) + parseFloat(taxamount);
+        $("#tax_amount").html(taxamount);
+        $("#taxAmount").val(taxamount);
+        $("#total").val(total);
+        $("#total_amount").html(total);
+    }
 </script>
 </body>
 

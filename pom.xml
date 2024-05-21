@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.croods</groupId>
+	<groupId>com.mterp</groupId>
 	<artifactId>mterp</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1</version>
@@ -208,12 +208,6 @@
 			<version>${io.springfox.version}</version> </dependency> <dependency> <groupId>io.springfox</groupId> 
 			<artifactId>springfox-swagger-ui</artifactId> <version>${io.springfox.version}</version> 
 			</dependency> -->
-
-		<dependency>
-		    <groupId>com.github.janamcroods</groupId>
-		    <artifactId>jpa-cloner</artifactId>
-		    <version>v1.0.3</version>
-		</dependency>
 		<dependency>
 			<groupId>com.github.darrachequesne</groupId>
 			<artifactId>spring-data-jpa-datatables</artifactId>

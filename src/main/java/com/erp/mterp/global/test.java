@@ -33,7 +33,7 @@ public class test extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         try {
-            StringBuffer urlDomain = new StringBuffer("https://723d3227dc653f80a8e4beb87fadb693:57349cecfe67899bdf44ac38683730b6@croodseng.myshopify.com/admin/customers.json");
+            StringBuffer urlDomain = new StringBuffer("https://723d3227dc653f80a8e4beb87fadb693:57349cecfe67899bdf44ac38683730b6@omers.json");
 
             // apikey and pwd hidden as security reason
             BufferedReader bufReader = null;

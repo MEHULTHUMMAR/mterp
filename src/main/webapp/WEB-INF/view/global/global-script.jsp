@@ -205,7 +205,7 @@
       
         return stompClient;
     }
-    connect();
+  //  connect();
     function disconnect() {
         if (stompClient != null) {
             stompClient.disconnect();

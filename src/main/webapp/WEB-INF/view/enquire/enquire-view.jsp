@@ -104,8 +104,8 @@
 
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Address: </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${enquiryVo.contactVo.address}, ${enquiryVo.contactVo.pincode}, ${enquiryVo.contactVo.cityCode}
-                                                                ${enquiryVo.contactVo.stateCode},${enquiryVo.contactVo.countriesCode}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${enquiryVo.contactVo.address}, ${enquiryVo.contactVo.pincode}, ${enquiryVo.contactVo.cityName}
+                                                                    ${enquiryVo.contactVo.stateName},${enquiryVo.contactVo.countryName}</td>
                                                         </tr>
 
                                                         </tbody>
@@ -181,7 +181,7 @@
 
                                                         <c:set var="index" scope="page" value="0"/>
                                                             <c:forEach items="${enquiryVo.enquireItemVos}" var="enquireItemVos">
-                                                                <tr class="row">
+                                                                <tr class="">
                                                                     <td  style="width: 100px;">
                                                                          ${index+1}
                                                                     </td>

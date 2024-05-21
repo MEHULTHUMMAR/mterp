@@ -19,28 +19,28 @@
                         <label class="form-control-label">
                             Name:<span style="font-size:1.25rem; color:red;" class="text-danger">*</small>
                         </label>
-                        <input type="text" autofocus name="customerName" class="form-control" onkeydown="check(event,this)"
+                        <input type="text" autofocus name="customerName" class="form-control"
                                id="customerName">
                         </div>
                          <div class="col-md-4">
                         <label class="form-control-label">
                             Company Name:
                         </label>
-                         <input type="text" autofocus name="companyName" class="form-control" onkeydown="check(event,this)"
+                         <input type="text" autofocus name="companyName" class="form-control"
                                id="companyName">
                         </div>
                         <div class="col-md-4">
                         <label class="form-control-label">
                             Mobile No.:<span style="font-size:1.25rem; color:red;" class="text-danger">*</small>
                         </label>
-                        <input type="text" autofocus name="mobileNo" class="form-control" onkeydown="check(event,this)"
+                        <input type="text" autofocus name="mobileNo" class="form-control"
                                id="mobileNo">
                         </div>
                         <div class="col-md-4">
                         <label class="form-control-label">
                             Email:
                         </label>
-                        <input type="text" autofocus name="email" class="form-control" onkeydown="check(event,this)"
+                        <input type="text" autofocus name="email" class="form-control"
                                id="email">
                         </div>
                         <div class="col-md-4 form-group">
@@ -48,7 +48,7 @@
                             <textarea rows="2" id="address" class="form-control form-control-sm" cols="2" name="address" placeholder="Address"></textarea>
                         </div>
                         <div class="col-md-4 form-group">
-                            <label class="form-control-label">Select Country <span class="text-danger">*</span></label>
+                            <label class="form-control-label">Select Country</label>
                             <select class="form-control m-select2" id="countriesCode" name="countriesCode" data-default="IN" onchange="getAllStateAjax('countriesCode','stateCode')" placeholder="Select Country">
                             </select>
                         </div>
