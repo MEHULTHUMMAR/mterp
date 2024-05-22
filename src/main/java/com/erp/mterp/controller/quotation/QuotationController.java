@@ -4,12 +4,10 @@ import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
 import com.erp.mterp.service.city.CityService;
 import com.erp.mterp.service.contact.ContactService;
 import com.erp.mterp.service.country.CountryService;
-import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.planing.PlaningService;
 import com.erp.mterp.service.quotation.QuotationService;
 import com.erp.mterp.service.state.StateService;
 import com.erp.mterp.utill.JasperExporter;
-import com.erp.mterp.vo.planing.PlaningVo;
 import com.erp.mterp.vo.quotation.QuotationVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -241,7 +237,7 @@ public class QuotationController {
 
 		jasperParameter.put("path", JASPER_REPORT_PATH + System.getProperty("file.separator"));
 
-		jasperExporter.jasperExporterPDF(jasperParameter, JASPER_REPORT_PATH + System.getProperty("file.separator") + "/quotation.jrxml","Quotation", response);
+		jasperExporter.jasperExporterPDF(jasperParameter, JASPER_REPORT_PATH + System.getProperty("file.separator") + "quotation.jrxml","Quotation", response);
 
 	}
 }

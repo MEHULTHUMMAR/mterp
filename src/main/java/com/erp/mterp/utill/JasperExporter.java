@@ -2,29 +2,20 @@ package com.erp.mterp.utill;
 
 import lombok.extern.java.Log;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.HtmlExporter;
-import net.sf.jasperreports.engine.export.JRTextExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.export.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
 
 @Service
 @Log
@@ -46,6 +37,27 @@ public class JasperExporter {
     String tempfileprefix = "output.";
     String tempfilesuffixpdf = ".pdf";
     String contenttypepdf = "application/pdf";
+
+
+    @Value("${spring.datasource.driver}")
+    public void setPrimaryDatabaseDriver(String driver) {
+        primaryDatabaseDriver = driver;
+    }
+
+    @Value("${spring.datasource.url}")
+    public void setPrimaryDatabaseUrl(String url) {
+        primaryDatabaseUrl = url;
+    }
+
+    @Value("${spring.datasource.username}")
+    public void setPrimaryDatabaseUserName(String userName) {
+        primaryDatabaseUserName = userName;
+    }
+
+    @Value("${spring.datasource.password}")
+    public void setPrimaryDatabasePassword(String password) {
+        primaryDatabasePassword = password;
+    }
 
 
     public static Connection getConnection() throws ClassNotFoundException {
