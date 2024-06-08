@@ -3,13 +3,14 @@ package com.erp.mterp.service.bom;
 import com.erp.mterp.repository.bom.BOMRepository;
 import com.erp.mterp.repository.enquire.EnquireRepository;
 import com.erp.mterp.vo.bom.BillOfMaterialVo;
-import com.erp.mterp.vo.enquire.EnquireVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 public class BOMServiceImpl implements BOMService {
 	@Autowired
@@ -55,6 +56,16 @@ public class BOMServiceImpl implements BOMService {
 	@Override
 	public List<Map<String, String>> findEnquiryforPlaning(long companyId) {
 		return enquireRepository.findEnquiryforPlaning(companyId);
+	}
+
+	@Override
+	public void deleteBOMByPlaningId(long id) {
+		bomRepository.deleteBOMByPlaningId( id);
+	}
+
+	@Override
+	public void deleteBOM(long id) {
+		bomRepository.deleteBOM( id);
 	}
 
 }

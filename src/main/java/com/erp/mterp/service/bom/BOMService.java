@@ -1,7 +1,6 @@
 package com.erp.mterp.service.bom;
 
 import com.erp.mterp.vo.bom.BillOfMaterialVo;
-import com.erp.mterp.vo.enquire.EnquireVo;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +19,8 @@ public interface BOMService {
     BillOfMaterialVo findByBOMId(long id, long companyId);
 
     List<Map<String,String>> findEnquiryforPlaning(long companyId);
+
+    void deleteBOMByPlaningId(long id);
+
+    void deleteBOM(long id);
 }

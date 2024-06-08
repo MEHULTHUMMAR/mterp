@@ -3,6 +3,7 @@ package com.erp.mterp.repository.drawinglogic;
 import com.erp.mterp.vo.drawinglogic.DrawingLogicDocVo;
 import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -71,9 +72,18 @@ public interface DrawingLogicRepository extends JpaRepository<DrawingLogicDocVo,
             "    costing,\n" +
             "    concat(b.prefix,b.bom_no) as bom_no,\n" +
             "    b.billofmaterial_id\n" +
-            "from planing_item_dl\n" +
-            "inner join public.drawing_logic_doc dld on dld.drawing_logic_doc_id = planing_item_dl.drawing_logic_doc_id\n" +
-            "inner join public.billofmaterial b on dld.drawing_logic_doc_id = b.drawing_logic_doc_id\n" +
+            "from planing_item_dl as pid\n" +
+            "inner join public.drawing_logic_doc dld on dld.drawing_logic_doc_id = pid.drawing_logic_doc_id\n" +
+            " inner join public.billofmaterial b on pid.billofmaterial_id = b.billofmaterial_id\n" +
             "         where planing_item_id=?3) as AA group by drawing_logic_doc_id ",nativeQuery = true)
     List<Map<String,String>> getdetailsByProductId(long id, long companyId,long planingItemId);
+
+    @Query(value = "select planing_item_dl_id from planing_item_dl\n" +
+            "inner join public.planing_item pi on planing_item_dl.planing_item_id = pi.planing_item_id\n" +
+            "         where billofmaterial_id = ?1 and pi.cost=0",nativeQuery = true)
+    List<Long> getDLAndPlaningFromBOMID(long id);
+
+    @Modifying
+    @Query(nativeQuery = true, value = " delete from planing_item_dl where planing_item_dl_id in (?1)\n")
+    void deleteplaningDL(List<Long> list);
 }

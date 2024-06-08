@@ -22,4 +22,8 @@ public interface DrawingLogicService {
 	Integer countOfDLDatatable(String serachValue, long companyId, int i);
 
 	List<Map<String,String>>  getdetailsByProductId(long id, long companyId,long planingItemId);
+
+	List<Long> getDLAndPlaningFromBOMID(long id);
+
+	void deleteplaningDL(List<Long> list);
 }

@@ -5,18 +5,17 @@ import com.erp.mterp.global.CurrentDateTime;
 import com.erp.mterp.service.bom.BOMService;
 import com.erp.mterp.service.category.CategoryService;
 import com.erp.mterp.service.contact.ContactService;
+import com.erp.mterp.service.drawinglogic.DrawingLogicService;
 import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.planing.PlaningService;
 import com.erp.mterp.service.product.ProductService;
 import com.erp.mterp.vo.bom.BillOfMaterialVo;
-import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.planing.PlaningItemDLVo;
 import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +50,9 @@ public class BillOfMaterialController {
 
 	@Autowired
 	PlaningService planingService;
+
+	@Autowired
+	DrawingLogicService drawingLogicService;
 
 	long totalRow=0;
 	String rowNumber = "";
@@ -190,10 +192,10 @@ public class BillOfMaterialController {
 	@RequestMapping("delete")
 	@ResponseBody
 	public boolean deleteProduct(@RequestParam(value = "id") long id,HttpSession session) {
-		EnquireVo enquireVo =enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(enquireVo!=null) {
-			enquireVo.setIsDeleted(1);
-			enquireService.saveEnquire(enquireVo);
+		List<Long> list = drawingLogicService.getDLAndPlaningFromBOMID(id);
+		if(list.size()>0){
+			bomService.deleteBOM(id);
+			drawingLogicService.deleteplaningDL(list);
 			return true;
 		}else{
 			return false;

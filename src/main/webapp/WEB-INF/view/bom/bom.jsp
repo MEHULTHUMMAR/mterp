@@ -181,7 +181,7 @@
                                         <th>Bill Of Material No</th>
                                         <th>Drawing Logic No.</th>
                                         <th>Total</th>
-                                     <%--   <th>Actions</th>--%>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -206,7 +206,7 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/script/enquire/enquire-new-script.js?v=0.0.2"   type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/script/enquire/enquire-update-script.js?v=0.0.2"  type="text/javascript"></script>
-<script src="<%=request.getContextPath()%>/assets/demo/demo12/custom/crud/      forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath()%>/assets/demo/demo12/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
     var table;
     var selectContactId = null;
@@ -240,9 +240,9 @@
                         data: "drawing_logic_doc_no"
                     }, {
                         data: "bom_total"
-                    }/*, {
+                    }, {
                         data: "billofmaterial_id"
-                    }*/],
+                    }],
                 columnDefs: [
                     {
                         targets: 0,
@@ -263,16 +263,15 @@
                         render: function (a, e, t, n) {
                             return '<a href="/bom/view/'+t.billofmaterial_id+'">'+a+'</a>';
                         }
-                    }/*, {
+                    }, {
 
-                        targets: 4, // index of the "Actions" column (zero-based index)
+                        targets: 5, // index of the "Actions" column (zero-based index)
                         orderable: false,
                         render: function (a, e, t, n) {
                             console.log(a)
-                            return  /!*'<i class="fa fa-edit text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="edit" data-target="#product_edit_modal" onclick="updateproduct(' + a + ')" style="cursor: pointer; color:gray;"></i> ' +*!/
-                                '<i class="fa fa-trash text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="delete"  onclick="deleteproduct(' + a + ')" style="cursor: pointer; color:gray;"></i> ';
+                            return  '<i class="fa fa-trash text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="delete"  onclick="deleteBOM(' + a + ')" style="cursor: pointer; color:gray;"></i> ';
                         }
-                    }*/],
+                    }],
             })
         }
     };
@@ -755,7 +754,7 @@
 
     }
 
-    function deleteproduct(id) {
+    function deleteBOM(id) {
         swal(
             {
                 title: "",
@@ -767,7 +766,7 @@
             if (e.value) {
 
                 $.ajax({
-                    url: "/enquire/delete",
+                    url: "/bom/delete",
                     type: "POST",
                     data: {
                         id: id
@@ -777,7 +776,7 @@
                             toastr["success"]("Record deleted....");
                             table.ajax.reload();
                         } else {
-                            toastr.error("There is Something went wrong...");
+                            toastr.error("Planning for this BOM has already been completed.");
                         }
                     },
                     error: function () {

@@ -7,9 +7,11 @@ import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 public class DrawingLogicDocServiceImpl implements DrawingLogicService {
 	@Autowired
@@ -32,6 +34,16 @@ public class DrawingLogicDocServiceImpl implements DrawingLogicService {
 	@Override
 	public List<Map<String,String>>  getdetailsByProductId(long id, long companyId,long planingItemId) {
 		return drawingLogicRepository.getdetailsByProductId( id,  companyId,planingItemId) ;
+	}
+
+	@Override
+	public List<Long> getDLAndPlaningFromBOMID(long id) {
+		return drawingLogicRepository.getDLAndPlaningFromBOMID(id);
+	}
+
+	@Override
+	public void deleteplaningDL(List<Long> list) {
+		drawingLogicRepository.deleteplaningDL(list);
 	}
 
 	@Override

@@ -1,14 +1,11 @@
 package com.erp.mterp.repository.bom;
 
 import com.erp.mterp.vo.bom.BillOfMaterialVo;
-import com.erp.mterp.vo.enquire.EnquireVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,5 +45,15 @@ public interface BOMRepository extends JpaRepository<BillOfMaterialVo, Long> {
 
     BillOfMaterialVo findByBillofmaterialIdAndCompanyId(long id, long companyId);
 
+    @Modifying
+    @Query(nativeQuery = true, value = "update billofmaterial set  is_deleted=1 where billofmaterial_id in (\n" +
+            "select billofmaterial_id from planing_item_dl\n" +
+            "inner join public.planing_item pi on planing_item_dl.planing_item_id = pi.planing_item_id\n" +
+            "inner join public.planing p on p.planing_id = pi.planing_id\n" +
+            "where p.planing_id=?1)")
+    void deleteBOMByPlaningId(long id);
 
+    @Modifying
+    @Query(nativeQuery = true, value = "update billofmaterial set is_deleted=1 where billofmaterial_id =?1")
+    void deleteBOM(long id);
 }

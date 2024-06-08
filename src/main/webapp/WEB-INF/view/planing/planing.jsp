@@ -176,8 +176,8 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Planning No.</th>
                                         <th>Planning Date</th>
+                                        <th>Planning No.</th>
                                         <th>Enquire No.</th>
                                         <th>Customer Name</th>
                                         <th>Status</th>

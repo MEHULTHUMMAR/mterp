@@ -76,21 +76,25 @@
                             <div class="m-portlet__body card-body-sm">
 	                            <%@include file="category_model_new.jsp" %>
 	                            <%@include file="category_model_update.jsp" %>
-                                <div class="raw col-lg-2 col-md-2 col-sm-2 ">
-                                </div>
-                                <div class="raw col-lg-6 col-md-6 col-sm-6 ">
-                                <div class="table-responsive">
-                                	<table class="table table-sm table-striped table-bordered table-hover table-checkable" id="m_table_1">
-                                    	<thead>
-											<tr>
-	                                            <th>#</th>
-	                                            <th>Name</th>
-	                                            <th >Actions</th>
-	                                        </tr>
-                                        </thead>
-                                    	<tbody></tbody>
-                                	</table>
-                                </div>
+
+                                <div class="raw">
+
+                                    <div class=" col-lg-6 col-md-6 col-sm-6 " style="margin-left: 230px;">
+                                        <div class="table">
+                                            <table class="table table-sm table-striped table-bordered table-hover table-checkable"
+                                                   id="m_table_1">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th style="width: auto">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

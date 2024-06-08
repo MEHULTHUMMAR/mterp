@@ -1,22 +1,18 @@
 package com.erp.mterp.controller.planing;
 
 import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
-import com.erp.mterp.service.category.CategoryService;
+import com.erp.mterp.service.bom.BOMService;
 import com.erp.mterp.service.city.CityService;
 import com.erp.mterp.service.contact.ContactService;
 import com.erp.mterp.service.country.CountryService;
 import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.planing.PlaningService;
-import com.erp.mterp.service.product.ProductService;
 import com.erp.mterp.service.state.StateService;
-import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.planing.PlaningVo;
-import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +46,9 @@ public class PlaningController {
 	StateService stateService;
 	@Autowired
 	CityService cityService;
+
+	@Autowired
+	BOMService bomService;
 	long totalRow=0;
 	String rowNumber = "";
 
@@ -188,6 +187,8 @@ String prefix="PLN";
 		if(planingVo!=null) {
 			planingVo.setIsDeleted(1);
 			planingService.savePlaning(planingVo);
+			bomService.deleteBOMByPlaningId(id);
+
 			return true;
 		}else{
 			return false;
