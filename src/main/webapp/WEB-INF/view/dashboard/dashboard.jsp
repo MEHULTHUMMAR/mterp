@@ -374,7 +374,6 @@
                                                                                     id="cityCode1"
                                                                                     data-default="${sessionScope.cityCode}"
                                                                                     name="cityCode"
-                                                                                    onchange="getAllLocalityAjax('cityCode1','localityCode1')"
                                                                                     placeholder="Select City"
                                                                                     data-allow-clear="false">
                                                                             </select>

@@ -1,78 +1,33 @@
 package com.erp.mterp.controller.contact;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import com.erp.mterp.config.SecurityValidation;
+import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
+import com.erp.mterp.dto.contact.ContactCustomDatatableMainDTO;
+import com.erp.mterp.dto.datatable.DataTableMetaDTO;
+import com.erp.mterp.repository.contact.ContactRepository;
+import com.erp.mterp.service.city.CityService;
+import com.erp.mterp.service.contact.ContactService;
+import com.erp.mterp.service.country.CountryService;
+import com.erp.mterp.service.state.StateService;
+import com.erp.mterp.vo.contact.ContactAddressVo;
+import com.erp.mterp.vo.contact.ContactVo;
+import lombok.extern.java.Log;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import com.erp.mterp.service.city.CityService;
-import com.erp.mterp.service.country.CountryService;
-import com.erp.mterp.service.state.StateService;
-import com.erp.mterp.vo.contact.ContactVo;
-import com.erp.mterp.vo.coupon.CouponVo;
-import com.erp.mterp.vo.product.ProductVo;
-import org.apache.commons.lang3.StringUtils;
-import org.dhatim.fastexcel.reader.ReadableWorkbook;
-import org.dhatim.fastexcel.reader.Row;
-import org.dhatim.fastexcel.reader.Sheet;
-//import org.apache.poi.ss.usermodel.Cell;
-//import org.apache.poi.ss.usermodel.CellStyle;
-//import org.apache.poi.ss.usermodel.CellType;
-//import org.apache.poi.ss.usermodel.CreationHelper;
-//import org.apache.poi.ss.usermodel.Font;
-//import org.apache.poi.ss.usermodel.IndexedColors;
-//import org.apache.poi.ss.usermodel.Row;
-//import org.apache.poi.ss.usermodel.Sheet;
-//import org.apache.poi.ss.usermodel.Workbook;
-//import org.apache.poi.xssf.usermodel.XSSFSheet;
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.erp.mterp.config.ImageResize;
-import com.erp.mterp.config.SecurityValidation;
-import com.erp.mterp.constant.Constant;
-import com.erp.mterp.dto.CustomerLoyaltyWrongSheetDTO;
-import com.erp.mterp.dto.CustomerUploadSheetFinalDTO;
-import com.erp.mterp.dto.FileValidationResponse;
-import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
-import com.erp.mterp.dto.contact.ContactCustomDatatableMainDTO;
-import com.erp.mterp.dto.datatable.DataTableMetaDTO;
-import com.erp.mterp.repository.contact.ContactRepository;
-import com.erp.mterp.service.contact.ContactService;
-import com.erp.mterp.utill.RegexTest;
-import com.erp.mterp.vo.commonResponse.ApiResponse;
-import com.erp.mterp.vo.contact.ContactManageVo;
-
-import lombok.var;
-import lombok.extern.java.Log;
 
 @Log
 @Controller
@@ -110,34 +65,67 @@ public class ContactController {
 		return view;
 	}
 
-	@PostMapping("datatable")
-	@ResponseBody
-	public DataTablesOutput<ContactManageVo> productDatatable(@Valid DataTablesInput input,
-			@RequestParam Map<String, String> allRequestParams, HttpSession session) {
-		long companyId = Long.parseLong(session.getAttribute("companyId").toString());
-		List<Map<Long, Double>> dueAmount = null;
-		Specification<ContactManageVo> specification = new Specification<ContactManageVo>() {
+	@RequestMapping(value =  "/new")
+	public ModelAndView Newpage(HttpSession session) {
 
-			@Override
-			public Predicate toPredicate(Root<ContactManageVo> root, CriteriaQuery<?> query,
-					CriteriaBuilder criteriaBuilder) {
-				List<Predicate> predicates = new ArrayList<Predicate>();
-				// predicates.add(criteriaBuilder.equal(root.get("type"), type));
-				predicates.add(criteriaBuilder.equal(root.get("isDeleted"), 0));
-				predicates.add(criteriaBuilder.equal(root.get("companyId"), companyId));
+		ModelAndView view = new ModelAndView("contact/contact-new");
+		view.addObject("CountryList", countryService.findAll());
+		view.addObject("StateList", stateService.findAll());
+		view.addObject("CityList", cityService.findAll());
 
-				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-			}
-		};
-		DataTablesOutput<ContactManageVo> dataTablesOutput = contactService.findAll(input, null, specification);
-		return dataTablesOutput;
+		return view;
 	}
+
+	@RequestMapping(value =  "/{id}")
+	public ModelAndView viewpage(HttpSession session,@PathVariable(value = "id") Long id) {
+
+		ModelAndView view = new ModelAndView("contact/contact-view");
+		view.addObject("CountryList", countryService.findAll());
+		view.addObject("StateList", stateService.findAll());
+		view.addObject("CityList", cityService.findAll());
+		view.addObject("ContactDetails",	contactService.findBycontactId(id,Long.parseLong(session.getAttribute("companyId").toString())));
+	return view;
+	}
+
+	@RequestMapping(value =  "/{id}/edit")
+	public ModelAndView Editpage(HttpSession session,@PathVariable(value = "id") Long id) {
+
+		ModelAndView view = new ModelAndView("contact/contact-edit");
+		view.addObject("CountryList", countryService.findAll());
+		view.addObject("StateList", stateService.findAll());
+		view.addObject("CityList", cityService.findAll());
+		view.addObject("ContactDetails",	contactService.findBycontactId(id,Long.parseLong(session.getAttribute("companyId").toString())));
+		return view;
+	}
+//
+//	@PostMapping("datatable")
+//	@ResponseBody
+//	public DataTablesOutput<ContactManageVo> productDatatable(@Valid DataTablesInput input,
+//			@RequestParam Map<String, String> allRequestParams, HttpSession session) {
+//		long companyId = Long.parseLong(session.getAttribute("companyId").toString());
+//		List<Map<Long, Double>> dueAmount = null;
+//		Specification<ContactManageVo> specification = new Specification<ContactManageVo>() {
+//
+//			@Override
+//			public Predicate toPredicate(Root<ContactManageVo> root, CriteriaQuery<?> query,
+//					CriteriaBuilder criteriaBuilder) {
+//				List<Predicate> predicates = new ArrayList<Predicate>();
+//				// predicates.add(criteriaBuilder.equal(root.get("type"), type));
+//				predicates.add(criteriaBuilder.equal(root.get("isDeleted"), 0));
+//				predicates.add(criteriaBuilder.equal(root.get("companyId"), companyId));
+//
+//				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//			}
+//		};
+//		DataTablesOutput<ContactManageVo> dataTablesOutput = contactService.findAll(input, null, specification);
+//		return dataTablesOutput;
+//	}
 
 	@RequestMapping("/customdatatable")
 	@ResponseBody
 	public ContactCustomDatatableMainDTO returnCustomDatatable(@RequestParam Map<String, String> allRequestParams,
 			@Valid DataTablesInput input, HttpSession session) throws NumberFormatException, ParseException {
-		long companyId = Long.parseLong(session.getAttribute("companyId").toString());
+		long branchId = Long.parseLong(session.getAttribute("branchId").toString());
 		String serachValue = "";
 		Integer totallength = 0;
 
@@ -148,7 +136,7 @@ public class ContactController {
 		}
 		log.info("serachValue::" + serachValue);
 
-		totallength = contactService.countOfContactVoDatatable(serachValue, companyId, 0);
+		totallength = contactService.countOfContactVoDatatable(serachValue, branchId, 0);
 
 		log.warning("count IS :" + totallength);
 		int start = Integer.parseInt(allRequestParams.get("start"));
@@ -174,7 +162,7 @@ public class ContactController {
 			offset = 0;
 		}
 
-		list = contactService.getContactVoCustomDatatableBy(serachValue, companyId, 0, length, offset);
+		list = contactService.getContactVoCustomDatatableBy(serachValue, branchId, 0, length, offset);
 		log.severe("LIST SIZE IS :" + list.size());
 		double totalRecords = totallength;
 		ContactCustomDatatableMainDTO dto = new ContactCustomDatatableMainDTO();
@@ -192,40 +180,66 @@ public class ContactController {
 
 
 	@PostMapping("/savecontact")
-	@ResponseBody
-	public void savecontact(@RequestParam(value = "customerName") String customerName,
-						   @RequestParam(value = "mobileNo") String mobileNo,
-						   @RequestParam(value = "companyName") String companyName,
-						   @RequestParam(value = "email") String email,
-							@RequestParam(value = "address") String address, @RequestParam(value = "cityCode") String cityCode,
-							@RequestParam(value = "stateCode") String stateCode, @RequestParam(value = "countriesCode") String countriesCode,
-							@RequestParam(value = "pincode") String pincode,
-							@RequestParam(value = "contactId",defaultValue = "0") long contactId,HttpSession session) {
+	public String savecontact(@ModelAttribute("contact") ContactVo contactVo, HttpSession session, @RequestParam Map<String, String> allRequestParams) {
 
-		ContactVo contactVo=new ContactVo();
-		if(contactId!=0){
-			contactVo.setContactId(contactId);
-		}
 		contactVo.setAlterBy(Long.parseLong(session.getAttribute("userId").toString()));
 		contactVo.setCreatedBy(Long.parseLong(session.getAttribute("userId").toString()));
 		contactVo.setCompanyId(Long.parseLong(session.getAttribute("companyId").toString()));
 		contactVo.setBranchId(Long.parseLong(session.getAttribute("branchId").toString()));
-		contactVo.setEmail(email);
-		contactVo.setCompanyName(companyName);
-		contactVo.setName(customerName);
-		contactVo.setMobNo(mobileNo);
-		contactVo.setAddress(address);
-		contactVo.setCountriesCode(countriesCode);
-		contactVo.setStateCode(stateCode);
-		contactVo.setCityCode(cityCode);
-		contactVo.setPincode(pincode);
-		contactService.saveContact(contactVo);
 
+		if (!CollectionUtils.isEmpty(contactVo.getContactAddressVos())) {
+			contactVo.getContactAddressVos().removeIf(address -> address.getCountriesCode() == null);
+			for (ContactAddressVo contactAddressVo : contactVo.getContactAddressVos()) {
+				ContactAddressVo contactAddressVoActual = contactService.findByContactAddressId(contactAddressVo.getContactAddressId());
+
+				contactAddressVo.setContact(contactVo);
+
+				try {
+					if (contactAddressVoActual != null) {
+						contactAddressVo.setIsDefault(contactAddressVoActual.getIsDefault());
+					} else {
+						if (contactVo.getContactAddressVos().indexOf(contactAddressVo) == 0) {
+							contactAddressVo.setIsDefault(1);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (contactVo.getContactAddressVos().stream().filter(x -> x.getIsDefault() == 1).count() == 0) {
+				contactVo.getContactAddressVos().get(0).setIsDefault(1);
+			}
+
+		}
+		ContactVo contactVo2=	contactService.saveContact(contactVo);
+
+		if (allRequestParams.containsKey("deleteAddress") == true) {
+			if (!allRequestParams.get("deleteAddress").equals("")) {
+				String address = allRequestParams.get("deleteAddress").substring(0,
+						allRequestParams.get("deleteAddress").length() - 1);
+
+				List<Long> l = Arrays.asList(address.split(",")).stream().map(Long::parseLong)
+						.collect(Collectors.toList());
+				contactService.updateAddress(l);
+			}
+
+		}
+
+		return "redirect:/contact/" + contactVo2.getContactId();
 	}
 
-	@RequestMapping("delete")
 	@ResponseBody
-	public boolean deleteContact(@RequestParam(value = "id") long id,HttpSession session) {
+	@PostMapping("/{id}/updateDefaultAddress/{addressId}")
+	public String updateDefaultAddress(@PathVariable Long id, @PathVariable(value = "addressId") Long addressId, HttpSession session) {
+
+		contactService.updateAllAdress(id);
+		contactService.updateDefaultAddress(addressId);
+		return "0";
+	}
+
+	@RequestMapping("/{id}/delete")
+	@ResponseBody
+	public boolean deleteContact(@PathVariable Long id,HttpSession session) {
 		ContactVo contactVo =contactService.findBycontactId(id,Long.parseLong(session.getAttribute("companyId").toString()));
 		if(contactVo!=null) {
 			contactVo.setIsDeleted(1);
@@ -238,8 +252,8 @@ public class ContactController {
 
 	@RequestMapping("/{id}/address")
 	@ResponseBody
-	public Map<String,String> contactVoData(HttpSession session, @PathVariable("id") long id) {
-		Map<String,String> contactVo= contactService.findAddressDetails(id, Long.parseLong(session.getAttribute("companyId").toString()));
+	public List<Map<String,String>> contactVoData(HttpSession session, @PathVariable("id") long id) {
+		List<Map<String,String>> contactVo= contactService.findAddressDetails(id, Long.parseLong(session.getAttribute("branchId").toString()));
 		return contactVo;
 	}
 	

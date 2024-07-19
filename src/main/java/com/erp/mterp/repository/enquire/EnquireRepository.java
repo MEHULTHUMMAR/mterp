@@ -1,7 +1,6 @@
 package com.erp.mterp.repository.enquire;
 
 import com.erp.mterp.vo.enquire.EnquireVo;
-import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,7 +30,7 @@ public interface EnquireRepository extends JpaRepository<EnquireVo, Long> {
             "    enquire_id,\n" +
             "    enquire_date,\n" +
             "    concat(enquire.prefix,enquire_no) as enquire_no,\n" +
-            "    c.name\n" +
+            "    c.company_name\n" +
             "from enquire\n" +
             "inner join public.contact c on c.contact_id = enquire.contact_id\n" +
             "         where enquire.company_id=?1 and enquire.is_deleted=0\n" +

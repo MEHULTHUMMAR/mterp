@@ -51,26 +51,5 @@
         }
     }
 
-    function getAllLocalityAjax(city, locality) {
-        console.log("locality");
-        $.get('/location/locality/' + $("#" + city).val(),
-            function (data, status) {
-                $('#' + locality).empty();
-                $("#" + locality).append($('<option>', {value: '', text: "Select Locality"}));
-                $.each(data, function (key, value) {
-                    $("#" + locality).append($('<option>', {value: value.localityId, text: value.localityName,}));
-                });
-                if ($('#' + locality).data("default") != undefined)
-                    $('#' + locality).val($('#' + locality).data("default")).trigger('change');
-            });
-    }
 
-    const getCurrencyFromCountry = (currencyCallBack) =>{
-        $.get('/location/currency/' + $("#countriesCode").val(),
-            function (data, status) {
-                $('#currencyList').val(data.currencyCode);
-                $("#currencyList").select2().trigger('change');
-                currencyCallBack(data.currencyName);
-            });
-    }
 </script>

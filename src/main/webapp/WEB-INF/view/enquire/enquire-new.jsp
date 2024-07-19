@@ -128,7 +128,7 @@
 
                                                                 <option value="0">Select Customer</option>
                                                                 <c:forEach items="${contactList}" var="contactList">
-                                                                    <option value="${contactList.contactId}"> ${contactList.name} </option>
+                                                                    <option value="${contactList.contactId}"> ${contactList.companyName} </option>
                                                                 </c:forEach>
                                                                 </select>
                                                             </div>
@@ -142,6 +142,8 @@
                                                         <div class="m-section__content m--hide mb-0" id="purchase_billing_address">
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                    <input type="hidden" name="billingAddressId"
+                                                                           id="billingAddressId" value="0"/>
                                                                     <p class="mb-0"><span data-address-line-1=""></span></p>
                                                                     <p class="mb-0">
                                                                         <span data-address-pincode=""></span> <span
@@ -156,7 +158,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        <button type="button" class="btn btn-link"
+                                                                data-toggle="m-popover" data-trigger="click"
+                                                                title="Billing Address <a href='#' data-popover-close='' class='m--font-bolder m-link m-link--state  m-link--danger float-right'>Cancel</a>"
+                                                                data-html="true" data-content=""
+                                                                id="billing_address_btn" tabindex="-1">Change Address
+                                                        </button>
                                                         <%-- </c:if> --%>
                                                     </div>
                                                 </div>
@@ -337,6 +344,42 @@
         </div>
     </div>
 
+<div class="m-section m--hide" id="address_template">
+    <div class="m-section__content" data-address-list="">
+        <div class="row" data-address-item="">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-3 mb-3">
+                <div class="m-divider">
+                    <span></span>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <h4>
+                    <small class="text-muted" data-address-name=""></small>
+                    <button type="button" data-change-address=""
+                            class="btn btn-outline-brand btn-sm float-right ml-5">Select
+                    </button>
+                </h4>
+                <h5>
+                    <small class="text-muted " data-address-company-name=""></small>
+                </h5>
+                <p class="mb-0">
+                    <span data-address-line-1=""></span>
+                </p>
+                <p class="mb-0">
+                    <span data-address-pincode=""></span>
+                    <span data-address-city=""></span>
+                </p>
+                <p class="mb-0">
+                    <span data-address-state=""></span>
+                    <span data-address-country=""></span>
+                    <span data-address-email="" class="m--hide"></span>
+                </p>
+                <p class="mb-0"><span><i class="la la-phone align-middle"></i> <span data-address-phoneno=""></span></span></p>
+
+            </div>
+        </div>
+    </div>
+</div>
 <%--    <%@include file="../footer/footer.jsp" %>--%>
 </div>
 <script src="<%=request.getContextPath()%>/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
@@ -375,6 +418,11 @@
             autoApply:true,
             orientation: "auto bottom",
             setDate:'today'
+        });
+
+        $(document).on("click", ".popover a[data-popover-close]", function () {
+            $(this).parents(".popover").popover('hide');
+            return false;
         });
 
         $("#product_table").on("click", 'a[data-item-remove]', function (e) {
@@ -498,15 +546,42 @@
         if ($("#contactVo").val() != "") {
             var id = $("#contactVo").val();
             $.post("/contact/" + id + "/address", {}, function (data, status) {
-                if (data) {
-                    $("#purchase_billing_address").find("[data-address-line-1]").html(data.address).end()
-                        .find("[data-address-pincode]").html(data.pin_code).end()
-                        .find("[data-address-city]").html(data.city_name).end()
-                        .find("[data-address-state]").html(data.state_name).end()
-                        .find("[data-address-country]").html(data.countries_name).end()
-                        .removeClass("m--hide").end()
-                        .find("[data-address-message]").addClass("m--hide").end();
+                if (data.length > 0) {
 
+                    var $template = $('#address_template'),
+                        $clone = $template.clone().removeClass('m--hide').removeAttr('id').attr('id', "billing_address");
+                    $addressList = $clone.find("[data-address-list]").clone();
+                    $clone.find("[data-address-list]").html("");
+
+                    $.each(data, function (key, value) {
+                        if (value.is_default = 1) {
+                            $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
+                                .find("[data-address-pincode]").html(value.pin_code).end()
+                                .find("[data-address-city]").html(value.city_name).end()
+                                .find("[data-address-state]").html(value.state_name).end()
+                                .find("[data-address-country]").html(value.countries_name).end()
+                                .removeClass("m--hide").end()
+                                .find("[data-address-message]").addClass("m--hide").end();
+                            $("#billingAddressId").val(value.contact_address_id);
+                        }
+
+                            $addressItem = $addressList.clone();
+                            $addressItem.find("[data-address-item]").attr("data-address-item", value.contact_address_id).end()
+                                .find("[data-address-name]").html(value.contact_name).end()
+                                .find("[data-address-line-1]").html(value.address).end()
+                                .find("[data-address-pincode]").html(value.pin_code).end()
+                                .find("[data-address-city]").html(value.city_name).end()
+                                .find("[data-address-state]").html(value.state_name).end()
+                                .find("[data-address-country]").html(value.countries_name).end()
+                                .find("[data-address-city]").attr("data-address-city", value.city_code).end()
+                                .find("[data-address-state]").attr("data-address-state", value.state_code).end()
+                                .find("[data-address-country]").attr("data-address-country", value.countries_code).end()
+                                .find("[data-address-phoneNo]").html(value.mob_no).end();
+
+                            $clone.find("[data-address-list]").append($addressItem.html());
+                    });
+                    $clone.find("[data-change-address]").attr("data-change-address", "billing");
+                    $("#billing_address_btn").attr("data-content", $clone.html());
                 }
             });
         }
@@ -515,6 +590,43 @@
     function changeDueDate() {
             $('#enquire_form').formValidation('revalidateField', "enquireDate");
        }
+
+
+    $("body").on("click", 'button[data-change-address]', function () {
+        var id, $selectedAddress = $(this).closest('[data-address-item]');
+        var flag;
+            flag = "billing";
+            id = '#purchase_billing_address';
+            $("#billingAddressId").val($selectedAddress.attr("data-address-item"));
+
+        $(id).find("[data-address-name]").html($selectedAddress.find("[data-address-name]").text()).end()
+            .find("[data-address-line-1]").html($selectedAddress.find("[data-address-line-1]").text()).end()
+            .find("[data-address-pincode]").html($selectedAddress.find("[data-address-pincode]").text()).end()
+            .find("[data-address-city]").html($selectedAddress.find("[data-address-city]").text()).end()
+            .find("[data-address-state]").html($selectedAddress.find("[data-address-state]").text()).end()
+            .find("[data-address-country]").html($selectedAddress.find("[data-address-country]").text()).end()
+            .find("[data-address-city]").attr("data-address-city", $selectedAddress.find("[data-address-city]").attr("data-address-city")).end()
+            .find("[data-address-state]").attr("data-address-state", $selectedAddress.find("[data-address-state]").attr("data-address-state")).end()
+            .find("[data-address-country]").attr("data-address-country", $selectedAddress.find("[data-address-country]").attr("data-address-country")).end()
+            .find("[data-address-phoneNo]").html($selectedAddress.find("[data-address-phoneNo]").text()).end()
+            .removeClass("m--hide").end()
+            .find("[data-address-message]").addClass("m--hide").end();
+        $selectedAddress.closest(".popover").find("a[data-popover-close]").click();
+        console.log(flag)
+        if(flag == "billing"){
+            //////////////billing hidden////////////////////////
+            $("#billingcompanyname").val($selectedAddress.find("[data-address-company-name]").text());
+            $("#billingaddressline1").val($selectedAddress.find("[data-address-line-1]").text());
+            $("#billingpincode").val($selectedAddress.find("[data-address-pincode]").text());
+            $("#billingcityname").val($selectedAddress.find("[data-address-city]").text());
+            $("#billingcitycode").val($selectedAddress.find("[data-address-city]").attr("data-address-city"));
+            $("#billingstatename").val($selectedAddress.find("[data-address-state]").text());
+            $("#billingstatecode").val($selectedAddress.find("[data-address-state]").attr("data-address-state"));
+            $("#billingcountryname").val($selectedAddress.find("[data-address-country]").text());
+            $("#billingcountrycode").val($selectedAddress.find("[data-address-country]").attr("data-address-country"));
+            $("#billingphone").val($selectedAddress.find("[data-address-phoneNo]").text());
+        }
+    });
 </script>
 </body>
 

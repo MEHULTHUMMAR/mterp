@@ -5,16 +5,10 @@ public interface ContactCustomDatatableDTO {
 	
 	public String getContactName();
 
-	public String getContactMobNo();
+	public String getMobNo();
 
-	public String getContactEmail();
+	public String getEmail();
 
 	public String getCompanyName();
-
-	public String getAddress();
-	public String getCountriesCode();
-	public String getStateCode();
-	public String getCityCode();
-	public String getPincode();
 
 }

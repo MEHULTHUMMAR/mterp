@@ -1,24 +1,7 @@
 package com.erp.mterp.service.product;
 
-import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
-import com.erp.mterp.dto.contact.ContactManageDTO;
-import com.erp.mterp.dto.pointledger.PointLedgerDTO;
-import com.erp.mterp.vo.contact.ContactManageVo;
-import com.erp.mterp.vo.contact.ContactTransactionVo;
-import com.erp.mterp.vo.contact.ContactVo;
-import com.erp.mterp.vo.product.MaterialTypeVo;
-import com.erp.mterp.vo.product.ProductUOMVo;
 import com.erp.mterp.vo.product.ProductVo;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

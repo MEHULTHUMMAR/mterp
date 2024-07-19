@@ -75,15 +75,15 @@ String prefix="PLN";
 	public ModelAndView ViewEnquire(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("planing/planing-view");
 		PlaningVo planingVo = planingService.findByPlaningId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(planingVo.getContactVo().getCountriesCode()!=null) {
-			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(planingVo.getContactVo().getStateCode()!=null) {
-			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(planingVo.getContactVo().getCityCode()!=null) {
-			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(planingVo.getContactVo().getCountriesCode()!=null) {
+//			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(planingVo.getContactVo().getStateCode()!=null) {
+//			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(planingVo.getContactVo().getCityCode()!=null) {
+//			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
+//		}
 
 		view.addObject(	"planingVo",planingVo);
 
@@ -206,15 +206,15 @@ String prefix="PLN";
 	@ResponseBody
 	public PlaningVo enquiryData(HttpSession session, @PathVariable("id") long id) {
 		PlaningVo planingVo= planingService.findByPlaningId(id, Long.parseLong(session.getAttribute("companyId").toString()));
-		if(planingVo.getContactVo().getCountriesCode()!=null) {
-			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(planingVo.getContactVo().getStateCode()!=null) {
-			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(planingVo.getContactVo().getCityCode()!=null) {
-			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(planingVo.getContactVo().getCountriesCode()!=null) {
+//			planingVo.getContactVo().setCountryName(countryService.findByCountriesCode(planingVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(planingVo.getContactVo().getStateCode()!=null) {
+//			planingVo.getContactVo().setStateName(stateService.findByStateCode(planingVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(planingVo.getContactVo().getCityCode()!=null) {
+//			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
+//		}
 		return planingVo;
 	}
 

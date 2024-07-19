@@ -1,7 +1,6 @@
 package com.erp.mterp.vo.product;
 
 import com.erp.mterp.vo.category.CategoryVo;
-import com.erp.mterp.vo.contact.ContactTransactionItemVo;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

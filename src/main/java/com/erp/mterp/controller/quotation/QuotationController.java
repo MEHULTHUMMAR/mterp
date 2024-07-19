@@ -83,15 +83,15 @@ public class QuotationController {
 	public ModelAndView ViewQuotation(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("quotation/quotation-view");
 		QuotationVo quotationVo = quotationService.findByQuotationId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(quotationVo.getContactVo().getCountriesCode()!=null) {
-			quotationVo.getContactVo().setCountryName(countryService.findByCountriesCode(quotationVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(quotationVo.getContactVo().getStateCode()!=null) {
-			quotationVo.getContactVo().setStateName(stateService.findByStateCode(quotationVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(quotationVo.getContactVo().getCityCode()!=null) {
-			quotationVo.getContactVo().setCityName(cityService.findByCityCode(quotationVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(quotationVo.getContactVo().getCountriesCode()!=null) {
+//			quotationVo.getContactVo().setCountryName(countryService.findByCountriesCode(quotationVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(quotationVo.getContactVo().getStateCode()!=null) {
+//			quotationVo.getContactVo().setStateName(stateService.findByStateCode(quotationVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(quotationVo.getContactVo().getCityCode()!=null) {
+//			quotationVo.getContactVo().setCityName(cityService.findByCityCode(quotationVo.getContactVo().getCityCode()).getCityName());
+//		}
 		view.addObject(	"quotationVo",quotationVo);
 		return view;
 	}
@@ -100,15 +100,15 @@ public class QuotationController {
 	public ModelAndView EditQuotation(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("quotation/quotation-edit");
 		QuotationVo quotationVo = quotationService.findByQuotationId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(quotationVo.getContactVo().getCountriesCode()!=null) {
-			quotationVo.getContactVo().setCountryName(countryService.findByCountriesCode(quotationVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(quotationVo.getContactVo().getStateCode()!=null) {
-			quotationVo.getContactVo().setStateName(stateService.findByStateCode(quotationVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(quotationVo.getContactVo().getCityCode()!=null) {
-			quotationVo.getContactVo().setCityName(cityService.findByCityCode(quotationVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(quotationVo.getContactVo().getCountriesCode()!=null) {
+//			quotationVo.getContactVo().setCountryName(countryService.findByCountriesCode(quotationVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(quotationVo.getContactVo().getStateCode()!=null) {
+//			quotationVo.getContactVo().setStateName(stateService.findByStateCode(quotationVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(quotationVo.getContactVo().getCityCode()!=null) {
+//			quotationVo.getContactVo().setCityName(cityService.findByCityCode(quotationVo.getContactVo().getCityCode()).getCityName());
+//		}
 		view.addObject(	"quotationVo",quotationVo);
 
 		return view;

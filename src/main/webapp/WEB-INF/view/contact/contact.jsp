@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="m-portlet__head-caption">
                                     <div class="m-portlet__head-title">
-                                        <a href="#" data-toggle="modal" data-target="#contact_new_modal"
+                                        <a href="/contact/new"
                                            class="btn btn-primary m-btn btn-sm m-btn--icon m-btn--air">
                                             <span><i class="la la-plus"></i><span>New customer</span></span>
                                         </a>
@@ -107,21 +107,7 @@
                                                     class="fas fa-search"></i></span></div>
                                         </div>
                                     </div>
-                                    <!-- <div class="m-portlet__head-title ml-2">
-                                        <a href="#" class="btn btn-sm btn-primary m-btn m-btn--icon"
-                                           data-toggle="dropdown" aria-expanded="true">
-                                            <span><i class="fas fa-file-export"></i><span>Export</span></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" id="export_excel"
-                                               data-skin="dark"
-                                               title="Excel"> <i class="fa fa-file-excel"></i> Excel</a>
-                                            <a class="dropdown-item" href="#" id="export_pdf"
-                                               data-skin="dark"
-                                               title="PDF"><i class="fa fa-file-pdf"></i> PDF</a>
-                                        </div>
 
-                                    </div> -->
                                 </div>
                             </div>
                             <div class="m-portlet__body remove_head_space_2">
@@ -184,51 +170,6 @@
             </div>
         </div>
     </div>
-    <!-- loyalty modal code -->
-
-    <!-- end loyalty modal code -->
-    <!-- start import excel sheet modal -->
-    <div class="modal fade" id="contact_upload_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header modal-header-sm">
-	                <h5 class="modal-title" id="exampleModalLabel">Upload Sheet</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-	            </div>
-	            <div class="modal-body modal-body-sm">
-	                <form action="" method="post" enctype="multipart/form-data" id="formContent">
-	                    <div class="row">
-	                        <div class="col-lg-12 col-md-12 col-sm-12">
-	                            <label>Download <a class="text-primary" id="downloadDemoFile" style="cursor:pointer">Demo</a>
-	                                File.</label>
-	                            <div class="input-group">
-	                            <input type="hidden" id="displayContactType" name="displayContactType" value="${displayContactType}"/>
-	                                <input type="text" class="form-control form-control-sm" name="fileTextBox" id="fileTextBox"
-	                                       readonly="readonly"/>
-	                                <div class="input-group-append" onclick="clickFileBtn()" style="cursor:pointer">
-														<span class="input-group-text">
-															<i class="la la-file"></i>
-														</span>
-	                                </div>
-	                                <input id="file-upload" name="excelFile" type="file" style="display: none;"
-	                                       required="required"/>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </form>
-	            </div>
-	            <div class="modal-footer modal-footer-sm">
-	                <button type="button" id="testfile" class="btn btn-sm btn-warning">Verify</button>
-	                <button type="button" class="btn btn-sm btn-secondary float-right" data-dismiss="modal">Cancel</button>
-	                <!-- <button type="button" id="importExcel" class="btn btn-sm btn-info" disabled>Upload</button> -->
-	            </div>
-	        </div>
-	    </div>
-	</div>
-    <!-- end import excel sheet modal -->
-    <!-- start modal for selecting contacts -->
-    
-    <!-- end modal for selecting contacts -->
 	<%@include file="../footer/footer.jsp" %>
 
     <%@include file="contact-modal-new.jsp" %>
@@ -275,9 +216,9 @@
                 }, {
                     data: "companyName"
                 }, {
-                    data: "contactMobNo"
+                    data: "mobNo"
                 }, {
-                    data: "contactEmail"
+                    data: "email"
                 }, {
                         data: "contactId"
                     }],
@@ -299,7 +240,7 @@
                     targets: 2,
                     orderable: !1,
                     render: function (a, e, t, n) {
-                        return a;
+                        return '<a title="Edit" href="/contact/' + t.contactId+'">'+a+'</a>';
                     }
                 },{
                     
@@ -308,17 +249,7 @@
                    render: function (data, type, row) {
 
 
-                  return '<input type="hidden" id="table_contactId'+row.contactId+'" value='+row.contactId+'>'+
-                      '<input type="hidden" id="table_contactName'+row.contactId+'" value='+row.contactName+'>'+
-                      '<input type="hidden" id="table_companyName'+row.contactId+'" value='+row.companyName+'>'+
-                      '<input type="hidden" id="table_contactEmail'+row.contactId+'" value='+row.contactEmail+'>'+
-                      '<input type="hidden" id="table_contactMobNo'+row.contactId+'" value='+row.contactMobNo+'>'+
-                      '<input type="hidden" id="table_countriesCode'+row.contactId+'" value='+row.countriesCode+'>'+
-                      '<input type="hidden" id="table_stateCode'+row.contactId+'" value='+row.stateCode+'>'+
-                      '<input type="hidden" id="table_cityCode'+row.contactId+'" value='+row.cityCode+'>'+
-                      '<input type="hidden" id="table_address'+row.contactId+'" value='+row.address+'>'+
-                      '<input type="hidden" id="table_pincode'+row.contactId+'" value='+row.pincode+'>'+
-                       '<i class="fa fa-edit text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="edit" data-target="#contact_edit_modal" onclick="updatecontact(' + row.contactId + ')" style="cursor: pointer; color:gray;"></i> '+
+                  return '<a title="Edit" href="/contact/' + row.contactId + '/edit"><i class="fa fa-edit text-gray-500 mr-2 " title="edit" style="cursor: pointer; color:gray;"></i></a> '+
                        '<i class="fa fa-trash text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="delete"  onclick="deletecontact(' + row.contactId + ')" style="cursor: pointer; color:gray;"></i> ';
 
                      }
@@ -690,37 +621,44 @@
     }
 
     function deletecontact(id){
-        swal(
-            {
-                title: "",
-                text: "Are you sure you want to delete this!",
-                type: "info",
-                showCancelButton: !0,
-                confirmButtonText: "Yes, Delete this!"
-            }).then(function (e) {
+        var u = '/contact/'+ id + '/delete';
+        swal({
+            title: "Are You Sure?",
+            text: "You Won't be Able to Revert This!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonText: "Yes, Delete It!"
+        }).then(function (e) {
             if (e.value) {
-
                 $.ajax({
-                    url: "/contact/delete",
+                    url: u,
                     type: "POST",
-                    data:{
-                        id: id
-                    },
-                    success: function (data) {
-                      if (data) {
-                            toastr["success"]("Record deleted....");
-                            table.ajax.reload();
+                    success: function(data, status) {
+                        if (data) {
+                            window.location.href = "/contact";
                         } else {
-                            toastr.error("There is Something went wrong...");
+                            swal({
+                                title: "Sorry",
+                                text: data.message,
+                                type: "warning",
+                            });
                         }
                     },
-                    error: function () {
-
-                        toastr.error("There is Something went wrong...");
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        if (XMLHttpRequest.status == 0) {
+                            toast("ERROR", ' Check Your Network.');
+                        } else if (XMLHttpRequest.status == 404) {
+                            toast("ERROR", 'Requested URL not found.');
+                        } else if (XMLHttpRequest.status == 500) {
+                            toast("ERROR", 'Internel Server Error.');
+                        } else {
+                            toast("ERROR", 'Unknow Error.\n' + XMLHttpRequest.responseText);
+                        }
                     }
                 });
+
             }
-        });
+        })
     }
 </script>
 </body>

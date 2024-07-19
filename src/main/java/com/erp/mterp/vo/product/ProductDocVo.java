@@ -1,6 +1,5 @@
 package com.erp.mterp.vo.product;
 
-import com.erp.mterp.vo.contact.ContactTransactionVo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;

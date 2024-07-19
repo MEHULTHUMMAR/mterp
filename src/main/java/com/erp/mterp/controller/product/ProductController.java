@@ -1,31 +1,18 @@
 package com.erp.mterp.controller.product;
 
-import com.erp.mterp.constant.Constant;
-import com.erp.mterp.dto.CustomerLoyaltyWrongSheetDTO;
-import com.erp.mterp.dto.CustomerUploadSheetFinalDTO;
 import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
 import com.erp.mterp.service.category.CategoryService;
 import com.erp.mterp.service.contact.ContactService;
 import com.erp.mterp.service.product.ProductService;
-import com.erp.mterp.utill.RegexTest;
-import com.erp.mterp.vo.commonResponse.ApiResponse;
-import com.erp.mterp.vo.contact.ContactManageVo;
-import com.erp.mterp.vo.contact.ContactVo;
 import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
-import lombok.var;
 import org.apache.commons.lang3.StringUtils;
-import org.dhatim.fastexcel.reader.ReadableWorkbook;
-import org.dhatim.fastexcel.reader.Row;
-import org.dhatim.fastexcel.reader.Sheet;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,25 +21,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 @Log
 @Controller

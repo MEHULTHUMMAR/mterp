@@ -1,6 +1,5 @@
 package com.erp.mterp.vo.enquire;
 
-import com.erp.mterp.vo.category.CategoryVo;
 import com.erp.mterp.vo.contact.ContactVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +35,9 @@ public class EnquireVo {
     @ManyToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "contact_id")
     private ContactVo contactVo;
+
+    @Column(name = "billing_address_id", length = 10)
+    private long billingAddressId;
 
     @Column(name = "description")
     private String description;

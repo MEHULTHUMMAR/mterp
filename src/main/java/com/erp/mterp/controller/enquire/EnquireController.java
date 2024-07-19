@@ -14,7 +14,6 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -82,15 +78,15 @@ String prefix="ENQ";
 	public ModelAndView ViewEnquire(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("enquire/enquire-view");
 		EnquireVo enquireVo = enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(enquireVo.getContactVo().getCountriesCode()!=null) {
-			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(enquireVo.getContactVo().getStateCode()!=null) {
-			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(enquireVo.getContactVo().getCityCode()!=null) {
-			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(enquireVo.getContactVo().getCountriesCode()!=null) {
+//			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(enquireVo.getContactVo().getStateCode()!=null) {
+//			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(enquireVo.getContactVo().getCityCode()!=null) {
+//			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
+//		}
 		view.addObject(	"enquiryVo",enquireVo);
 
 		return view;
@@ -100,15 +96,15 @@ String prefix="ENQ";
 	public ModelAndView EditEnquire(HttpSession session,@PathVariable("id")long id) {
 		ModelAndView view = new ModelAndView("enquire/enquire-edit");
 		EnquireVo enquireVo = enquireService.findByEnquireId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(enquireVo.getContactVo().getCountriesCode()!=null) {
-			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
-		}
-		if(enquireVo.getContactVo().getStateCode()!=null) {
-			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
-		}
-		if(enquireVo.getContactVo().getCityCode()!=null) {
-			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
-		}
+//		if(enquireVo.getContactVo().getCountriesCode()!=null) {
+//			enquireVo.getContactVo().setCountryName(countryService.findByCountriesCode(enquireVo.getContactVo().getCountriesCode()).getCountriesName());
+//		}
+//		if(enquireVo.getContactVo().getStateCode()!=null) {
+//			enquireVo.getContactVo().setStateName(stateService.findByStateCode(enquireVo.getContactVo().getStateCode()).getStateName());
+//		}
+//		if(enquireVo.getContactVo().getCityCode()!=null) {
+//			enquireVo.getContactVo().setCityName(cityService.findByCityCode(enquireVo.getContactVo().getCityCode()).getCityName());
+//		}
 		view.addObject(	"enquiryVo",enquireVo);
 		view.addObject("productList",productService.findProductByCompanyId(Long.parseLong(session.getAttribute("companyId").toString())));
 		view.addObject("contactList",contactService.findByCompanyIdAndIsDeleted(Long.parseLong(session.getAttribute("companyId").toString()),0));
