@@ -150,9 +150,11 @@
                                                     </div>
                                                     <div class="m-section m--margin-bottom-15">
                                                         <label>Address</label>
-                                                        <div class="m-section__content  mb-0" id="purchase_billing_address">
+                                                        <div class="m-section__content m--hide mb-0" id="purchase_billing_address">
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                    <input type="hidden" name="billingAddressId"
+                                                                           id="billingAddressId" value="0"/>
                                                                     <p class="mb-0"><span data-address-line-1=""></span></p>
                                                                     <p class="mb-0">
                                                                         <span data-address-pincode=""></span> <span
@@ -167,7 +169,13 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        <%--  <button type="button" class="btn btn-link"
+                                                                  data-toggle="m-popover" data-trigger="click"
+                                                                  title="Billing Address <a href='#' data-popover-close='' class='m--font-bolder m-link m-link--state  m-link--danger float-right'>Cancel</a>"
+                                                                  data-html="true" data-content=""
+                                                                  id="billing_address_btn" tabindex="-1">Change Address
+                                                          </button>--%>
+                                                        <%-- </c:if> --%>
                                                     </div>
                                                 </div>
 
@@ -535,7 +543,8 @@
                 if (data) {
                     console.log(data)
                     $("#contactId").val(data.contactVo.contactId);
-                    $("#contact_details").find("[customer_name]").html(data.contactVo.name).end();
+                    $("#billingAddressId").val(data.billingAddressId);
+                    $("#contact_details").find("[customer_name]").html(data.contactVo.companyName).end();
                     $("#purchase_billing_address").find("[data-address-line-1]").html(data.contactVo.address).end()
                         .find("[data-address-pincode]").html(data.contactVo.pincode).end()
                         .find("[data-address-city]").html(data.contactVo.cityName).end()
@@ -577,6 +586,7 @@
 
 
                     });
+                    getContactInfo();
                     setAllTotal();
 
                 }
@@ -596,10 +606,54 @@
         if(!allTotal){allTotal=0}
         taxamount= ((parseFloat(allTotal) * parseFloat(tax_rate))/100);
         total=  parseFloat(allTotal) + parseFloat(taxamount);
-        $("#tax_amount").html(taxamount);
-        $("#taxAmount").val(taxamount);
-        $("#total").val(total);
-        $("#total_amount").html(total);
+        $("#tax_amount").html(taxamount.toFixed(2));
+        $("#taxAmount").val(taxamount.toFixed(2));
+        $("#total").val(total.toFixed(2));
+        $("#total_amount").html(total.toFixed(2));
+    }
+
+    function getContactInfo() {
+        if ($("#contactId").val() != "") {
+            var id = $("#contactId").val();
+            $.post("/contact/" + id + "/address", {}, function (data, status) {
+                if (data.length > 0) {
+
+                    var $template = $('#address_template'),
+                        $clone = $template.clone().removeClass('m--hide').removeAttr('id').attr('id', "billing_address");
+                    $addressList = $clone.find("[data-address-list]").clone();
+                    $clone.find("[data-address-list]").html("");
+
+                    $.each(data, function (key, value) {
+                        if (value.contact_address_id == $("#billingAddressId").val()) {
+                            $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
+                                .find("[data-address-pincode]").html(value.pin_code).end()
+                                .find("[data-address-city]").html(value.city_name).end()
+                                .find("[data-address-state]").html(value.state_name).end()
+                                .find("[data-address-country]").html(value.countries_name).end()
+                                .removeClass("m--hide").end();
+                            $("#billingAddressId").val(value.contact_address_id);
+                        }
+
+                        $addressItem = $addressList.clone();
+                        $addressItem.find("[data-address-item]").attr("data-address-item", value.contact_address_id).end()
+                            .find("[data-address-name]").html(value.contact_name).end()
+                            .find("[data-address-line-1]").html(value.address).end()
+                            .find("[data-address-pincode]").html(value.pin_code).end()
+                            .find("[data-address-city]").html(value.city_name).end()
+                            .find("[data-address-state]").html(value.state_name).end()
+                            .find("[data-address-country]").html(value.countries_name).end()
+                            .find("[data-address-city]").attr("data-address-city", value.city_code).end()
+                            .find("[data-address-state]").attr("data-address-state", value.state_code).end()
+                            .find("[data-address-country]").attr("data-address-country", value.countries_code).end()
+                            .find("[data-address-phoneNo]").html(value.mob_no).end();
+
+                        $clone.find("[data-address-list]").append($addressItem.html());
+                    });
+                    $clone.find("[data-change-address]").attr("data-change-address", "billing");
+                    $("#billing_address_btn").attr("data-content", $clone.html());
+                }
+            });
+        }
     }
 </script>
 </body>

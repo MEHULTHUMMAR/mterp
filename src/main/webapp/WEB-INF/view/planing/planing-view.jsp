@@ -104,13 +104,27 @@
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Customer Name:
                                                             </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.contactVo.name}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.contactVo.companyName}</td>
                                                         </tr>
 
                                                         <tr class="row">
                                                             <th scope="row" class="col-lg-4 col-md-4 col-sm-12">Address: </th>
-                                                            <td class="col-lg-8 col-md-8 col-sm-12">${planingVo.contactVo.address}, ${planingVo.contactVo.pincode}, ${planingVo.contactVo.cityName}
-                                                                ${planingVo.contactVo.stateName},${planingVo.contactVo.countryName}</td>
+                                                            <td class="col-lg-8 col-md-8 col-sm-12" id="purchase_billing_address">
+                                                                <input type="hidden" name="billingAddressId"
+                                                                       id="billingAddressId" value="${planingVo.billingAddressId}"/>
+                                                                <p class="mb-0"><span data-address-line-1=""></span></p>
+                                                                <p class="mb-0">
+                                                                    <span data-address-pincode=""></span> <span
+                                                                        data-address-city=""></span> <span
+                                                                        class="m--font-boldest">,&nbsp;</span>
+                                                                </p>
+                                                                <p class="mb-0">
+                                                                    <span data-address-state=""></span> <span
+                                                                        class="m--font-boldest">,&nbsp;</span> <span
+                                                                        data-address-country=""></span>
+                                                                </p>
+                                                            </td>
+
                                                         </tr>
 
                                                         </tbody>
@@ -182,7 +196,7 @@
                                                             <th style="width: 100px;">Remark</th>
                                                             <th style="width: 100px;">Cost</th>
                                                             <th style="width: 100px;">Total</th>
-                                                            <th style="width: 100px;">Drawing Login</th>
+                                                            <th style="width: 100px;">Drawing Logic</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -292,7 +306,7 @@
     <script>
         var index=0;
         $(document).ready(function () {
-
+            getContactInfo(${planingVo.contactVo.contactId});
         });
 
         function openDrawingLogic(id){
@@ -337,7 +351,7 @@
                             $(this).attr("data-target") ? $(this).attr("data-target", $(this).attr("data-target").replace(/{index}/g, index)) : "";
                         });
                         $("#product_table").find("[data-sales-list]").append($salesItemTemplate);
-                        $("#dlNo"+index).val(data.drawing_logic_doc_no);
+                        $("#dlNo"+index).val(data.drawing_logic_code);
                         $("#dlPDF"+index).attr('href','/drawinglogic/download?fileName='+data.file_name);
                         if(data.billofmaterial_id==0) {
                             $("#bom_generate" + index).attr('onclick', 'generateBOM(' + data.drawing_logic_doc_id + ')');
@@ -376,6 +390,24 @@
             var id = $("#dl_planing_item_id").val();
             $.post("/planing/update/itemcost/" + id, {}, function (data, status) {
                 location.reload();
+            });
+        }
+
+        function getContactInfo(id) {
+            $.post("/contact/" + id + "/address", {}, function (data, status) {
+                if (data.length > 0) {
+                    $.each(data, function (key, value) {
+                        if (value.contact_address_id == $("#billingAddressId").val()) {
+                            $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
+                                .find("[data-address-pincode]").html(value.pin_code).end()
+                                .find("[data-address-city]").html(value.city_name).end()
+                                .find("[data-address-state]").html(value.state_name).end()
+                                .find("[data-address-country]").html(value.countries_name).end()
+                                .removeClass("m--hide").end()
+                                .find("[data-address-message]").addClass("m--hide").end();
+                        }
+                    });
+                }
             });
         }
     </script>

@@ -239,7 +239,7 @@
                     },{
                         data: "enquire_no"
                     }, {
-                        data: "name"
+                        data: "company_name"
                     }, {
                         data: "status"
                     }, {

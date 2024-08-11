@@ -11,7 +11,6 @@ import com.erp.mterp.service.planing.PlaningService;
 import com.erp.mterp.service.product.ProductService;
 import com.erp.mterp.vo.bom.BillOfMaterialVo;
 import com.erp.mterp.vo.planing.PlaningItemDLVo;
-import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -204,8 +203,7 @@ public class BillOfMaterialController {
 
 	@RequestMapping("/getdata/{id}")
 	@ResponseBody
-	public ProductVo productData(HttpSession session, @PathVariable("id") long id) {
-		ProductVo productVo= productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
-		return productVo;
+	public List<Map<String,String>> productData(HttpSession session, @PathVariable("id") long id) {
+		return productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
 	}
 }

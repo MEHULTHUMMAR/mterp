@@ -630,8 +630,8 @@ var first_time=1;
                     $clone.find("[data-address-list]").html("");
 
                     $.each(data, function (key, value) {
-                        if(first_time=1){
-                            if (value.contact_address_id = $("#billingAddressId").val()) {
+                        if(first_time==1){
+                            if (value.contact_address_id == $("#billingAddressId").val()) {
                                 $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
                                     .find("[data-address-pincode]").html(value.pin_code).end()
                                     .find("[data-address-city]").html(value.city_name).end()
@@ -643,7 +643,7 @@ var first_time=1;
                             }
                             first_time=0;
                         }else {
-                            if (value.is_default = 1) {
+                            if (value.is_default == 1) {
                                 $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
                                     .find("[data-address-pincode]").html(value.pin_code).end()
                                     .find("[data-address-city]").html(value.city_name).end()

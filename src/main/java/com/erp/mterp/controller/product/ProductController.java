@@ -57,6 +57,7 @@ public class ProductController {
 
 		ModelAndView view = new ModelAndView("product/product");
 		view.addObject("categoryList",categoryService.findByCompanyIdAndIsDeleted(Long.parseLong(session.getAttribute("companyId").toString()),0));
+		view.addObject("subProductList",productService.findSubProductByCompanyIdAndIsDeleted(Long.parseLong(session.getAttribute("companyId").toString()),0));
 
 		return view;
 	}
@@ -172,6 +173,17 @@ public class ProductController {
 			});
 		}
 
+		if(productVo.getSubProductVos()!=null) {
+			productVo.getSubProductVos().removeIf(x -> x.getSubProductId() == 0L);
+			productVo.getSubProductVos().forEach(doc -> {
+				doc.setProductVo(productVo);
+			});
+		}
+
+		if(productVo.getProductId()!=0L){
+			productService.deleteSubProductByMainProduct(productVo.getProductId());
+		}
+
 		productService.saveProduct(productVo);
 		return view;
 	}
@@ -187,21 +199,15 @@ public class ProductController {
 	@RequestMapping("delete")
 	@ResponseBody
 	public boolean deleteProduct(@RequestParam(value = "id") long id,HttpSession session) {
-		ProductVo productVo =productService.findByProductId(id,Long.parseLong(session.getAttribute("companyId").toString()));
-		if(productVo!=null) {
-			productVo.setIsDeleted(1);
-			productService.saveProduct(productVo);
+			productService.deleteProduct(id);
 			return true;
-		}else{
-			return false;
-		}
+
 	}
 
 	@RequestMapping("/getdata/{id}")
 	@ResponseBody
-	public ProductVo productData(HttpSession session, @PathVariable("id") long id) {
-		ProductVo productVo= productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
-		return productVo;
+	public List<Map<String,String>> productData(HttpSession session, @PathVariable("id") long id) {
+		return productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
 	}
 
 

@@ -63,6 +63,7 @@ $(document).ready(function () {
 
         var filenames="",ids="";
         $("#all_prodcut_tbl").find("[data-purchase-item='template']").remove();
+        $("#sub_product_tbl").find("[data-purchase-item='template']").remove();
         var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
         $purchaseItem.each(function() {
             var index=this.id;

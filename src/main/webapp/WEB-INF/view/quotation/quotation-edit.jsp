@@ -134,33 +134,41 @@
                                                         <input type="hidden" id="contactId" name="contactVo.contactId" value="${quotationVo.contactVo.contactId}">
                                                         <div class="m-section__content mb-0" id="contact_details">
                                                             <div class="row">
-                                                                <p class="mb-0"><span customer_name="">${quotationVo.contactVo.name}</span></p>
+                                                                <p class="mb-0"><span customer_name="">${quotationVo.contactVo.companyName}</span></p>
                                                             </div>
                                                         </div>
 
                                                     </div>
-                                                    <div class="m-section m--margin-bottom-15">
-                                                        <label>Address</label>
-                                                        <div class="m-section__content  mb-0" id="purchase_billing_address">
-                                                            <div class="row">
-                                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                    <p class="mb-0"><span data-address-line-1="">${quotationVo.contactVo.address}</span></p>
-                                                                    <p class="mb-0">
-                                                                        <span data-address-pincode="">${quotationVo.contactVo.pincode}</span> <span
-                                                                            data-address-city="">${quotationVo.contactVo.cityName}</span> <span
-                                                                            class="m--font-boldest">,&nbsp;</span>
-                                                                    </p>
-                                                                    <p class="mb-0">
-                                                                        <span data-address-state="">${quotationVo.contactVo.stateName}</span> <span
-                                                                            class="m--font-boldest">,&nbsp;</span> <span
-                                                                            data-address-country="">${quotationVo.contactVo.countryName}</span>
-                                                                    </p>
+                                                        <div class="m-section m--margin-bottom-15">
+                                                            <label>Address</label>
+                                                            <div class="m-section__content  mb-0" id="purchase_billing_address">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                        <input type="hidden" name="billingAddressId"
+                                                                               id="billingAddressId" value="${quotationVo.billingAddressId}"/>
+                                                                        <p class="mb-0"><span data-address-line-1=""></span></p>
+                                                                        <p class="mb-0">
+                                                                            <span data-address-pincode=""></span> <span
+                                                                                data-address-city=""></span> <span
+                                                                                class="m--font-boldest">,&nbsp;</span>
+                                                                        </p>
+                                                                        <p class="mb-0">
+                                                                            <span data-address-state=""></span> <span
+                                                                                class="m--font-boldest">,&nbsp;</span> <span
+                                                                                data-address-country=""></span>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <button type="button" class="btn btn-link"
+                                                                    data-toggle="m-popover" data-trigger="click"
+                                                                    title="Billing Address <a href='#' data-popover-close='' class='m--font-bolder m-link m-link--state  m-link--danger float-right'>Cancel</a>"
+                                                                    data-html="true" data-content=""
+                                                                    id="billing_address_btn" tabindex="-1">Change Address
+                                                            </button>
+                                                            <%-- </c:if> --%>
                                                         </div>
-
                                                     </div>
-                                                </div>
 
                                             </div>
                                         </div>
@@ -391,7 +399,7 @@
             orientation: "auto bottom",
             setDate:'today'
         });
-
+        getContactInfo();
         $("#product_table").on("click", 'a[data-item-remove]', function (e) {
             var i = $(this).closest("[data-sales-item]").attr("data-sales-item");
 
@@ -592,6 +600,50 @@
         $("#taxAmount").val(taxamount);
         $("#total").val(total);
         $("#total_amount").html(total);
+    }
+
+    function getContactInfo() {
+        if ($("#contactId").val() != "") {
+            var id = $("#contactId").val();
+            $.post("/contact/" + id + "/address", {}, function (data, status) {
+                if (data.length > 0) {
+
+                    var $template = $('#address_template'),
+                        $clone = $template.clone().removeClass('m--hide').removeAttr('id').attr('id', "billing_address");
+                    $addressList = $clone.find("[data-address-list]").clone();
+                    $clone.find("[data-address-list]").html("");
+
+                    $.each(data, function (key, value) {
+                        if (value.contact_address_id == $("#billingAddressId").val()) {
+                            $("#purchase_billing_address").find("[data-address-line-1]").html(value.address).end()
+                                .find("[data-address-pincode]").html(value.pin_code).end()
+                                .find("[data-address-city]").html(value.city_name).end()
+                                .find("[data-address-state]").html(value.state_name).end()
+                                .find("[data-address-country]").html(value.countries_name).end()
+                                .removeClass("m--hide").end();
+                            $("#billingAddressId").val(value.contact_address_id);
+                        }
+
+                        $addressItem = $addressList.clone();
+                        $addressItem.find("[data-address-item]").attr("data-address-item", value.contact_address_id).end()
+                            .find("[data-address-name]").html(value.contact_name).end()
+                            .find("[data-address-line-1]").html(value.address).end()
+                            .find("[data-address-pincode]").html(value.pin_code).end()
+                            .find("[data-address-city]").html(value.city_name).end()
+                            .find("[data-address-state]").html(value.state_name).end()
+                            .find("[data-address-country]").html(value.countries_name).end()
+                            .find("[data-address-city]").attr("data-address-city", value.city_code).end()
+                            .find("[data-address-state]").attr("data-address-state", value.state_code).end()
+                            .find("[data-address-country]").attr("data-address-country", value.countries_code).end()
+                            .find("[data-address-phoneNo]").html(value.mob_no).end();
+
+                        $clone.find("[data-address-list]").append($addressItem.html());
+                    });
+                    $clone.find("[data-change-address]").attr("data-change-address", "billing");
+                    $("#billing_address_btn").attr("data-content", $clone.html());
+                }
+            });
+        }
     }
 </script>
 </body>

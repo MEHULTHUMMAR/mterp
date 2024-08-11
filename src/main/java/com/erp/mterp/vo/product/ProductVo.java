@@ -49,12 +49,19 @@ public class ProductVo {
     @Column(name = "certificate_required", columnDefinition = "int default 0")
     private int certificateRequired;
 
+    @Column(name = "is_sub_product", columnDefinition = "int default 0")
+    private int isSubProduct;
+
     @Column(name = "description")
     private String description;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "productVo", cascade = CascadeType.ALL)
     private List<ProductDocVo> productDocVos;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "productVo", cascade = CascadeType.ALL)
+    private List<SubProductVo> subProductVos;
 
     @Column(name = "alterby_id", length = 10)
     private long alterBy;

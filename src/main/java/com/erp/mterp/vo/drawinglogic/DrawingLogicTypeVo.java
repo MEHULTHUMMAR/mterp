@@ -1,50 +1,32 @@
-package com.erp.mterp.vo.enquire;
+package com.erp.mterp.vo.drawinglogic;
 
-import com.erp.mterp.vo.contact.ContactVo;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "enquire")
-public class EnquireVo {
+@Table(name = "drawing_logic_type")
+public class DrawingLogicTypeVo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "enquire_id", length = 10)
-    private long enquireId;
+    @Column(name = "drawing_logic_type_id", length = 10)
+    private long drawingLogicTypeId;
 
-    @Column(name = "prefix")
-    private String prefix;
-    
-    @Column(name = "enquire_no")
-    private long enquireNo;
-    
-    @Column(name = "enquire_date")
-    private String enquireDate;
+    @Column(name = "dl_type_name")
+    private String dlTypeName;
 
-    @ManyToOne
-    @JoinColumn(name = "contact_id", referencedColumnName = "contact_id")
-    private ContactVo contactVo;
+    @Column(name = "dl_type_code")
+    private String dlTypeCode;
 
-    @Column(name = "billing_address_id", length = 10,columnDefinition = "bigint default 0")
-    private long billingAddressId;
-
-    @Column(name = "description")
-    private String description;
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "enquireVo", cascade = CascadeType.ALL)
-    private List<EnquireItemVo> enquireItemVos;
+    @Column(name = "dl_type")
+    private String dlType;
 
     @Column(name = "alterby_id", length = 10)
     private long alterBy;

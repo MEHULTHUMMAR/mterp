@@ -1,10 +1,8 @@
 package com.erp.mterp.vo.commonResponse;
 
-import com.erp.mterp.dto.pointtransaction.PointTransactionMainCustomDatatableDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +23,5 @@ public class ApiResponseForCustomerLedger {
     @JsonProperty(value = "message")
     private String message;
 
-    @JsonProperty(value = "response")
-    private PointTransactionMainCustomDatatableDto response;
 
 }

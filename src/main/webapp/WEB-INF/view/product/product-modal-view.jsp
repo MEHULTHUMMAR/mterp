@@ -111,10 +111,48 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="form-group m-form__group row m--padding-left-0">
+                            <label class="col-form-label col-lg-12 col-md-12 col-sm-12"></label>
+                            <div class="col-form-label col-lg-12 col-md-12 col-sm-12">
+                                <div class="m-checkbox-inline">
+                                    <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                        <input type="checkbox" name="isSubProduct_view" value="0" onclick="$(this).val(this.checked ? 1 : 0)" disabled
+                                               id="isSubProduct_view">Is Sub Product ?<span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                 <div class=" text-center" id="subProductDiv_view" style="border: 1px solid;">
+
+                        <div class="table-responsive">
+                            <table class="table" id="sub_product_tbl_view">
+                                <thead>
+                                <tr>
+                                    <th>Sr No.</th>
+                                    <th>Sub Product</th>
+                                </tr>
+                                </thead>
+                                <tbody data-purchase-list="" id="sub_product_tbl_body_view">
+                                <tr class="text-center m--hide" id="{p_index}" data-purchase-item="template">
+                                    <td class="align-middle" style="width: 100px"><span class="m--font-bolder" data-item-index id="product_srNo_view{p_index}"></span>
+                                    </td>
+                                    <td class="align-middle" style="width: 100px"><span class="m--font-bolder" id="product_Name_view{p_index}"></span>
+                                        <input class="form-control " type="hidden" name="subProductVos[{p_index}].subProductId" id="sub_product_id_view{p_index}" readonly="" value="" style="background: none;">
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
                 <div class=" text-center" id="fileDiv_view"> <h5 class="modal-title  text-center" id="">Upload Document</h5><small>(You can select only 10 images)</small>
-
-
                     <div class="table-responsive">
                         <table class="table" id="all_prodcut_tbl_view">
                             <thead>

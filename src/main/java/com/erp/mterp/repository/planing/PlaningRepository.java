@@ -35,7 +35,7 @@ public interface PlaningRepository extends JpaRepository<PlaningVo, Long> {
             "    concat(planing.prefix,planing_no) as planing_no,\n" +
             "    concat(q.prefix,enquire_no) as enquire_no,\n" +
             "    q.enquire_id,\n" +
-            "    c.name\n" +
+            "    c.company_name\n" +
             "from planing\n" +
             "inner join public.contact c on c.contact_id = planing.contact_id\n" +
             "inner join public.enquire q on q.enquire_id = planing.enquire_id\n" +

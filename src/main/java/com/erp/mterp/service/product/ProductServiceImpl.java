@@ -1,12 +1,11 @@
 package com.erp.mterp.service.product;
 
 import com.erp.mterp.repository.product.ProductRepository;
-import com.erp.mterp.vo.product.MaterialTypeVo;
-import com.erp.mterp.vo.product.ProductUOMVo;
 import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductVo findByProductId(long id, long companyId) {
+	public List<Map<String,String>> findByProductId(long id, long companyId) {
 		return productRepository.findByProductId(id, companyId) ;
 	}
 
@@ -50,6 +49,23 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Map<String,String>> findUOMList() {
 		return productRepository.findUOMList();
+	}
+
+	@Override
+	public List<Map<String, String>> findSubProductByCompanyIdAndIsDeleted(long companyId, int i) {
+		return productRepository.findSubProductByCompanyIdAndIsDeleted( companyId, i);
+	}
+
+	@Override
+	@Transactional
+	public void deleteProduct(long id) {
+		productRepository.deleteProduct(id);
+	}
+
+	@Override
+	@Transactional
+	public void deleteSubProductByMainProduct(long productId) {
+		productRepository.deleteSubProductByMainProduct(productId);
 	}
 
 

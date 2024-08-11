@@ -84,7 +84,6 @@ String prefix="PLN";
 //		if(planingVo.getContactVo().getCityCode()!=null) {
 //			planingVo.getContactVo().setCityName(cityService.findByCityCode(planingVo.getContactVo().getCityCode()).getCityName());
 //		}
-
 		view.addObject(	"planingVo",planingVo);
 
 		return view;

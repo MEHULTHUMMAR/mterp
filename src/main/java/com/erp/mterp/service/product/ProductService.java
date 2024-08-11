@@ -15,11 +15,17 @@ public interface ProductService {
 
 	List<Map<String,String>> findproductData(long companyId, String serachValue, int length, int offset);
 
-	ProductVo findByProductId(long id, long companyId);
+	List<Map<String,String>> findByProductId(long id, long companyId);
 
 	List<ProductVo> findProductByCompanyId(long companyId);
 
 	List<Map<String,String>> findMaterialTypeList();
 
 	List<Map<String,String>> findUOMList();
+
+	List<Map<String,String>> findSubProductByCompanyIdAndIsDeleted(long companyId, int i);
+
+	void deleteProduct(long id);
+
+	void deleteSubProductByMainProduct(long productId);
 }

@@ -1,7 +1,6 @@
 package com.erp.mterp.vo.quotation;
 
 import com.erp.mterp.vo.contact.ContactVo;
-import com.erp.mterp.vo.enquire.EnquireVo;
 import com.erp.mterp.vo.planing.PlaningVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +28,7 @@ public class QuotationVo {
     private String prefix;
     
     @Column(name = "quotation_no")
-    private String quotationNo;
+    private long quotationNo;
     
     @Column(name = "quotation_date")
     private String quotationDate;
@@ -37,6 +36,9 @@ public class QuotationVo {
     @ManyToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "contact_id")
     private ContactVo contactVo;
+
+    @Column(name = "billing_address_id", length = 10,columnDefinition = "bigint default 0")
+    private long billingAddressId;
 
     @ManyToOne
     @JoinColumn(name = "planing_id", referencedColumnName = "planing_id")

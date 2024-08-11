@@ -219,6 +219,7 @@
                                         <th>Product Name</th>
                                         <th>Display Name</th>
                                         <th>Category</th>
+                                        <th>Sub Product</th>
                                         <th>Actions</th>
 
                                     </tr>
@@ -337,6 +338,8 @@
                     }, {
                         data: "category_name"
                     }, {
+                        data: "is_sub_product"
+                    }, {
                         data: "product_id"
                     }],
                 columnDefs: [
@@ -360,8 +363,18 @@
                             return a;
                         }
                     }, {
+                        targets: 5,
+                        orderable: !1,
+                        render: function (a, e, t, n) {
+                            if(a==0){
+                                return 'No';
+                            }else{
+                                return 'Yes';
+                            }
+                        }
+                    }, {
 
-                        targets: 5, // index of the "Actions" column (zero-based index)
+                        targets: 6, // index of the "Actions" column (zero-based index)
                         orderable: false,
                         render: function (a, e, t, n) {
                             return '<i class="fa fa-eye text-gray-500 mr-2 " data-toggle="modal" data-toggle="popover" title="view" data-target="#product_view_modal" onclick="viewproduct(' + a + ')" style="cursor: pointer; color:gray;"></i> ' +
@@ -378,6 +391,16 @@
         DatatablesDataSourceHtml.init();
         $(".dt-buttons").addClass("m--hide");
 
+        $("#subproductId").select2();
+
+        $('#isSubProduct').change(function() {
+            if(this.checked) {
+                $("#subProductDiv").addClass('m--hide');
+            }else{
+                $("#subProductDiv").removeClass('m--hide');
+            }
+        });
+
         $("#all_prodcut_tbl").on("click", 'a[data-item-remove]', function (e) {
             $(this).closest("[data-purchase-item]").remove();
             var $purchaseItem = $("#all_prodcut_tbl").find("[data-purchase-item]").not(".m--hide");
@@ -389,7 +412,24 @@
                 'Total Files: <b>' + i + '</b></br >';
         });
 
-    });
+        $("#sub_product_tbl").on("click", 'a[data-item-remove]', function (e) {
+            $(this).closest("[data-purchase-item]").remove();
+            var $purchaseItem = $("#sub_product_tbl").find("[data-purchase-item]").not(".m--hide");
+            var i = 0;
+            $purchaseItem.each(function () {
+                $(this).find("[data-item-index]").html(++i);
+            });
+        });
+
+        $("#sub_product_tbl_edit").on("click", 'a[data-item-remove]', function (e) {
+            $(this).closest("[data-purchase-item]").remove();
+            var $purchaseItem = $("#sub_product_tbl_edit").find("[data-purchase-item]").not(".m--hide");
+            var i = 0;
+            $purchaseItem.each(function () {
+                $(this).find("[data-item-index]").html(++i);
+            });
+        });
+   });
 
 
     $("#contact_upload_model").on('hidden.bs.modal', function () {
@@ -424,29 +464,39 @@
             url: "/product/getdata/" + id,
             type: "GET",
             success: function (data) {
+                data=data[0];
                 $("#product_edit_form").resetForm();
                 $("#all_prodcut_tbl_edit").find("[data-purchase-item]").not(".m--hide").remove();
                 totalFiles_edit = 0;
                 mainIndex_edit = 0;
                 $("#categoryId_edit").select2();
                 $("#unit_edit").select2();
+                $("#subproductId_edit").select2();
 
                 $("#product_id_edit").val(id);
                 $("#itemcode_edit").val(data.itemcode);
-                $("#productName_edit").val(data.productName);
-                $("#displayName_edit").val(data.displayName);
-                $("#categoryId_edit").val(data.categoryVo.categoryId).trigger('change');
+                $("#productName_edit").val(data.product_name);
+                $("#displayName_edit").val(data.display_name);
+                $("#categoryId_edit").val(data.category_id).trigger('change');
                 $("#capacity1_edit").val(data.capacity1);
                 $("#capacity2_edit").val(data.capacity2);
                 $("#unit_edit").val(data.unit).trigger('change');
-                if (data.certificateRequired == 1) {
-
-                    $("#certificateRequired_edit").prop('checked', true);
+                if (data.certificate_required == 1) {
+                   $("#certificateRequired_edit").prop('checked', true);
+                }else{
+                    $("#certificateRequired_edit").prop('checked', false);
+                }
+                if (data.is_sub_product == 1) {
+                    $("#isSubProduct_edit").prop('checked', true);
+                    $("#subProductDiv_edit").addClass('m--hide');
+                }else{
+                    $("#isSubProduct_edit").prop('checked', false);
+                    $("#subProductDiv_edit").removeClass('m--hide');
                 }
                 $("#description_edit").val(data.description);
 
-
-                $.each(data.productDocVos, function (key, value) {
+                data.product_doc = JSON.parse(data.product_doc);
+                $.each(data.product_doc, function (key, value) {
 
                     var $purchaseItemTemplate;
                     $purchaseItemTemplate = $("#all_prodcut_tbl_edit").find("[data-purchase-item='template']").clone();
@@ -464,16 +514,42 @@
                     $purchaseItemTemplate.append('<input type="hidden" id="productDocId_edit' + mainIndex_edit + '" name="productDocVos[' + mainIndex_edit + '].productDocId" value="' + id + '"/>')
                     $("#all_prodcut_tbl_edit").find("[data-purchase-list]").append($purchaseItemTemplate);
                     $("#srNo_edit" + mainIndex_edit).html(mainIndex_edit + 1);
-                    $("#fileName_edit" + mainIndex_edit).val(value.fileName);
+                    $("#fileName_edit" + mainIndex_edit).val(value.file_name);
                     $("#remark_edit" + mainIndex_edit).val(value.remark);
-                    $("#productDocId_edit" + mainIndex_edit).val(value.productDocId);
+                    $("#productDocId_edit" + mainIndex_edit).val(value.product_doc_id);
                     mainIndex_edit++;
                     totalFiles_edit++;
                 });
                 document.getElementById('Filemessage').innerHTML =
                     'Total Files: <b>' + totalFiles_edit + '</b></br >';
 
+                mainIndex_edit = 0;
+                if(data.sub_product!=null){
+                data.sub_product = JSON.parse(data.sub_product);
+                $("#sub_product_tbl_edit").find("[data-purchase-item]").not("[data-purchase-item='template']").remove();
+                $.each(data.sub_product, function (key, value) {
 
+                    var $purchaseItemTemplate;
+                    $purchaseItemTemplate = $("#sub_product_tbl_edit").find("[data-purchase-item='template']").clone();
+                    $purchaseItemTemplate.find("[data-purchase-item-toggle]").remove();
+                    $purchaseItemTemplate.attr("data-purchase-item", mainIndex_edit).removeClass("m--hide");
+                    $purchaseItemTemplate.attr("id", mainIndex_edit);
+                    $purchaseItemTemplate.find("input[type='text'],input[type='hidden'],button,select,span,textarea,a").each(function () {
+                        n = $(this).attr("id");
+                        n ? $(this).attr("id", n.replace(/{p_index}/g, mainIndex_edit)) : "";
+                        n = $(this).attr("name");
+                        n ? $(this).attr("name", n.replace(/{p_index}/g, mainIndex_edit)) : "";
+
+                        $(this).attr("data-select2-id") ? $(this).attr("data-select2-id", $(this).attr("data-select2-id").replace(/{index}/g, mainIndex_edit)) : "";
+                    });
+                    $purchaseItemTemplate.append('<input type="hidden" id="sub_product_tbl_id_edit' + mainIndex_edit + '" name="subProductVos[' + mainIndex_edit + '].subProductTBLId" value="' + value.sub_product_tbl_id + '"/>')
+                    $("#sub_product_tbl_edit").find("[data-purchase-list]").append($purchaseItemTemplate);
+                    $("#product_srNo_edit" + mainIndex_edit).html(mainIndex_edit + 1);
+                    $("#product_Name_edit" + mainIndex_edit).html(value.product_name);
+                    $("#sub_product_id_edit" + mainIndex_edit).val(value.sub_product_id);
+                    mainIndex_edit++;
+                });
+                }
             },
             error: function () {
 
@@ -490,6 +566,7 @@
             url: "/product/getdata/" + id,
             type: "GET",
             success: function (data) {
+                data=data[0];
                 $("#categoryId_view").select2();
                 $("#unit_view").select2();
                 totalFiles_edit = 0;
@@ -498,19 +575,26 @@
 
                 $("#product_id_view").val(id);
                 $("#itemcode_view").val(data.itemcode);
-                $("#productName_view").val(data.productName);
-                $("#displayName_view").val(data.displayName);
-                $("#categoryId_view").val(data.categoryVo.categoryId).trigger('change');
+                $("#productName_view").val(data.product_name);
+                $("#displayName_view").val(data.display_name);
+                $("#categoryId_view").val(data.category_id).trigger('change');
                 $("#capacity1_view").val(data.capacity1);
                 $("#capacity2_view").val(data.capacity2);
                 $("#unit_view").val(data.unit).trigger('change');
-                if (data.certificateRequired == 1) {
+                if (data.certificate_required == 1) {
                     $("#certificateRequired_view").prop('checked', true);
+                }else{
+                    $("#certificateRequired_view").prop('checked', false);
+                }
+                if (data.is_sub_product == 1) {
+                    $("#isSubProduct_view").prop('checked', true);
+                }else{
+                    $("#isSubProduct_view").prop('checked', false);
                 }
                 $("#description_view").val(data.description);
 
-
-                $.each(data.productDocVos, function (key, value) {
+                data.product_doc = JSON.parse(data.product_doc);
+                $.each(data.product_doc, function (key, value) {
 
                     var $purchaseItemTemplate;
                     $purchaseItemTemplate = $("#all_prodcut_tbl_view").find("[data-purchase-item='template']").clone();
@@ -528,12 +612,37 @@
                     $purchaseItemTemplate.append('<input type="hidden" id="productDocId_view' + mainIndex_edit + '" name="productDocVos[' + mainIndex_edit + '].productDocId" value="' + id + '"/>')
                     $("#all_prodcut_tbl_view").find("[data-purchase-list]").append($purchaseItemTemplate);
                     $("#srNo_view" + mainIndex_edit).html(mainIndex_edit + 1);
-                    $("#fileName_view" + mainIndex_edit).val(value.fileName);
+                    $("#fileName_view" + mainIndex_edit).val(value.file_name);
                     $("#remark_view" + mainIndex_edit).val(value.remark);
-                    $("#productDocId_view" + mainIndex_edit).val(value.productDocId);
-                    $("#file_download" + mainIndex_edit).attr("href", '/product/download?fileName='+ value.fileName)
+                    $("#productDocId_view" + mainIndex_edit).val(value.product_doc_id);
+                    $("#file_download" + mainIndex_edit).attr("href", '/product/download?fileName='+ value.file_name)
                     mainIndex_edit++;
                     totalFiles_edit++;
+                });
+
+                mainIndex_edit = 0;
+                data.sub_product = JSON.parse(data.sub_product);
+                $.each(data.sub_product, function (key, value) {
+
+                    var $purchaseItemTemplate;
+                    $purchaseItemTemplate = $("#sub_product_tbl_view").find("[data-purchase-item='template']").clone();
+                    $purchaseItemTemplate.find("[data-purchase-item-toggle]").remove();
+                    $purchaseItemTemplate.attr("data-purchase-item", mainIndex_edit).removeClass("m--hide");
+                    $purchaseItemTemplate.attr("id", mainIndex_edit);
+                    $purchaseItemTemplate.find("input[type='text'],input[type='hidden'],button,select,span,textarea,a").each(function () {
+                        n = $(this).attr("id");
+                        n ? $(this).attr("id", n.replace(/{p_index}/g, mainIndex_edit)) : "";
+                        n = $(this).attr("name");
+                        n ? $(this).attr("name", n.replace(/{p_index}/g, mainIndex_edit)) : "";
+
+                        $(this).attr("data-select2-id") ? $(this).attr("data-select2-id", $(this).attr("data-select2-id").replace(/{index}/g, mainIndex_edit)) : "";
+                    });
+                    $purchaseItemTemplate.append('<input type="hidden" id="sub_product_tbl_id_view' + mainIndex_edit + '" name="subProductVos[' + mainIndex_edit + '].subProductTBLId" value="' + id + '"/>')
+                    $("#sub_product_tbl_view").find("[data-purchase-list]").append($purchaseItemTemplate);
+                    $("#product_srNo_view" + mainIndex_edit).html(mainIndex_edit + 1);
+                    $("#product_Name_view" + mainIndex_edit).html(value.product_name);
+                    $("#sub_product_id_view" + mainIndex_edit).val(value.sub_product_id);
+                    mainIndex_edit++;
                 });
             },
             error: function () {
@@ -576,6 +685,57 @@
         });
     }
 
+var pr_index=0;
+
+    function addSubProduct(type) {
+        var id='';
+        if(type=='edit'){
+            id='_edit';
+        }
+
+        if ($("#subproductId"+id).val() != null) {
+
+            var $purchaseItem = $("#sub_product_tbl"+id).find("[data-purchase-item]").not(".m--hide");
+            var repeat=true;
+            $purchaseItem.each(function() {
+                var pid=this.id;
+               if($("#sub_product_id"+id + pid).val()==$("#subproductId"+id).val()){
+                   repeat=false;
+                }
+            });
+
+            if(repeat) {
+                var $productTemplate;
+                var mainIndex = pr_index;
+                var selector = "{p_index}";
+                $productTemplate = $("#sub_product_tbl"+id).find("[data-purchase-item='template']").clone();
+                $productTemplate.find("[data-purchase-item-toggle]").remove();
+                $productTemplate.attr("data-purchase-item", mainIndex).removeClass("m--hide");
+                $productTemplate.attr("id", mainIndex);
+                $productTemplate.find("input[type='text'],input[type='hidden'],select,span,textarea").each(function () {
+                    n = $(this).attr("id");
+                    n ? $(this).attr("id", n.replace(/{p_index}/g, mainIndex)) : "";
+                    n = $(this).attr("name");
+                    n ? $(this).attr("name", n.replace(/{p_index}/g, mainIndex)) : "";
+                    $(this).attr("data-select2-id") ? $(this).attr("data-select2-id", $(this).attr("data-select2-id").replace(/{p_index}/g, mainIndex)) : "";
+                });
+                $("#sub_product_tbl"+id).find("[data-purchase-list]").append($productTemplate);
+                $("#product_srNo"+id + pr_index).html(pr_index + 1);
+                $("#product_Name"+id + pr_index).html($("#subproductId option:selected").text());
+                $("#sub_product_id"+id + pr_index).val($("#subproductId").val());
+                pr_index++;
+
+                var i = 0;
+                var $purchaseItem = $("#sub_product_tbl"+id).find("[data-purchase-item]").not(".m--hide");
+                $purchaseItem.each(function () {
+                    $(this).find("[data-item-index]").html(++i);
+                });
+                $("#subproductId"+id).val(0).trigger('change');
+            }else{
+                toastr.error("Sub Product already added.");
+            }
+        }
+    }
 </script>
 </body>
 

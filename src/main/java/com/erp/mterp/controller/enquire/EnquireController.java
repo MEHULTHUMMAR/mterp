@@ -9,7 +9,6 @@ import com.erp.mterp.service.enquire.EnquireService;
 import com.erp.mterp.service.product.ProductService;
 import com.erp.mterp.service.state.StateService;
 import com.erp.mterp.vo.enquire.EnquireVo;
-import com.erp.mterp.vo.product.ProductVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -219,9 +218,8 @@ String prefix="ENQ";
 
 	@RequestMapping("/getdata/{id}")
 	@ResponseBody
-	public ProductVo productData(HttpSession session, @PathVariable("id") long id) {
-		ProductVo productVo= productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
-		return productVo;
+	public List<Map<String,String>> productData(HttpSession session, @PathVariable("id") long id) {
+		return productService.findByProductId(id, Long.parseLong(session.getAttribute("companyId").toString()));
 	}
 
 	@RequestMapping("/{id}/getenquire-data")

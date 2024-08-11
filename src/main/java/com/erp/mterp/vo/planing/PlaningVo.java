@@ -28,7 +28,7 @@ public class PlaningVo {
     private String prefix;
     
     @Column(name = "planing_no")
-    private String planingNo;
+    private long planingNo;
     
     @Column(name = "planing_date")
     private String planingDate;
@@ -36,6 +36,9 @@ public class PlaningVo {
     @ManyToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "contact_id")
     private ContactVo contactVo;
+
+    @Column(name = "billing_address_id", length = 10,columnDefinition = "bigint default 0")
+    private long billingAddressId;
 
     @ManyToOne
     @JoinColumn(name = "enquire_id", referencedColumnName = "enquire_id")

@@ -56,6 +56,7 @@ $(document).ready(function () {
           $('#product_edit_form').data('formValidation').validate();
         var filenames="",ids="";
         $("#all_prodcut_tbl_edit").find("[data-purchase-item='template']").remove();
+        $("#sub_product_tbl_edit").find("[data-purchase-item='template']").remove();
         var $purchaseItem = $("#all_prodcut_tbl_edit").find("[data-purchase-item]").not(".m--hide");
         $purchaseItem.each(function() {
             var index=this.id;

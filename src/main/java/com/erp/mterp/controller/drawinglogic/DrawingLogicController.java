@@ -1,12 +1,14 @@
 package com.erp.mterp.controller.drawinglogic;
 
 import com.erp.mterp.dto.contact.ContactCustomDatatableDTO;
+import com.erp.mterp.dto.dl_type.DLTypeCUSTOMDTO;
+import com.erp.mterp.dto.dl_type.DLTypeCUSTOMSelectItemDTO;
 import com.erp.mterp.service.category.CategoryService;
 import com.erp.mterp.service.contact.ContactService;
 import com.erp.mterp.service.drawinglogic.DrawingLogicService;
 import com.erp.mterp.service.product.ProductService;
 import com.erp.mterp.vo.drawinglogic.DrawingLogicDocVo;
-import com.erp.mterp.vo.product.ProductVo;
+import com.erp.mterp.vo.drawinglogic.DrawingLogicTypeVo;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -212,4 +214,55 @@ public class DrawingLogicController {
 		}
 	}
 
+
+	@PostMapping("/list/type/select/json")
+	@ResponseBody
+	public DLTypeCUSTOMDTO selectProductForRecipe(@RequestParam Map<String, String> allRequestParams, HttpSession session)
+			throws ParseException {
+
+
+		String searchValue = "";
+		if (StringUtils.isNotBlank(allRequestParams.get("q"))) {
+			if (!allRequestParams.get("q").toString().equals("")) {
+				searchValue = allRequestParams.get("q").toString();
+			}
+		}
+		List<DLTypeCUSTOMSelectItemDTO> productVos = new ArrayList<DLTypeCUSTOMSelectItemDTO>();
+		productVos = drawingLogicService.findDLTypeData(searchValue, Long.parseLong(session.getAttribute("companyId").toString()), allRequestParams.get("type"));
+
+		return new DLTypeCUSTOMDTO(productVos.size(), true, productVos);
+	}
+
+	@PostMapping("/save/dltype")
+	@ResponseBody
+	public DrawingLogicTypeVo save_dltype(@RequestParam(value = "dl_name") String dl_name, @RequestParam(value = "dl_code") String dl_code, @RequestParam(value = "dl_type") String dl_type, HttpSession session) {
+
+		DrawingLogicTypeVo dlTypeVo = new DrawingLogicTypeVo();
+
+		dlTypeVo.setDlTypeName(dl_name);
+		dlTypeVo.setDlTypeCode(dl_code);
+		dlTypeVo.setDlType(dl_type);
+		dlTypeVo.setCreatedBy(Long.parseLong(session.getAttribute("userId").toString()));
+		dlTypeVo.setBranchId(Long.parseLong(session.getAttribute("branchId").toString()));
+		dlTypeVo.setCompanyId(Long.parseLong(session.getAttribute("companyId").toString()));
+		dlTypeVo.setAlterBy(Long.parseLong(session.getAttribute("userId").toString()));
+		drawingLogicService.savedrawingLogicType(dlTypeVo);
+		return dlTypeVo;
+	}
+
+	@PostMapping("/checkdlcode")
+	@ResponseBody
+	public Boolean checkdlcode(@RequestParam(defaultValue = "", value = "drawingLogicCode") String drawingLogicCode, @RequestParam(defaultValue = "0", value = "drawingLogicId") long drawingLogicId,HttpSession session) {
+		List<DrawingLogicDocVo> b;
+//		if (measurementId == 0) {
+//			b = uomService.findByUomCodeAndCompanyId(name, Long.parseLong(session.getAttribute("companyId").toString()),merchantTypeId,clusterId);
+//		} else {
+			b = drawingLogicService.checkDLCode(drawingLogicCode, Long.parseLong(session.getAttribute("companyId").toString()));
+//		}
+		if (b.isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

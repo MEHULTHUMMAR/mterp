@@ -87,7 +87,7 @@
                                             <option value="">Select Unit</option>
                                                 <option value="ml"selected="selected">ML</option>
                                             <option value="mg">MG</option>
-                                            <option value="gm"      >GM</option>
+                                            <option value="gm">GM</option>
                                         </select>
 
                                     </div>
@@ -107,6 +107,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-8 col-md-8 col-sm-4">
                             <div class="form-group m-form__group row m--padding-left-0">
                                 <label class="col-form-label col-lg-12 col-md-12 col-sm-12">Description:</label>
@@ -117,38 +118,62 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="form-group m-form__group row m--padding-left-0">
+                                <label class="col-form-label col-lg-12 col-md-12 col-sm-12"></label>
+                                <div class="col-form-label col-lg-12 col-md-12 col-sm-12">
+                                    <div class="m-checkbox-inline">
+                                        <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
+                                            <input type="checkbox" name="isSubProduct" value="0" onclick="$(this).val(this.checked ? 1 : 0)"
+                                                   id="isSubProduct">Is Sub Product ?<span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
 
 
                     </div>
-                    <div class=" text-center" id="fileDiv"> <h5 class="modal-title  text-center" id="">Upload Document</h5><small>(You can select only 10 images)</small>
-                        <input type="hidden" id="fileNames" name="fileNames">
-                        <input type="hidden" id="ids" name="ids">
-                        <div id="uploadBulkFile" class="m-b-30">
-                            <input type="file" id="file" name="uploadFiles" onchange="FileDetails()"  multiple >
-                            <p class="text-center" id="Filemessage">Drag your files here or click in this area.</p>
+                    <div class=" text-center" id="subProductDiv" style="border: 1px solid;">
+                        <div class="form-group row" style="margin-top: 10px;">
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div class="form-group m-form__group row m--padding-left-0">
+                                    <label class="col-form-label col-lg-6 col-md-6 col-sm-6">Select
+                                        Sub Product:</label>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="input-group">
+                                            <select class="form-control m-select2" id="subproductId" onchange="addSubProduct('new')"
+                                                    name="subproductId" placeholder="Select Sub Product">
+                                                <option value="">Select Sub Product</option>
+                                                <c:forEach items="${subProductList}" var="subProductList">
+                                                    <option value="${subProductList.product_id}">
+                                                            ${subProductList .product_name}</option>
+                                                </c:forEach>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table" id="all_prodcut_tbl">
+                            <table class="table" id="sub_product_tbl">
                                 <thead>
                                 <tr>
                                     <th>Sr No.</th>
-                                    <th>Document Name</th>
-                                    <th>Remark</th>
+                                    <th>Sub Product</th>
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody data-purchase-list="" id="prodcut_tbl_body">
-                                <tr class="text-center m--hide" id="{index}" data-purchase-item="template">
-                                    <td class="align-middle" style="width: 100px"><span class="m--font-bolder" data-item-index id="srNo{index}"></span>
+                                <tbody data-purchase-list="" id="sub_product_tbl_body">
+                                <tr class="text-center m--hide" id="{p_index}" data-purchase-item="template">
+                                    <td class="align-middle" style="width: 100px"><span class="m--font-bolder" data-item-index id="product_srNo{p_index}"></span>
                                     </td>
-                                    <td class="align-middle" style="width: 300px">
-                                        <input class="form-control " type="text" name="productDocVos[{index}].fileName" id="fileName{index}" readonly="" value="" style="background: none;">
-                                    </td>
-
-                                    <td class="align-middle" style="width: 150px">
-                                        <textarea rows="" cols="" id="remark{index}" name="productDocVos[{index}].remark"></textarea>
+                                    <td class="align-middle" style="width: 100px"><span class="m--font-bolder" id="product_Name{p_index}"></span>
+                                        <input class="form-control " type="hidden" name="subProductVos[{p_index}].subProductId" id="sub_product_id{p_index}" readonly="" value="" style="background: none;">
                                     </td>
                                     <td class="" style="width: 40px;">
                                         <a href="#" data-item-remove=""	class="btn m-btn m-btn--icon m-btn--icon-only m-btn--pill remove-rows"
@@ -160,6 +185,47 @@
 
                         </div>
                     </div>
+
+
+                <div class=" text-center" id="fileDiv" style="margin-top: 60px;border: 1px solid;"> <h5 class="modal-title  text-center" id="">Upload Document</h5><small>(You can select only 10 images)</small>
+                    <input type="hidden" id="fileNames" name="fileNames">
+                    <input type="hidden" id="ids" name="ids">
+                    <div id="uploadBulkFile" class="m-b-30">
+                        <input type="file" id="file" name="uploadFiles" onchange="FileDetails()"  multiple >
+                        <p class="text-center" id="Filemessage">Drag your files here or click in this area.</p>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" id="all_prodcut_tbl">
+                            <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Document Name</th>
+                                <th>Remark</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody data-purchase-list="" id="prodcut_tbl_body">
+                            <tr class="text-center m--hide" id="{index}" data-purchase-item="template">
+                                <td class="align-middle" style="width: 100px"><span class="m--font-bolder" data-item-index id="srNo{index}"></span>
+                                </td>
+                                <td class="align-middle" style="width: 300px">
+                                    <input class="form-control " type="text" name="productDocVos[{index}].fileName" id="fileName{index}" readonly="" value="" style="background: none;">
+                                </td>
+
+                                <td class="align-middle" style="width: 150px">
+                                    <textarea rows="" cols="" id="remark{index}" name="productDocVos[{index}].remark"></textarea>
+                                </td>
+                                <td class="" style="width: 40px;">
+                                    <a href="#" data-item-remove=""	class="btn m-btn m-btn--icon m-btn--icon-only m-btn--pill remove-rows"
+                                       style="margin-right: 0px; margin-top: 0px;"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
 
 
             </div>

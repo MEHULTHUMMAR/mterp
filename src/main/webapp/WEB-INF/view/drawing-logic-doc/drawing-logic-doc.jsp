@@ -10,6 +10,10 @@
 
     <title>Drawing Logic</title>
     <style type="text/css">
+
+        /* modal backdrop fix */
+
+
         .select2-container {
             display: block;
         }
@@ -183,17 +187,15 @@
                                  id="contact_table">
                                     <thead>
                                     <tr>
-
                                         <th>#</th>
-                                        <th>Drawing Logic NO</th>
                                         <th>Product Name</th>
+                                        <th>Drawing Logic Code</th>
+                                        <th>Raw Material Code</th>
+                                        <th>Hardware Code</th>
+                                        <th>Miscellaneous Code</th>
                                         <th>File</th>
-                                        <th>Remark</th>
-                                        <th>GA</th>
-                                        <th>Remark</th>
-
-                                        
-                                    </tr>
+                                        <th>Action</th>
+                                   </tr>
                                     </thead>
                                     <tbody>
                                        
@@ -207,47 +209,54 @@
             </div>
         </div>
     </div>
-    <!-- loyalty modal code -->
 
-    <!-- end loyalty modal code -->
-    <!-- start import excel sheet modal -->
-    <div class="modal fade" id="contact_upload_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header modal-header-sm">
-	                <h5 class="modal-title" id="exampleModalLabel">Upload Sheet</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-	            </div>
-	            <div class="modal-body modal-body-sm">
-	                <form action="" method="post" enctype="multipart/form-data" id="formContent">
-	                    <div class="row">
-	                        <div class="col-lg-12 col-md-12 col-sm-12">
-	                            <label>Download <a class="text-primary" id="downloadDemoFile" style="cursor:pointer">Demo</a>
-	                                File.</label>
-	                            <div class="input-group">
-	                            <input type="hidden" id="displayContactType" name="displayContactType" value="${displayContactType}"/>
-	                                <input type="text" class="form-control form-control-sm" name="fileTextBox" id="fileTextBox"
-	                                       readonly="readonly"/>
-	                                <div class="input-group-append" onclick="clickFileBtn()" style="cursor:pointer">
-														<span class="input-group-text">
-															<i class="la la-file"></i>
-														</span>
-	                                </div>
-	                                <input id="file-upload" name="excelFile" type="file" style="display: none;"
-	                                       required="required"/>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </form>
-	            </div>
-	            <div class="modal-footer modal-footer-sm">
-	                <button type="button" id="testfile" class="btn btn-sm btn-warning">Verify</button>
-	                <button type="button" class="btn btn-sm btn-secondary float-right" data-dismiss="modal">Cancel</button>
-	                <!-- <button type="button" id="importExcel" class="btn btn-sm btn-info" disabled>Upload</button> -->
-	            </div>
-	        </div>
-	    </div>
-	</div>
+
+    <div class="modal fade " id="dl_type_model" style="z-index:1000000000" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dl_type_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">
+						&times;
+					</span>
+                </button>
+            </div>
+            <div class="modal-body container">
+                <form class="m-form m-form--state m-form--fit m-form--label-align-left" id="dl_type_form">
+                <input type="hidden" name="dlType" id="dlType" value="0"/>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group m-form__group row m--padding-left-0">
+                                <label class="col-form-label col-lg-12 col-md-12 col-sm-12">Code:</label>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <input type="hidden" name="data_type" id="dl_type" value="">
+                                    <input type="text" class="form-control m-input m_name" autofocus
+                                           name="dl_code" id="dl_code" placeholder="Code" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group m-form__group row m--padding-left-0">
+                                <label class="col-form-label col-lg-12 col-md-12 col-sm-12">Name:</label>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <input type="text" class="form-control m-input m_name"
+                                           name="dl_name" id="dl_name" placeholder=" Name" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-brand" id="dl_type_save"> Submit  </button>
+                <button type="button" class="btn btn-secondary" id="" data-dismiss="modal">Close  </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 	<%@include file="../footer/footer.jsp" %>
 
     <%@include file="drawing-logic-doc-new.jsp" %>
@@ -261,10 +270,131 @@
 <script src="<%=request.getContextPath()%>/assets/vendors/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/formValidation.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/vendors/formvalidation/framework/bootstrap.min.js"></script>
-
+<%@include file="../drawing-logic-doc/dl-type-modal-ajax.jsp" %>
 <script type="text/javascript">
     var table;
     var selectContactId=null;
+
+    $(document).ready(function() {
+
+      /*  $('#drawinglogic_new_form').formValidation({
+            framework: 'bootstrap',
+            live: 'disabled',
+            //excluded : ":disabled",
+            button: {
+                selector: "#savedrawinglogic",
+                disabled: "disabled",
+            },
+            icon: null,
+            fields: {
+                'productVo.productId': {
+                    validators: {
+                        notEmpty: {
+                            message: 'Select Product'
+                        }
+                    }
+                },
+                drawingLogicCode: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The Drawing Logic Code is Required'
+                        },
+                        remote: {
+                            message: 'This Code is already exist',
+                            url: "/drawinglogic/checkdlcode",
+                            type: 'POST'
+                        }
+                    }
+                },
+            }
+        }).on('success.form.fv', function (e) {
+            e.preventDefault();//stop the from action methods
+            var formdata = new FormData($("#drawinglogic_new_form")[0]);
+            $.ajax({
+                url: "/drawinglogic/savedrawinglogic",
+                type: "POST",
+                data: formdata,
+                encType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    toastr["success"]("Record Inserted....");
+                    $('#drawinglogic_new_modal').modal('toggle');
+                    location.reload();
+                },
+                error: function () {
+                    mApp.unblock("#drawinglogic_new_modal .modal-content");
+                }
+            });
+        });*/
+
+        DatatablesDataSourceHtml.init();
+        $(".dt-buttons").addClass("m--hide");
+
+        $('#drawinglogic_new_modal').on('shown.bs.modal', function () {
+            $("#productId").select2();
+            // $('#drawinglogic_new_form').formValidation('resetForm', true);
+        });
+
+        $("#docFile").on("change", function () {
+            $("#updateFileTextBox").val(this.value.substring(this.value.lastIndexOf("\\") + 1));
+        });
+
+          $("#savedrawinglogic").click(function () {
+              mApp.block("#drawinglogic_new_modal .modal-content",
+                  {
+                      overlayColor: "#464b66",
+                      type: "loader",
+                      state: "success",
+                      message: "Please wait..."
+                  });
+              if ($("#productId").val() == "0") {
+                  toastr.error("Please Select Product.");
+                  mApp.unblock("#drawinglogic_new_modal .modal-content");
+                  return false;
+              } else {
+
+                  $.ajax({
+                      url: "/drawinglogic/checkdlcode",
+                      type: "POST",
+                      data: {
+                          drawingLogicCode:$("#drawingLogicCode").val()
+                      },
+                      success: function (data) {
+                          console.log(data);
+                          if(data) {
+                              console.log("in onin ");
+                              var formdata = new FormData($("#drawinglogic_new_form")[0]);
+                              console.log(formdata);
+                              $.ajax({
+                                  url: "/drawinglogic/savedrawinglogic",
+                                  type: "POST",
+                                  data: formdata,
+                                  encType: "multipart/form-data",
+                                  contentType: false,
+                                  processData: false,
+                                  success: function (data) {
+                                      toastr["success"]("Record Inserted....");
+                                      $('#drawinglogic_new_modal').modal('toggle');
+                                      location.reload();
+                                  },
+                                  error: function () {
+                                      mApp.unblock("#drawinglogic_new_modal .modal-content");
+                                  }
+                              });
+                          }else{
+                              toastr["error"]("Drawing Logic Code is already exists....");
+                              mApp.unblock("#drawinglogic_new_modal .modal-content");
+                          }
+                      },
+                      error: function () {
+                          mApp.unblock("#drawinglogic_new_modal .modal-content");
+                      }
+                  });
+              }
+          });
+
+    });
 
     var DatatablesDataSourceHtml = {
         init: function () {
@@ -281,21 +411,16 @@
                 },
                 lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
                 columns: [
-                    {
-                    data: "drawingLogicDocId"
-                }, {
-                    data: "drawingLogicDocNo"
-                }, {
-                    data: "productVo.productName"
-                }, {
-                    data: "fileName"
-                }, {
-                    data: "description"
-                }, {
-                        data: "gaFlag"
-                    }, {
-                    data: "drawingLogicDocId"
-                }],
+                    { data: "drawingLogicDocId" },
+                    { data: "productVo.productName" },
+                    { data: "drawingLogicCode" },
+                    { data: "rawMaterialCode" },
+                    { data: "hardwareCode" },
+                    { data: "miscellaneousCode" },
+                    { data: "fileName" },
+                   /* { data: "description"},*/
+                    { data: "drawingLogicDocId"}
+                ],
                 columnDefs: [
                     {
                     targets: 0,
@@ -308,29 +433,27 @@
                     targets: 1,
                     orderable: !1,
                     render: function (a, e, t, n) {
-                        return t.prefix+t.drawingLogicDocNo;
+                        return a;
                     }
-                }, {
+                },/* {
                     targets: 2,
                     orderable: !1,
                     render: function (a, e, t, n) {
-                        return a;
+                        return t.drawingLogicCode;
                     }
-                }, {
-                        targets: 3,
+                }, */{
+                        targets: 6,
                         orderable: !1,
                         render: function (a, e, t, n) {
-                            return '<a href="/drawinglogic/download?fileName='+a+'">'+a+'</a>';
+                            if(a!=null) {
+                                return '<a href="/drawinglogic/download?fileName=' + a + '">' + a + '</a>';
+                            }else{
+                                return '-';
+                            }
                         }
                     }, {
-                        targets: 5,
-                        orderable: !1,
-                        render: function (a, e, t, n) {
-                            return a==1?'Yes':'No';
-                        }
-                    },{
                     
-                    targets: 6, // index of the "Actions" column (zero-based index)
+                    targets: 7, // index of the "Actions" column (zero-based index)
                     orderable: false,
                    render: function (a, e, t, n) {
                     //    console.log(a)
@@ -341,197 +464,8 @@
         }
     };
 
-   
-     $(document).ready(function() {
-
-
-       DatatablesDataSourceHtml.init();
-       $(".dt-buttons").addClass("m--hide");
-
-         $('#drawinglogic_new_modal').on('shown.bs.modal', function () {
-             $("#productId").select2();
-        //     $('#drawinglogic_new_form').formValidation('resetForm', true);
-         });
-         $("#docFile").on("change", function () {
-             $("#updateFileTextBox").val(this.value.substring(this.value.lastIndexOf("\\") + 1));
-         });
-
-         $("#savedrawinglogic").click(function () {
-             mApp.block("#drawinglogic_new_modal .modal-content",
-                 {
-                     overlayColor: "#464b66",
-                     type: "loader",
-                     state: "success",
-                     message: "Please wait..."
-                 });
-             if ($("#productId").val() == "0") {
-                 toastr.error("Please Select Product.");
-                 mApp.unblock("#drawinglogic_new_modal .modal-content");
-                 return false;
-             } else {
-                     var formdata = new FormData($("#drawinglogic_new_form")[0]);
-                     $.ajax({
-                         url: "/drawinglogic/savedrawinglogic",
-                         type: "POST",
-                         data: formdata,
-                         encType: "multipart/form-data",
-                         contentType: false,
-                         processData: false,
-                         success: function (data) {
-                             toastr["success"]("Record Inserted....");
-                             $('#drawinglogic_new_modal').modal('toggle');
-                             location.reload();
-                         },
-                         error: function () {
-                             mApp.unblock("#drawinglogic_new_modal .modal-content");
-                         }
-                     });
-
-             }
-         });
-
-    });
-
     function clickUpdateFileBtn() {
         $("#docFile").trigger("click");
-    }
-
-    var totalFiles_edit=0;
-    var mainIndex_edit=0;
-    function updateproduct(id) {
-
-        $.ajax({
-            url: "/product/getdata/"+id,
-            type: "GET",
-            success: function (data) {
-                //console.log(data);
-                $("#product_edit_form").resetForm();
-                $("#all_prodcut_tbl_edit").find("[data-purchase-item]").not(".m--hide").remove();
-                totalFiles_edit=0;
-                mainIndex_edit=0;
-                $("#categoryId_edit").select2();
-                $("#unit_edit").select2();
-
-                $("#product_id_edit").val(id);
-                $("#itemcode_edit").val(data.itemcode);
-                $("#productName_edit").val(data.productName);
-                $("#displayName_edit").val(data.displayName);
-                $("#categoryId_edit").val(data.categoryVo.categoryId).trigger('change');
-                $("#capacity1_edit").val(data.capacity1);
-                $("#capacity2_edit").val(data.capacity2);
-                $("#unit_edit").val(data.unit).trigger('change');
-                if(data.certificateRequired==1){
-
-                    $("#certificateRequired_edit").prop('checked', true);
-                }
-                $("#description_edit").val(data.description);
-
-
-
-                $.each(data.productDocVos, function (key, value) {
-
-                    var $purchaseItemTemplate;
-                    $purchaseItemTemplate = $("#all_prodcut_tbl_edit").find("[data-purchase-item='template']").clone();
-                    $purchaseItemTemplate.find("[data-purchase-item-toggle]").remove();
-                    $purchaseItemTemplate.attr("data-purchase-item", mainIndex_edit).removeClass("m--hide");
-                    $purchaseItemTemplate.attr("id", mainIndex_edit);
-                    $purchaseItemTemplate.find("input[type='text'],input[type='hidden'],button,select,span,textarea").each(function () {
-                        n = $(this).attr("id");
-                        n ? $(this).attr("id", n.replace(/{index}/g, mainIndex_edit)) : "";
-                        n = $(this).attr("name");
-                        n ? $(this).attr("name", n.replace(/{index}/g, mainIndex_edit)) : "";
-
-                        $(this).attr("data-select2-id") ? $(this).attr("data-select2-id", $(this).attr("data-select2-id").replace(/{index}/g, mainIndex_edit)) : "";
-                    });
-                    $purchaseItemTemplate.append('<input type="hidden" id="productDocId_edit' + mainIndex_edit + '" name="productDocVos[' + mainIndex_edit + '].productDocId" value="' + id + '"/>')
-                    $("#all_prodcut_tbl_edit").find("[data-purchase-list]").append($purchaseItemTemplate);
-                    $("#srNo_edit" + mainIndex_edit).html(mainIndex_edit + 1);
-                    $("#fileName_edit" + mainIndex_edit).val(value.fileName);
-                    $("#remark_edit" + mainIndex_edit).val(value.remark);
-                    $("#productDocId_edit" + mainIndex_edit).val(value.productDocId);
-                    mainIndex_edit++;
-                    totalFiles_edit++;
-                });
-                document.getElementById('Filemessage').innerHTML =
-                    'Total Files: <b>' + totalFiles_edit + '</b></br >';
-
-
-            },
-            error: function () {
-
-                toastr.error("There is Something went wrong...");
-            }
-        });
-
-
-    }
-
-    function viewproduct(id) {
-
-        $.ajax({
-            url: "/product/getdata/"+id,
-            type: "GET",
-            success: function (data) {
-               // console.log(data);
-                $("#categoryId_view").select2();
-                $("#unit_view").select2();
-                totalFiles_edit=0;
-                mainIndex_edit=0;
-                $("#all_prodcut_tbl_view").find("[data-purchase-item]").not(".m--hide").remove();
-
-                $("#product_id_view").val(id);
-                $("#itemcode_view").val(data.itemcode);
-                $("#productName_view").val(data.productName);
-                $("#displayName_view").val(data.displayName);
-                $("#categoryId_view").val(data.categoryVo.categoryId).trigger('change');
-                $("#capacity1_view").val(data.capacity1);
-                $("#capacity2_view").val(data.capacity2);
-                $("#unit_view").val(data.unit).trigger('change');
-                if(data.certificateRequired==1){
-
-                    $("#certificateRequired_view").prop('checked', true);
-                }
-                $("#description_view").val(data.description);
-
-
-
-                $.each(data.productDocVos, function (key, value) {
-
-                    var $purchaseItemTemplate;
-                    $purchaseItemTemplate = $("#all_prodcut_tbl_view").find("[data-purchase-item='template']").clone();
-                    $purchaseItemTemplate.find("[data-purchase-item-toggle]").remove();
-                    $purchaseItemTemplate.attr("data-purchase-item", mainIndex_edit).removeClass("m--hide");
-                    $purchaseItemTemplate.attr("id", mainIndex_edit);
-                    $purchaseItemTemplate.find("input[type='text'],input[type='hidden'],button,select,span,textarea,a").each(function () {
-                        n = $(this).attr("id");
-                        n ? $(this).attr("id", n.replace(/{index}/g, mainIndex_edit)) : "";
-                        n = $(this).attr("name");
-                        n ? $(this).attr("name", n.replace(/{index}/g, mainIndex_edit)) : "";
-
-                        $(this).attr("data-select2-id") ? $(this).attr("data-select2-id", $(this).attr("data-select2-id").replace(/{index}/g, mainIndex_edit)) : "";
-                    });
-                    $purchaseItemTemplate.append('<input type="hidden" id="productDocId_view' + mainIndex_edit + '" name="productDocVos[' + mainIndex_edit + '].productDocId" value="' + id + '"/>')
-                    $("#all_prodcut_tbl_view").find("[data-purchase-list]").append($purchaseItemTemplate);
-                    $("#srNo_view" + mainIndex_edit).html(mainIndex_edit + 1);
-                    $("#fileName_view" + mainIndex_edit).val(value.fileName);
-                    $("#remark_view" + mainIndex_edit).val(value.remark);
-                    $("#productDocId_view" + mainIndex_edit).val(value.productDocId);
-                    $("#file_download"+mainIndex_edit).attr("href", value.filePath+value.fileName)
-                    mainIndex_edit++;
-                    totalFiles_edit++;
-                });
-                document.getElementById('Filemessage_view').innerHTML =
-                    'Total Files: <b>' + totalFiles_edit + '</b></br >';
-
-
-            },
-            error: function () {
-
-                toastr.error("There is Something went wrong...");
-            }
-        });
-
-
     }
 
     function deleteproduct(id) {
@@ -567,10 +501,7 @@
             }
         });
     }
-
 </script>
 </body>
-
-<!-- end::Body -->
 </html>
 

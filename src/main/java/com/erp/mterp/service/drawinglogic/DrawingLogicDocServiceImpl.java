@@ -1,8 +1,11 @@
 package com.erp.mterp.service.drawinglogic;
 
+import com.erp.mterp.dto.dl_type.DLTypeCUSTOMSelectItemDTO;
 import com.erp.mterp.repository.drawinglogic.DrawingLogicRepository;
+import com.erp.mterp.repository.drawinglogic.DrawingLogicTypeRepository;
 import com.erp.mterp.repository.product.ProductRepository;
 import com.erp.mterp.vo.drawinglogic.DrawingLogicDocVo;
+import com.erp.mterp.vo.drawinglogic.DrawingLogicTypeVo;
 import com.erp.mterp.vo.product.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class DrawingLogicDocServiceImpl implements DrawingLogicService {
 
 	@Autowired
 	DrawingLogicRepository drawingLogicRepository;
+
+	@Autowired
+	DrawingLogicTypeRepository drawingLogicTypeRepository;
 
 	@Override
 	public DrawingLogicDocVo savedrawingLogicDoc(DrawingLogicDocVo drawingLogicDocVo) {
@@ -44,6 +50,21 @@ public class DrawingLogicDocServiceImpl implements DrawingLogicService {
 	@Override
 	public void deleteplaningDL(List<Long> list) {
 		drawingLogicRepository.deleteplaningDL(list);
+	}
+
+	@Override
+	public void savedrawingLogicType(DrawingLogicTypeVo dlTypeVo) {
+		drawingLogicTypeRepository.save(dlTypeVo);
+	}
+
+	@Override
+	public List<DLTypeCUSTOMSelectItemDTO> findDLTypeData(String searchValue, long companyId, String type) {
+		return drawingLogicTypeRepository.findDLTypeData(searchValue, companyId, type);
+	}
+
+	@Override
+	public List<DrawingLogicDocVo> checkDLCode(String drawingLogicCode, long companyId) {
+		return drawingLogicRepository.checkDLCode( drawingLogicCode, companyId) ;
 	}
 
 	@Override
